@@ -1,0 +1,4 @@
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\PhoneClassLibrary1\Bin\Debug\RatinVolsuAPI.dll
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\PhoneClassLibrary1\Bin\Debug\RatinVolsuAPI.pdb
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\PhoneClassLibrary1\obj\Debug\RatinVolsuAPI.dll
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\PhoneClassLibrary1\obj\Debug\RatinVolsuAPI.pdb
