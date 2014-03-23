@@ -20,3 +20,27 @@ D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\
 D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\RatinVolsuAPI.dll
 D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\RatinVolsuAPI.pdb
 D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\RatingVolsuWP8.csprojResolveAssemblyReference.cache
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\ApplicationIcon.png
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\FlipCycleTileSmall.png
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\IconicTileMediumLarge.png
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\IconicTileSmall.png
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\RatingVolsuWP8.dll
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\RatingVolsuWP8.pdb
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\AppManifest.xaml
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Properties\WMAppManifest.xml
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\RatingVolsuWP8_Debug_AnyCPU.xap
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\RatinVolsuAPI.dll
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\RatinVolsuAPI.pdb
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\RatingVolsuWP8.csprojResolveAssemblyReference.cache
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\App.g.cs
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\MainPage.g.cs
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\RatingVolsuWP8.g.resources
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\RatingVolsuWP8.Resources.AppResources.resources
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\RatingVolsuWP8.csproj.GenerateResource.Cache
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\RatingVolsuWP8.dll
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\RatingVolsuWP8.pdb
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\XapCacheFile.xml
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Newtonsoft.Json.dll
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Newtonsoft.Json.xml
