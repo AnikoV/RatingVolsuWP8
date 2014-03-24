@@ -1,13 +1,21 @@
-﻿<xapCache source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\RatingVolsuWP8_Debug_AnyCPU.xap" wasSigned="False" wasTritonized="False" certificateThumbprint="" TimeStampUrl="" signKeyFile="" signKeyPassword="" lastWriteTime="09.03.2014 19:24:37">
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\RatingVolsuWP8.dll" archivePath="RatingVolsuWP8.dll" lastWriteTime="09.03.2014 19:24:37" />
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Assets\AlignmentGrid.png" archivePath="Assets\AlignmentGrid.png" lastWriteTime="09.03.2014 19:02:41" />
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Assets\Tiles\FlipCycleTileLarge.png" archivePath="Assets\Tiles\FlipCycleTileLarge.png" lastWriteTime="09.03.2014 19:02:41" />
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Assets\Tiles\FlipCycleTileSmall.png" archivePath="Assets\Tiles\FlipCycleTileSmall.png" lastWriteTime="09.03.2014 19:02:41" />
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Assets\Tiles\IconicTileMediumLarge.png" archivePath="Assets\Tiles\IconicTileMediumLarge.png" lastWriteTime="09.03.2014 19:02:41" />
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Assets\Tiles\IconicTileSmall.png" archivePath="Assets\Tiles\IconicTileSmall.png" lastWriteTime="09.03.2014 19:02:41" />
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="09.03.2014 19:24:37" />
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\ApplicationIcon.png" archivePath="Assets\ApplicationIcon.png" lastWriteTime="09.03.2014 19:02:41" />
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png" archivePath="Assets\Tiles\FlipCycleTileMedium.png" lastWriteTime="09.03.2014 19:02:41" />
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\PhoneClassLibrary1\Bin\Debug\RatinVolsuAPI.dll" archivePath="RatinVolsuAPI.dll" lastWriteTime="09.03.2014 19:24:36" />
-  <file source="D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\AppProject\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Properties\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="09.03.2014 19:02:47" />
+﻿<xapCache source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\RatingVolsuWP8_Debug_AnyCPU.xap" wasSigned="False" wasTritonized="False" certificateThumbprint="" TimeStampUrl="" signKeyFile="" signKeyPassword="" lastWriteTime="23.03.2014 21:52:31">
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\RatingVolsuWP8.dll" archivePath="RatingVolsuWP8.dll" lastWriteTime="23.03.2014 21:52:29" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Assets\AlignmentGrid.png" archivePath="Assets\AlignmentGrid.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Assets\Tiles\FlipCycleTileLarge.png" archivePath="Assets\Tiles\FlipCycleTileLarge.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Assets\Tiles\FlipCycleTileSmall.png" archivePath="Assets\Tiles\FlipCycleTileSmall.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Assets\Tiles\IconicTileMediumLarge.png" archivePath="Assets\Tiles\IconicTileMediumLarge.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Assets\Tiles\IconicTileSmall.png" archivePath="Assets\Tiles\IconicTileSmall.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\AppManifest.xaml" archivePath="AppManifest.xaml" lastWriteTime="23.03.2014 21:52:30" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\ApplicationIcon.png" archivePath="Assets\ApplicationIcon.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png" archivePath="Assets\Tiles\FlipCycleTileLarge.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png" archivePath="Assets\Tiles\FlipCycleTileMedium.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\FlipCycleTileSmall.png" archivePath="Assets\Tiles\FlipCycleTileSmall.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\IconicTileMediumLarge.png" archivePath="Assets\Tiles\IconicTileMediumLarge.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Assets\Tiles\IconicTileSmall.png" archivePath="Assets\Tiles\IconicTileSmall.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\packages\Newtonsoft.Json.6.0.1\lib\portable-net45+wp80+win8\Newtonsoft.Json.dll" archivePath="Newtonsoft.Json.dll" lastWriteTime="23.03.2014 21:42:31" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\Bin\Debug\RatinVolsuAPI.dll" archivePath="RatinVolsuAPI.dll" lastWriteTime="23.03.2014 21:52:26" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\packages\Newtonsoft.Json.6.0.1\lib\portable-net45+wp80+win8\Newtonsoft.Json.xml" archivePath="Newtonsoft.Json.xml" lastWriteTime="23.03.2014 21:42:31" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Assets\ApplicationIcon.png" archivePath="Assets\ApplicationIcon.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Assets\Tiles\FlipCycleTileMedium.png" archivePath="Assets\Tiles\FlipCycleTileMedium.png" lastWriteTime="17.03.2014 21:33:45" />
+  <file source="C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Properties\WMAppManifest.xml" archivePath="WMAppManifest.xml" lastWriteTime="17.03.2014 21:33:45" />
 </xapCache>

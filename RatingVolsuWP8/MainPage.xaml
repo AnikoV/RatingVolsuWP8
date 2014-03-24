@@ -40,23 +40,75 @@
          -->
 
         <!--TitlePanel содержит имя приложения и заголовок страницы-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" Orientation="Vertical">
             <TextBlock Text="МОЕ ПРИЛОЖЕНИЕ" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
             <TextBlock Text="имя страницы" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+
+
+            <!--ContentPanel — поместите здесь дополнительное содержимое-->
+            <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" HorizontalAlignment="Stretch">
+                <StackPanel x:Name="mainPanel" Grid.Row="0" Margin="12,17,0,28" Orientation="Vertical">
+                    <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,0,0,0" Grid.Row="1" Click="Button_Click_1"/>
+                    <TextBlock Text="Факультет" Margin="9,-7,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
+                    <ListBox ItemsSource="{Binding facultCollection}" 
+                x:Name="FacultList"
+				Margin="10,10,24,0" 
+				Tap="FacultList_Tap">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Padding="3,0,3,0"
+								Text="{Binding FacultName}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <TextBlock Text="Группа" Margin="9,-7,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
+                    <ListBox ItemsSource="{Binding groupCollection}" 
+				x:Name="GroupList"
+				Margin="10,10,24,0" 
+				Tap="GroupList_Tap">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Padding="3,0,3,0"
+								Text="{Binding GroupName}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <TextBlock Text="Студенты" Margin="9,-7,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
+                    <ListBox ItemsSource="{Binding studentCollection}" 
+			x:Name="StudentList"
+			Margin="10,10,24,0" 
+			Tap="StudentList_Tap">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Padding="3,0,3,0"
+				Text="{Binding StudentNumber}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <ListBox 
+			            x:Name="SemestrList"
+			            Margin="10,10,24,0" 
+			            Tap="Semestr_Tap">
+                    </ListBox>
+                    <Grid>
+                        <Button Content="Студент" HorizontalAlignment="Center" Margin="262,0,26,0" Width="144" Click="Button_Click_3"/>
+                        <Button Content="Группа" HorizontalAlignment="Center" Margin="58,0,237,0" Width="137" Click="Button_Click_2"/>
+                    </Grid>
+
+
+
+                </StackPanel>
+            </Grid>
         </StackPanel>
+        <TextBlock x:Name="text" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="189,10,0,0" Grid.Row="1"/>
 
-        <!--ContentPanel — поместите здесь дополнительное содержимое-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
-        </Grid>
-
-        <!--Раскомментируйте, чтобы увидеть сетку выравнивания и выровнять
-            элементы управления по общим границам.  Верхнее поле изображения равно -32 пикселя, чтобы
-            осталось место для области уведомлений. Установите его равным 0 (или вообще удалите поле),
-            если область уведомлений скрыта.
-
-            Перед сдачей приложения удалите этот код XAML и само изображение.-->
-        <!--<Image Source="/Assets/AlignmentGrid.png" VerticalAlignment="Top" Height="800" Width="480" Margin="0,-32,0,0" Grid.Row="0" Grid.RowSpan="2" IsHitTestVisible="False" />-->
     </Grid>
 
 </phone:PhoneApplicationPage>
