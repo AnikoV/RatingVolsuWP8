@@ -9,35 +9,35 @@ using System.Threading.Tasks;
 
 namespace RatingVolsuWP8
 {
-    public class SavedRequest
-    {
-        public ObservableCollection<Facult> FacultCollection;
-        public ObservableCollection<Group> GroupCollection;
-        public ObservableCollection<Student> StudentCollection;
-        public StudentRat RatingStudent;
-        public string FacultId;
-        public string GroupId;
-        public string StudentId;
-        public string Semestr;
+    //public class SavedRequest
+    //{
+    //    public ObservableCollection<Facult> FacultCollection;
+    //    public ObservableCollection<Group> GroupCollection;
+    //    public ObservableCollection<Student> StudentCollection;
+    //    public StudentRat RatingStudent;
+    //    public string FacultId;
+    //    public string GroupId;
+    //    public string StudentId;
+    //    public string Semestr;
 
-        public void SetValues(RatingViewModel v)
-        {
-            FacultCollection = new ObservableCollection<Facult>(v.facults);
-            GroupCollection = new ObservableCollection<Group>(v.groups);
-            StudentCollection = new ObservableCollection<Student>(v.students);
-            RatingStudent = v.RatingStudent;
-            FacultId = v.FacultId;
-            GroupId = v.GroupId;
-            StudentId = v.StudentId;
-            Semestr = v.Semestr;
-        }
-    }
+    //    public void SetValues(RatingViewModel v)
+    //    {
+    //        FacultCollection = new ObservableCollection<Facult>(v.facults);
+    //        GroupCollection = new ObservableCollection<Group>(v.groups);
+    //        StudentCollection = new ObservableCollection<Student>(v.students);
+    //        RatingStudent = v.RatingStudent;
+    //        FacultId = v.FacultId;
+    //        GroupId = v.GroupId;
+    //        StudentId = v.StudentId;
+    //        Semestr = v.Semestr;
+    //    }
+    //}
 
-    public class Facult : INotifyPropertyChanged
+    public class FacultBase : INotifyPropertyChanged
     {
         public string Name;
         public string Id;
-        public ObservableCollection<Group> Groups;
+        public ObservableCollection<GroupBase> Groups;
 
         public string FacultName
         {
@@ -59,7 +59,7 @@ namespace RatingVolsuWP8
         }
     }
 
-    public class Group : INotifyPropertyChanged
+    public class GroupBase : INotifyPropertyChanged
     {
         public string Name;
 
@@ -67,7 +67,7 @@ namespace RatingVolsuWP8
 
         public string Id;
 
-        public ObservableCollection<Student> Students;
+        public ObservableCollection<StudentBase> Students;
 
         public string GroupName
         {
@@ -91,7 +91,7 @@ namespace RatingVolsuWP8
 
     }
 
-    public class Student : INotifyPropertyChanged
+    public class StudentBase : INotifyPropertyChanged
     {
         public string Id;
         public string Number;
@@ -136,7 +136,7 @@ namespace RatingVolsuWP8
         public Dictionary<string, string> subjects;
     }
 
-    public class Subject
+    public class SubjectBase
     {
         public string Id;
         public string Name;

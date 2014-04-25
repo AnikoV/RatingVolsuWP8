@@ -85,7 +85,17 @@
   <ItemGroup>
     <Compile Include="Base\PropertyChangedBase.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="DataBase\Facult.cs" />
+    <Compile Include="DataBase\FavoritesItem.cs" />
+    <Compile Include="DataBase\Group.cs" />
+    <Compile Include="DataBase\Rating.cs" />
+    <Compile Include="DataBase\RatingDatabase.cs" />
+    <Compile Include="DataBase\Student.cs" />
+    <Compile Include="DataBase\Subject.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="HttpExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -95,6 +105,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />

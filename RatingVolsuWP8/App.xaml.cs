@@ -6,6 +6,7 @@ using System.Windows.Markup;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using RatingVolsuAPI;
 using RatingVolsuWP8.Resources;
 
 namespace RatingVolsuWP8
@@ -17,7 +18,13 @@ namespace RatingVolsuWP8
         /// </summary>
         /// <returns>Корневой кадр приложения телефона.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
-
+        public static string DbConnectionString = @"isostore:/RatingDataBase.sdf";
+        private static RatingViewModel _viewModel;
+        public static string CurrentFavorites = "";
+        public static RatingViewModel ViewModel
+        {
+            get { return _viewModel; }
+        }
         /// <summary>
         /// Конструктор объекта приложения.
         /// </summary>
@@ -54,7 +61,13 @@ namespace RatingVolsuWP8
                 // и потреблять энергию батареи, когда телефон не будет использоваться.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-
+            using (RatingDatabase db = new RatingDatabase(DbConnectionString))
+            {
+                if (db.DatabaseExists() == false)
+                    db.CreateDatabase();
+            }
+            _viewModel = new RatingViewModel(DbConnectionString);
+            _viewModel.LoadCollectionsFromDatabase();
         }
 
         // Код для выполнения при запуске приложения (например, из меню "Пуск")

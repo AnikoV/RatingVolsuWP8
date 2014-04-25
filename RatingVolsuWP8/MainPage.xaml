@@ -14,101 +14,65 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
-        <!-- ПРИМЕЧАНИЕ О ЛОКАЛИЗАЦИИ:
-            Чтобы локализовать отображаемые строки, скопируйте их значения в соответствующим образом названные
-            ключи в файле ресурсов нейтрального языка приложения (AppResources.resx), а затем
-            замените жестко заданное текстовое значение между кавычками атрибутов
-            на выражение привязки, указывающее на имя соответствующей строки.
-
-            Пример:
-
-                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
-
-            Данная привязка указывает на строковый ресурс шаблона с именем "ApplicationTitle".
-
-            Добавление поддерживаемых языков на вкладку "Свойства проекта" создает
-            новый RESX-файл для каждого языка, в котором могут храниться переведенные значения
-            строк пользовательского интерфейса. Привязка в этих примерах вызывает отрисовку
-            значений атрибутов из RESX-файла, соответствующего
-            CurrentUICulture приложения во время выполнения.
-         -->
-
-        <!--TitlePanel содержит имя приложения и заголовок страницы-->
-
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" Orientation="Vertical">
-            <TextBlock Text="МОЕ ПРИЛОЖЕНИЕ" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-            <TextBlock Text="имя страницы" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-
-
-            <!--ContentPanel — поместите здесь дополнительное содержимое-->
-            <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" HorizontalAlignment="Stretch">
-                <StackPanel x:Name="mainPanel" Grid.Row="0" Margin="12,17,0,28" Orientation="Vertical">
-                    <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="170,0,0,0" Grid.Row="1" Click="Button_Click_1"/>
-                    <TextBlock Text="Факультет" Margin="9,-7,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
+    <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,10,12,28" HorizontalAlignment="Stretch">
+        <StackPanel x:Name="mainPanel" Grid.Row="0" Margin="12,17,0,10" Orientation="Vertical">
+            <phone:Pivot Height="697" Title="Рейтинг" FontSize="20" Margin="0,0,10,0">
+                <phone:PivotItem CacheMode="{x:Null}" Header="Факультет" Margin="12,28,12,2">
                     <ListBox ItemsSource="{Binding facultCollection}" 
-                x:Name="FacultList"
-				Margin="10,10,24,0" 
-				Tap="FacultList_Tap">
+                                x:Name="FacultList"
+				                Margin="10" 
+				                Tap="FacultList_Tap">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
                                     <TextBlock Padding="3,0,3,0"
-								Text="{Binding FacultName}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+								Text="{Binding Name}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <TextBlock Text="Группа" Margin="9,-7,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
+                </phone:PivotItem>
+                <phone:PivotItem CacheMode="{x:Null}" Header="Группа">
                     <ListBox ItemsSource="{Binding groupCollection}" 
-				x:Name="GroupList"
-				Margin="10,10,24,0" 
-				Tap="GroupList_Tap">
+				                x:Name="GroupList"
+				                Margin="10,10,24,0" 
+				                Tap="GroupList_Tap">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
                                     <TextBlock Padding="3,0,3,0"
-								Text="{Binding GroupName}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+								Text="{Binding Name}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <TextBlock Text="Студенты" Margin="9,-7,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
-                    <ListBox ItemsSource="{Binding studentCollection}" 
-			x:Name="StudentList"
-			Margin="10,10,24,0" 
-			Tap="StudentList_Tap">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Padding="3,0,3,0"
-				Text="{Binding StudentNumber}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                </phone:PivotItem>
+                <phone:PivotItem CacheMode="{x:Null}" Header="Семестр">
                     <ListBox 
-			            x:Name="SemestrList"
-			            Margin="10,10,24,0" 
-			            Tap="Semestr_Tap">
+			                x:Name="SemestrList"
+			                Margin="10,10,24,0" 
+			                Tap="Semestr_Tap">
                     </ListBox>
-                    <Grid>
-                        <Button Content="Студент" HorizontalAlignment="Center" Margin="262,0,26,0" Width="144" Click="Button_Click_3"/>
-                        <Button Content="Группа" HorizontalAlignment="Center" Margin="58,0,237,0" Width="137" Click="Button_Click_2"/>
-                    </Grid>
-
-
-
-                </StackPanel>
-            </Grid>
+                </phone:PivotItem>
+                <phone:PivotItem CacheMode="{x:Null}" Header="Студент">
+                    <ListBox ItemsSource="{Binding studentCollection}" 
+			                    x:Name="StudentList"
+			                    Margin="10,10,24,0" 
+			                    Tap="StudentList_Tap">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Padding="3,0,3,0"
+				                                Text="{Binding Number}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </phone:PivotItem>
+            </phone:Pivot>
         </StackPanel>
-        <TextBlock x:Name="text" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="189,10,0,0" Grid.Row="1"/>
-
     </Grid>
+
 
 </phone:PhoneApplicationPage>

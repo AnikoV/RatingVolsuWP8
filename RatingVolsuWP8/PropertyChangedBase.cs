@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RatingVolsuAPI.Base
+namespace RatingVolsuWP8
 {
     internal class MagicAttribute : Attribute { }
 
