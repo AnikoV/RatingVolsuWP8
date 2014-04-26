@@ -46,4 +46,3 @@ C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Newtonsoft
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Newtonsoft.Json.xml
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\RequestDataView.g.cs
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\Microsoft.Phone.Controls.dll
-C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\TestPage.g.cs

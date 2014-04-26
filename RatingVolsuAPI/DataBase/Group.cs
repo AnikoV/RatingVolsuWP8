@@ -112,25 +112,6 @@ namespace RatingVolsuAPI
 
         #endregion
 
-        //#region relation group-FavoriteItem
-
-        //private EntityRef<FavoritesItem> _favoriteItem;
-
-        //[Association(Storage = "_favoriteItem", ThisKey = "Id", OtherKey = "_groupId", IsForeignKey = true)]
-
-        //public FavoritesItem FavoriteItem
-        //{
-        //    get { return _favoriteItem.Entity; }
-        //    set
-        //    {
-        //        RaisePropertyChanged("FavoritesItem");
-        //        _favoriteItem.Entity = value;
-        //        NotifyPropertyChanging("FavoritesItem");
-        //    }
-        //}
-
-        //#endregion
-
         #region INotifyPropertyChanging Members
 
         public event PropertyChangingEventHandler PropertyChanging;

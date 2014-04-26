@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data.Linq;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Threading;
-using Newtonsoft.Json;
-using RatingVolsuAPI;
 using RatingVolsuAPI;
 
 namespace RatingVolsuWP8
@@ -61,45 +54,6 @@ namespace RatingVolsuWP8
             LoadCollectionsFromDatabase();
             request = new RequestManager();
         }
-
-        public void SaveChangesRatingtoDb(string favoritesId)
-        {
-            var currentFavorites = rating.Favorites.FirstOrDefault(x => x.Id == favoritesId);
-            if (currentFavorites == null)
-            {
-                rating.Favorites.InsertOnSubmit(new FavoritesItem()
-                {
-                    Id = StudentId,
-                    Type = RatingType.RatingOfStudent,
-                    Student = studentCollection.First(x => x.Id == StudentId)
-
-                });
-                
-                foreach (var facult in facultCollection)
-                {
-                    if (rating.Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
-                        rating.Facults.InsertOnSubmit(facult);
-                }
-
-                foreach (var group in groupCollection)
-                {
-                    group.FacultId = FacultId;
-                    if (rating.Groups.FirstOrDefault(x => x.Id == group.Id) == null)
-                    {
-                        rating.Groups.InsertOnSubmit(group);
-                    }
-                        
-                }
-
-                foreach (var student in studentCollection)
-                {
-                    student.GroupId = GroupId;
-                    if (rating.Students.FirstOrDefault(x => x.Id == student.Id) == null)
-                        rating.Students.InsertOnSubmit(student);
-                }
-                rating.SubmitChanges();
-            } 
-        }
         
         public void LoadCollectionsFromDatabase()
         {
@@ -123,18 +77,21 @@ namespace RatingVolsuWP8
 
         public async Task GetFacults()
         {
-           facultCollection = await request.GetFucultList();
+            facultCollection = await request.GetFucultList();
+            App.CacheManager.facultCollection = new ObservableCollection<Facult>(facultCollection);
         }
 
         public async Task GetGroups(int SelectedId)
         {
             FacultId = facultCollection[SelectedId].Id;
             groupCollection = await request.GetGroupList(FacultId);
+            App.CacheManager.groupCollection = new ObservableCollection<Group>(groupCollection);
         }
 
         public async Task GetStudents(int SelectedId)
         {
             studentCollection = await request.GetStudentList(GroupId);
+            App.CacheManager.studentCollection = new ObservableCollection<Student>(studentCollection);
         }
 
         public int GetSemestrCount()

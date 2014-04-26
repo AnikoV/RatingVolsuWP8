@@ -20,10 +20,20 @@ namespace RatingVolsuWP8
         public static PhoneApplicationFrame RootFrame { get; private set; }
         public static string DbConnectionString = @"isostore:/RatingDataBase.sdf";
         private static RatingViewModel _viewModel;
-        public static string CurrentFavorites = "";
+        public static int CurrentFavorites = -1;
         public static RatingViewModel ViewModel
         {
             get { return _viewModel; }
+        }
+        private static CacheManager _cacheManager;
+        public static CacheManager CacheManager
+        {
+            get
+            {
+                if (_cacheManager == null)
+                    _cacheManager = new CacheManager();
+                return _cacheManager;
+            }
         }
         /// <summary>
         /// Конструктор объекта приложения.

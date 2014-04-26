@@ -14,10 +14,10 @@ namespace RatingVolsuAPI
     [Table]
     public class FavoritesItem : PropertyChangedBase, INotifyPropertyChanging
     {
-        private string _id;
+        private int _id;
 
-        [Column(IsPrimaryKey = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public string Id
+        [Column(IsPrimaryKey = true, DbType = "INT NOT NULL IDENTITY", IsDbGenerated = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public int Id
         {
             get { return _id; }
             set
@@ -28,13 +28,15 @@ namespace RatingVolsuAPI
             }
         }
 
+        public string _name;
+        [Column]
         public string Name
         {
-            get { return _id; }
+            get { return _name; }
             set
             {
                 NotifyPropertyChanging("Name");
-                _id = value;
+                _name = value;
                 RaisePropertyChanged("Name");
             }
         }
@@ -56,11 +58,11 @@ namespace RatingVolsuAPI
         #region relation student-FavoriteItem
 
         [Column]
-        internal string _studentId;
+        public string StudentId;
 
         private EntityRef<Student> _student;
 
-        [Association(Storage = "_student", ThisKey = "_studentId", OtherKey = "Id", IsForeignKey = true)]
+        [Association(Storage = "_student", ThisKey = "StudentId", OtherKey = "Id", IsForeignKey = true)]
 
         public Student Student
         {
@@ -72,7 +74,7 @@ namespace RatingVolsuAPI
 
                 if (value != null)
                 {
-                    _studentId = value.Id;
+                    StudentId = value.Id;
                 }
 
                 NotifyPropertyChanging("Student");
@@ -84,11 +86,11 @@ namespace RatingVolsuAPI
         #region relation group-FavoriteItem
 
         [Column]
-        internal string _groupId;
+        public string GroupId;
 
         private EntityRef<Group> _group;
 
-        [Association(Storage = "_group", ThisKey = "_groupId", OtherKey = "Id", IsForeignKey = true)]
+        [Association(Storage = "_group", ThisKey = "GroupId", OtherKey = "Id", IsForeignKey = true)]
 
         public Group Group
         {
@@ -100,7 +102,7 @@ namespace RatingVolsuAPI
 
                 if (value != null)
                 {
-                    _groupId = value.Id;
+                    GroupId = value.Id;
                 }
 
                 NotifyPropertyChanging("Group");

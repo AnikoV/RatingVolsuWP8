@@ -44,38 +44,6 @@ namespace RatingVolsuAPI
         [Column(IsVersion = true)]
         private Binary _version;
 
-        #region relation rating-subject
-        private EntitySet<Rating> _ratings;
-
-        [Association(Storage = "_subj", OtherKey = "SubjectId", ThisKey = "Id")]
-        public EntitySet<Rating> Ratings
-        {
-            get { return this._ratings; }
-            set { this._ratings.Assign(value); }
-        }
-
-        public Subject()
-        {
-            _ratings = new EntitySet<Rating>(
-                new Action<Rating>(this.attach_subj),
-                new Action<Rating>(this.detach_subj)
-                );
-        }
-
-        private void attach_subj(Rating subj)
-        {
-            NotifyPropertyChanging("Rating");
-            subj.Subject = this;
-        }
-
-        private void detach_subj(Rating subj)
-        {
-            NotifyPropertyChanging("Rating");
-            subj.Subject = null;
-        }
-
-        #endregion
-
         #region INotifyPropertyChanging Members
 
         public event PropertyChangingEventHandler PropertyChanging;

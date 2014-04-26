@@ -8,4 +8,3 @@ C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\obj\Debug\RatinVolsu
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\obj\Debug\RatinVolsuAPI.pdb
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\Bin\Debug\Newtonsoft.Json.dll
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\Bin\Debug\Newtonsoft.Json.xml
-C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\obj\Debug\RatingVolsuAPI.csprojResolveAssemblyReference.cache

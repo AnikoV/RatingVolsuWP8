@@ -17,22 +17,10 @@ namespace RatingVolsuAPI
 {
     public delegate void DataLoaded(string content);
 
-    public enum RequestType
-    {
-        Facult,
-        Group,
-        Student,
-        RatingGroup,
-        RatingStudent
-    }
-
     public class RequestManager
     {
         private string _url;
         private Data _data;
-        private DataLoaded _onDataLoaded;
-        public string responseString;
-        private string _postString;
 
         private async Task<string> SendRequest(string DataRequest)
         {
@@ -51,7 +39,7 @@ namespace RatingVolsuAPI
                 using (var reader = new StreamReader(responseStream))
                 {
                     content = reader.ReadToEnd();
-                }
+                    }
                 responseStream.Close();
                 return content;
             }

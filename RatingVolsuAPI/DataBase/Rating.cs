@@ -13,13 +13,10 @@ namespace RatingVolsuAPI
     [Table]
     public class Rating : PropertyChangedBase, INotifyPropertyChanging
     {
-        private string _id 
-        {
-            get { return StudentId + SubjectId + Semestr; }
-            set { }
-        }
-        [Column(IsPrimaryKey = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public string Id
+        private int _id;
+
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL IDENTITY", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public int Id
         {
             get { return _id; }
             set
@@ -36,8 +33,19 @@ namespace RatingVolsuAPI
         [Column] 
         public string Semestr;
 
+        private string _subjectId;
+
         [Column]
-        public string SubjectId;
+        public string SubjectId
+        {
+            get { return _subjectId; }
+            set
+            {
+                NotifyPropertyChanging("SubjectId");
+                _subjectId = value;
+                RaisePropertyChanged("SubjectId");
+            }
+        }
 
         private EntityRef<Subject> _subject;
 
@@ -165,22 +173,6 @@ namespace RatingVolsuAPI
 
         [Column(IsVersion = true)]
         private Binary _version;
-
-        public Rating()
-        {
-         
-        }
-
-        public Rating(Rating c)
-        {
-            Id = c.Id;
-            Att1 = c.Att1;
-            Att2 = c.Att2;
-            Att3 = c.Att3;
-            Exam = c.Exam;
-            Sum = c.Sum;
-            Total = c.Total;
-        }
 
         #region INotifyPropertyChanging Members
 

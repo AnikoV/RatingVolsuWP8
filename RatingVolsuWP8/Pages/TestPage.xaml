@@ -16,8 +16,8 @@
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <phone:Panorama HorizontalAlignment="Left" Height="758" Title="рейтинг" VerticalAlignment="Top" Width="470">
-            <phone:PanoramaItem CacheMode="{x:Null}" Header="Предметы">
-                <ListBox ItemsSource="{Binding subjectCollection}" 
+            <phone:PanoramaItem CacheMode="{x:Null}" Header="Избранное">
+                <ListBox ItemsSource="{Binding favotitesCollection}" 
                                 x:Name="List"
 				                Margin="10" Tap="List_Tap">
                     <ListBox.ItemTemplate>

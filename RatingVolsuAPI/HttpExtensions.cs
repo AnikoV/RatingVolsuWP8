@@ -17,7 +17,7 @@ namespace WinPhoneExtensions
                 {
                     var webRequest = (HttpWebRequest)asyncRequest.AsyncState;
 
-                    using (var postStream =webRequest.EndGetRequestStream(asyncRequest))
+                    using (var postStream = webRequest.EndGetRequestStream(asyncRequest))
                     {
                         var byteArray = new byte[PostString.Length];
                         new UTF8Encoding().GetBytes(PostString.ToCharArray(), 0, PostString.Length, byteArray, 0);
@@ -25,7 +25,7 @@ namespace WinPhoneExtensions
                         postStream.Close();
                         taskComplete.TrySetResult(webRequest);
                     }
-                    
+
                 }
                 catch (WebException webExc)
                 {

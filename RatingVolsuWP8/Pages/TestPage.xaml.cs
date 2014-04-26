@@ -24,9 +24,10 @@ namespace RatingVolsuWP8
         public RequestDataView()
         {
             InitializeComponent();
+
             _viewModel = new RequestDataViewModel();
             DataContext = _viewModel;
-            
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -43,10 +44,7 @@ namespace RatingVolsuWP8
         {
             var SelectedIndex = List.SelectedIndex;
             if (SelectedIndex == -1) return;
-            App.RootFrame.Dispatcher.BeginInvoke(new Action<Rating>(c =>
-            {
-               
-            }), _viewModel.ratingCollection[SelectedIndex]);
+            _viewModel.GetFavoritesRating();
         }
     }
 }

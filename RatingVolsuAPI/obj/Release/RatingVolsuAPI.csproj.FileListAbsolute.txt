@@ -1,0 +1,7 @@
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\Bin\Release\RatinVolsuAPI.dll
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\Bin\Release\RatinVolsuAPI.pdb
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\Bin\Release\Newtonsoft.Json.dll
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\Bin\Release\Newtonsoft.Json.xml
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\obj\Release\RatinVolsuAPI.dll
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\obj\Release\RatinVolsuAPI.pdb
+C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\obj\Release\RatingVolsuAPI.csprojResolveAssemblyReference.cache
