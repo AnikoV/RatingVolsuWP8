@@ -49,6 +49,19 @@ namespace RatingVolsuAPI
             }
         }
 
+        private string _type;
+
+        [Column]
+        public string Type
+        {
+            get { return _type; }
+            set
+            {
+                _type = value;
+                RaisePropertyChanged("Type");
+            }
+        }
+
         [Column(IsVersion = true)]
         private Binary _version;
 
@@ -79,38 +92,38 @@ namespace RatingVolsuAPI
 
         #endregion
 
-        #region relation group-student
+        //#region relation group-student
 
-        private EntitySet<Student> _students;
+        //private EntitySet<Student> _students;
 
-        [Association(Storage = "_students", OtherKey = "GroupId", ThisKey = "Id")]
-        public EntitySet<Student> Student
-        {
-            get { return this._students; }
-            set { this._students.Assign(value); }
-        }
+        //[Association(Storage = "_students", OtherKey = "GroupId", ThisKey = "Id")]
+        //public EntitySet<Student> Student
+        //{
+        //    get { return this._students; }
+        //    set { this._students.Assign(value); }
+        //}
 
-        public Group()
-        {
-            _students = new EntitySet<Student>(
-                new Action<Student>(this.attach_stud),
-                new Action<Student>(this.detach_stud)
-                );
-        }
+        //public Group()
+        //{
+        //    _students = new EntitySet<Student>(
+        //        new Action<Student>(this.attach_stud),
+        //        new Action<Student>(this.detach_stud)
+        //        );
+        //}
 
-        private void attach_stud(Student student)
-        {
-            NotifyPropertyChanging("Student");
-            student.Group = this;
-        }
+        //private void attach_stud(Student student)
+        //{
+        //    NotifyPropertyChanging("Student");
+        //    student.Group = this;
+        //}
 
-        private void detach_stud(Student student)
-        {
-            NotifyPropertyChanging("Student");
-            student.Group = null;
-        }
+        //private void detach_stud(Student student)
+        //{
+        //    NotifyPropertyChanging("Student");
+        //    student.Group = null;
+        //}
 
-        #endregion
+        //#endregion
 
         #region INotifyPropertyChanging Members
 

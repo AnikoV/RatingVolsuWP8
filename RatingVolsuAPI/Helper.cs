@@ -20,6 +20,7 @@ namespace RatingVolsuAPI
     public class CacheManager : PropertyChangedBase
     {
         public int CurrentFavorites;
+        public RatingType CurrentRatingType;
         private ObservableCollection<Facult> _facultCollection;
         public ObservableCollection<Facult> facultCollection
         {
@@ -53,8 +54,26 @@ namespace RatingVolsuAPI
     }
     public class StudentRat
     {
-        public Dictionary<string, string> Predmet;
+        public Dictionary<string, BasePredmet> Predmet;
         public Dictionary<string, List<string>> Table;
         
+    }
+    public class GroupRat
+    {
+        public Dictionary<string, BasePredmet> Predmet;
+        public Dictionary<string, BaseStudent> Table;
+
+    }
+
+    public class BaseStudent
+    {
+        public string Name;
+        public Dictionary<string, string> Predmet;
+    }
+
+    public class BasePredmet
+    {
+        public string Name;
+        public string Type;
     }
 }

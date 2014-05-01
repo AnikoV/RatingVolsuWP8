@@ -55,7 +55,7 @@
 			                Tap="Semestr_Tap">
                     </ListBox>
                 </phone:PivotItem>
-                <phone:PivotItem CacheMode="{x:Null}" Header="Студент">
+                <phone:PivotItem x:Name="StudentItem" CacheMode="{x:Null}" Header="Студент">
                     <ListBox ItemsSource="{Binding studentCollection}" 
 			                    x:Name="StudentList"
 			                    Margin="10,10,24,0" 

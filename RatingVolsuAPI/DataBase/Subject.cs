@@ -41,6 +41,8 @@ namespace RatingVolsuAPI
             }
         }
 
+        public string Type { get; set; }
+
         [Column(IsVersion = true)]
         private Binary _version;
 

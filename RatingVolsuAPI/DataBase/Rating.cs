@@ -30,8 +30,22 @@ namespace RatingVolsuAPI
             }
         }
 
-        [Column] 
-        public string Semestr;
+        private string _semestr;
+       
+        [Column]
+        public string Semestr
+        {
+            get { return _semestr; }
+            set
+            {
+                if (_semestr != value)
+                {
+                    NotifyPropertyChanging("Semestr");
+                    _semestr = value;
+                    RaisePropertyChanged("Semestr");
+                }
+            }
+        }
 
         private string _subjectId;
 
@@ -168,6 +182,19 @@ namespace RatingVolsuAPI
             {
                 _total = value;
                 RaisePropertyChanged("Total");
+            }
+        }
+
+        private string _type;
+
+        [Column]
+        public string Type
+        {
+            get { return _type; }
+            set
+            {
+                _type = value;
+                RaisePropertyChanged("Type");
             }
         }
 

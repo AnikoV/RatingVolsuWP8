@@ -66,37 +66,37 @@ namespace RatingVolsuAPI
 
         #endregion
 
-        #region relation rating-students
-        private EntitySet<Rating> _stud;
+        //#region relation rating-students
+        //private EntitySet<Rating> _stud;
 
-        [Association(Storage = "_stud", OtherKey = "StudentId", ThisKey = "Id")]
+        //[Association(Storage = "_stud", OtherKey = "StudentId", ThisKey = "Id")]
 
-        public EntitySet<Rating> Stud
-        {
-            get { return this._stud; }
-            set { this._stud.Assign(value); }
-        }
+        //public EntitySet<Rating> Stud
+        //{
+        //    get { return this._stud; }
+        //    set { this._stud.Assign(value); }
+        //}
 
-        public Student()
-        {
-            _stud = new EntitySet<Rating>(
-                new Action<Rating>(this.attach_stud),
-                new Action<Rating>(this.detach_stud)
-                );
-        }
+        //public Student()
+        //{
+        //    _stud = new EntitySet<Rating>(
+        //        new Action<Rating>(this.attach_stud),
+        //        new Action<Rating>(this.detach_stud)
+        //        );
+        //}
 
-        private void attach_stud(Rating stud)
-        {
-            NotifyPropertyChanging("Rating");
-            stud.Student = this;
-        }
+        //private void attach_stud(Rating stud)
+        //{
+        //    NotifyPropertyChanging("Rating");
+        //    stud.Student = this;
+        //}
 
-        private void detach_stud(Rating stud)
-        {
-            NotifyPropertyChanging("Rating");
-            stud.Student = null;
-        }
-        #endregion
+        //private void detach_stud(Rating stud)
+        //{
+        //    NotifyPropertyChanging("Rating");
+        //    stud.Student = null;
+        //}
+        //#endregion
 
         #region INotifyPropertyChanging Members
 

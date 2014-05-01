@@ -21,12 +21,17 @@ namespace RatingVolsuWP8
 {
     public partial class InputData : PhoneApplicationPage
     {
+        private RatingType currRatingType;
         public InputData()
         {
             InitializeComponent();
             InitializeAppBar();
             DataContext = App.ViewModel;
-
+            currRatingType = App.CacheManager.CurrentRatingType;
+            if (currRatingType == RatingType.RatingOfGroup)
+                StudentItem.Visibility = Visibility.Collapsed;
+            else
+                StudentItem.Visibility = Visibility.Visible;
             bool isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             if (isNetworkAvailable)
             {
@@ -72,7 +77,15 @@ namespace RatingVolsuWP8
             ApplicationBar.IsVisible = false;
             App.ViewModel.studentCollection.Clear();
             App.ViewModel.Semestr = (SelectedIndex + 1).ToString();
-            App.ViewModel.GetStudents(SelectedIndex);
+            if (currRatingType == RatingType.RatingOfStudent)
+            {
+                App.ViewModel.GetStudents(SelectedIndex);
+            }
+            else
+            {
+                ApplicationBar.IsVisible = true;
+            }
+            
         }
 
         private void StudentList_Tap(object sender, GestureEventArgs e)

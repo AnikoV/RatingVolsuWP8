@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using WinPhoneExtensions;
+
 using Data = System.Collections.Generic.Dictionary<string, string>;
 using FacultCollection = System.Collections.Generic.Dictionary<string, RatingVolsuAPI.Facult>;
 
@@ -39,7 +40,7 @@ namespace RatingVolsuAPI
                 using (var reader = new StreamReader(responseStream))
                 {
                     content = reader.ReadToEnd();
-                    }
+                }
                 responseStream.Close();
                 return content;
             }
@@ -99,7 +100,7 @@ namespace RatingVolsuAPI
             return students;
         }
 
-        public async Task<ObservableCollection<Facult>> GetRatingOfGroup(string FacultId, string GroupId, string Semestr)
+        public async Task<GroupRat> GetRatingOfGroup(string FacultId, string GroupId, string Semestr)
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/group_rat.php";
             _data = new Data
@@ -110,8 +111,8 @@ namespace RatingVolsuAPI
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
 
-            var students = new ObservableCollection<Facult>(JsonConvert.DeserializeObject<ObservableCollection<Facult>>(content));
-            return students;
+            var rating = JsonConvert.DeserializeObject<GroupRat>(content);
+            return rating;
         }
 
         public async Task<StudentRat> GetRatingOfStudent(string FacultId, string GroupId, string Semestr, string Zach)
@@ -129,5 +130,15 @@ namespace RatingVolsuAPI
             var rating = JsonConvert.DeserializeObject<StudentRat>(content);
             return rating;
         }
+
+        public async Task GetRatingCurrentYear()
+        {
+            _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/current_year.php";
+            string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+            int a = Convert.ToInt32(content);
+            
+        }
+
+        
     }
 }

@@ -7,7 +7,7 @@ using RatingVolsuAPI;
 
 namespace RatingVolsuWP8
 {
-    public class RatingViewModel : PropertyChangedBase
+    public class InputDataViewModel : PropertyChangedBase
     {
         private ObservableCollection<Facult> _facultCollection;
         public ObservableCollection<Facult> facultCollection
@@ -48,7 +48,7 @@ namespace RatingVolsuWP8
         private RatingDatabase rating;
         private RequestManager request;
 
-        public RatingViewModel(string toDoDBConnectionString)
+        public InputDataViewModel(string toDoDBConnectionString)
         {
             rating = new RatingDatabase(toDoDBConnectionString);
             LoadCollectionsFromDatabase();

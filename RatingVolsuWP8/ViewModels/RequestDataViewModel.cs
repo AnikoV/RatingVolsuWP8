@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Newtonsoft.Json;
 using RatingVolsuAPI;
 
@@ -51,7 +52,8 @@ namespace RatingVolsuWP8
         public string Semestr;
         private RatingDatabase rating;
         private RequestManager request;
-        private StudentRat RatingStudent;
+        private StudentRat _studentRating;
+        private GroupRat _groupRating;
         private ObservableCollection<Rating> rt;
 
 
@@ -63,18 +65,66 @@ namespace RatingVolsuWP8
             subjectCollection = new ObservableCollection<Subject>();
         }
 
+        public async Task GetRatingOfGroup(string facultId, string groupId, string semestr)
+        {
+            FacultId = facultId;
+            GroupId = groupId;
+            Semestr = semestr;
+            _groupRating = await request.GetRatingOfGroup(facultId, groupId, semestr);
+
+            foreach (var basePredmet in _groupRating.Predmet)
+            {
+                subjectCollection.Add(new Subject()
+                {
+                    Id = basePredmet.Key,
+                    Name = basePredmet.Value.Name,
+                });
+            }
+            
+            foreach (var tableItem in _groupRating.Table)
+            {
+                foreach (var predmetItem in tableItem.Value.Predmet)
+                {
+                    rt.Add(new Rating()
+                    {
+                        StudentId = tableItem.Key,
+                        SubjectId = predmetItem.Key,
+                        Total = predmetItem.Value,
+                        Semestr = Semestr,
+                        Type = _groupRating.Predmet[predmetItem.Key].Type
+                    });
+                }
+            }
+            SaveChangesRatingtoDb(App.CurrentFavorites);
+        }
+
         public async Task GetRatingOfStudent(string facultId, string groupId, string semestr, string studentId)
         {
             FacultId = facultId;
             GroupId = groupId;
             StudentId = studentId;
             Semestr = semestr;
-            RatingStudent = await request.GetRatingOfStudent(facultId, groupId, semestr, studentId);
-            
-            foreach (var item in RatingStudent.Table)
+            _studentRating = await request.GetRatingOfStudent(facultId, groupId, semestr, studentId);
+
+            foreach (var basePredmet in _studentRating.Predmet)
+            {
+                subjectCollection.Add(new Subject()
+                {
+                    Id = basePredmet.Key,
+                    Name = basePredmet.Value.Name,
+                    Type = basePredmet.Value.Type
+                });
+            }
+
+            int subjectItem = 0;
+            foreach (var item in _studentRating.Table)
             {
                 rt.Add(new Rating()
                 {
+                    StudentId = StudentId,
+                    SubjectId = subjectCollection[subjectItem].Id,
+                    Type = subjectCollection[subjectItem++].Type,
+                    Semestr = Semestr,
                     Att1 = item.Value[0],
                     Att2 = item.Value[1],
                     Att3 = item.Value[2],
@@ -82,42 +132,38 @@ namespace RatingVolsuWP8
                     Exam = item.Value[4],
                     Total = item.Value[5]
                 });
-
             }
-
-            foreach (var item in RatingStudent.Predmet)
-            {
-                subjectCollection.Add(new Subject()
-                {
-                    Id = item.Key,
-                    Name = item.Value
-                });
-
-            }
-            SaveChangesRatingtoDb(App.CurrentFavorites);
+            //SaveChangesRatingtoDb(App.CurrentFavorites);
         }
 
         public void SaveChangesRatingtoDb(int favoritesId)
         {
-
             var currentFavorites = rating.Favorites.FirstOrDefault(x => x.Id == favoritesId);
             string ItemName = "";
             if (currentFavorites == null)
             {
-                Debug.Assert(App.CacheManager.studentCollection != null, "studentCollection != null");
-                var orDefault = App.CacheManager.studentCollection.FirstOrDefault(x => x.Id == StudentId);
-                if (orDefault != null)
+                if (App.CacheManager.CurrentRatingType == RatingType.RatingOfStudent)
                 {
-                    ItemName = "Студент " + orDefault.Number;
-                    var item = new FavoritesItem()
-                    {
-                        StudentId = StudentId,
-                        Name = ItemName,
-                        Type = RatingType.RatingOfStudent
-
-                    };
-                    rating.Favorites.InsertOnSubmit(item);
+                    var orDefault = App.CacheManager.studentCollection.FirstOrDefault(x => x.Id == StudentId);
+                    if (orDefault != null)
+                        ItemName = "Студент " + orDefault.Number;
                 }
+                else
+                {
+                    var orDefault = App.CacheManager.groupCollection.FirstOrDefault(x => x.Id == GroupId);
+                    if (orDefault != null)
+                        ItemName = "Группа " + orDefault.Name;
+                }
+
+                var item = new FavoritesItem()
+                {
+                    StudentId = StudentId,
+                    GroupId = GroupId,
+                    Name = ItemName,
+                    Type = App.CacheManager.CurrentRatingType
+
+                };
+                rating.Favorites.InsertOnSubmit(item);
 
                 foreach (var facult in App.CacheManager.facultCollection)
                 {
@@ -132,25 +178,25 @@ namespace RatingVolsuWP8
                     {
                         rating.Groups.InsertOnSubmit(group);
                     }
-                        
+
                 }
-                foreach (var student in App.CacheManager.studentCollection)
-                {
-                    student.GroupId = GroupId;
-                    if (rating.Students.FirstOrDefault(x => x.Id == student.Id) == null)
-                        rating.Students.InsertOnSubmit(student);
-                }
+                if (App.CacheManager.studentCollection != null)
+                    foreach (var student in App.CacheManager.studentCollection)
+                    {
+                        student.GroupId = GroupId;
+                        if (rating.Students.FirstOrDefault(x => x.Id == student.Id) == null)
+                            rating.Students.InsertOnSubmit(student);
+                    }
 
                 for (int i = 0; i < rt.Count; i++)
                 {
                     var ratingItem = rt[i];
-                    ratingItem.StudentId = StudentId;
-                    ratingItem.Semestr = Semestr;
-                    ratingItem.SubjectId = subjectCollection[i].Id;
 
-                    if (rating.Rating.FirstOrDefault(x => x.Id == ratingItem.Id) == null)
+                    if (rating.Rating.FirstOrDefault(x => x.StudentId == ratingItem.StudentId &&
+                                                          x.SubjectId == ratingItem.SubjectId) == null)
                         rating.Rating.InsertOnSubmit(ratingItem);
                 }
+
                 foreach (var subject in subjectCollection)
                 {
                     if (rating.Subjects.FirstOrDefault(x => x.Id == subject.Id) == null)
@@ -161,7 +207,6 @@ namespace RatingVolsuWP8
                 rating.SubmitChanges();
                 GetFavoritesRating();
             }
-
         }
 
         public void GetFavoritesRating()
@@ -170,5 +215,6 @@ namespace RatingVolsuWP8
                                                         select item;
             favotitesCollection = new ObservableCollection<FavoritesItem>(favoritesList);
         }
+        
     }
 }

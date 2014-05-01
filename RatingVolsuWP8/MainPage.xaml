@@ -14,18 +14,17 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="Transparent" Loaded="LayoutRoot_Loaded">
         <!--Элемент управления Pivot-->
         <phone:Pivot Title="МОЕ ПРИЛОЖЕНИЕ">
             <!--Первый элемент Pivot-->
-            <phone:PivotItem Header="item1">
-                <Button Content="Рейтинг" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="163,89,0,0" Click="Button_Click"/>
+            <phone:PivotItem Header="item1" Margin="0,25,24,3">
+                <Button Content="Рейтинг по студентам" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="79,84,0,0" Click="Button_Click"/>
 
             </phone:PivotItem>
 
-            <!--Второй элемент Pivot-->
             <phone:PivotItem Header="item2">
-                <Grid/>
+                <Button Content="Рейтинг по группам" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="79,84,0,0" Click="Button1_Click"/>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>

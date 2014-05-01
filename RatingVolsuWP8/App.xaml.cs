@@ -19,9 +19,10 @@ namespace RatingVolsuWP8
         /// <returns>Корневой кадр приложения телефона.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
         public static string DbConnectionString = @"isostore:/RatingDataBase.sdf";
-        private static RatingViewModel _viewModel;
+        private static InputDataViewModel _viewModel;
         public static int CurrentFavorites = -1;
-        public static RatingViewModel ViewModel
+        public static int CurrentYear;
+        public static InputDataViewModel ViewModel
         {
             get { return _viewModel; }
         }
@@ -76,8 +77,10 @@ namespace RatingVolsuWP8
                 if (db.DatabaseExists() == false)
                     db.CreateDatabase();
             }
-            _viewModel = new RatingViewModel(DbConnectionString);
+            
+            _viewModel = new InputDataViewModel(DbConnectionString);
             _viewModel.LoadCollectionsFromDatabase();
+            
         }
 
         // Код для выполнения при запуске приложения (например, из меню "Пуск")

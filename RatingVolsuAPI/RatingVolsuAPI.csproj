@@ -84,7 +84,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Base\PropertyChangedBase.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="DataBase\Facult.cs" />
     <Compile Include="DataBase\FavoritesItem.cs" />
     <Compile Include="DataBase\Group.cs" />

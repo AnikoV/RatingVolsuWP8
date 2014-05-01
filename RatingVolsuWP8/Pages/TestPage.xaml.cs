@@ -37,7 +37,10 @@ namespace RatingVolsuWP8
             NavigationContext.QueryString.TryGetValue("group", out GroupId);
             NavigationContext.QueryString.TryGetValue("semestr", out Semestr);
             NavigationContext.QueryString.TryGetValue("student", out StudentId);
-            _viewModel.GetRatingOfStudent(FacultId, GroupId, Semestr, StudentId);
+            if (App.CacheManager.CurrentRatingType == RatingType.RatingOfStudent)
+                _viewModel.GetRatingOfStudent(FacultId, GroupId, Semestr, StudentId);
+            else
+                _viewModel.GetRatingOfGroup(FacultId, GroupId, Semestr);
         }
 
         private void List_Tap(object sender, System.Windows.Input.GestureEventArgs e)
