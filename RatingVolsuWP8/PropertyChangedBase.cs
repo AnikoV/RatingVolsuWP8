@@ -9,8 +9,6 @@ namespace RatingVolsuWP8
 {
     internal class MagicAttribute : Attribute { }
 
-    public class NoMagicAttribute : Attribute { }
-
     [Magic]
     public abstract class PropertyChangedBase : INotifyPropertyChanged
     {

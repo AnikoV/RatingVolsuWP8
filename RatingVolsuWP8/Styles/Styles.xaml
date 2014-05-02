@@ -1,0 +1,10 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:local="clr-namespace:RatingVolsuWP8">
+    
+    <Style TargetType="Grid" x:Key="LayoutGrid">
+        <Setter Property="Background" Value="#254586"/>
+    </Style>
+    
+</ResourceDictionary>

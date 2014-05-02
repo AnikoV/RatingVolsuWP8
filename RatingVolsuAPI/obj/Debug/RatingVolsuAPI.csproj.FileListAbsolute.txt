@@ -9,3 +9,10 @@ C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\obj\Debug\RatinVolsu
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\Bin\Debug\Newtonsoft.Json.dll
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\Bin\Debug\Newtonsoft.Json.xml
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuAPI\obj\Debug\RatingVolsuAPI.csprojResolveAssemblyReference.cache
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuAPI\Bin\Debug\RatinVolsuAPI.dll
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuAPI\Bin\Debug\RatinVolsuAPI.pdb
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuAPI\Bin\Debug\Newtonsoft.Json.dll
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuAPI\Bin\Debug\Newtonsoft.Json.xml
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuAPI\obj\Debug\RatingVolsuAPI.csprojResolveAssemblyReference.cache
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuAPI\obj\Debug\RatinVolsuAPI.dll
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuAPI\obj\Debug\RatinVolsuAPI.pdb
