@@ -80,14 +80,25 @@ namespace RatingVolsuWP8
                     Name = basePredmet.Value.Name,
                 });
             }
+            App.CacheManager.studentCollection = new ObservableCollection<Student>();
+            foreach (var student in _groupRating.Table)
+            {
+                App.CacheManager.studentCollection.Add(new Student()
+                {
+                    Id = student.Key,
+                    Number = student.Value.Name
+                });
+            }
+
             
             foreach (var tableItem in _groupRating.Table)
             {
+                var stId = tableItem.Key;
                 foreach (var predmetItem in tableItem.Value.Predmet)
                 {
                     rt.Add(new Rating()
                     {
-                        StudentId = tableItem.Key,
+                        StudentId = stId,
                         SubjectId = predmetItem.Key,
                         Total = predmetItem.Value,
                         Semestr = Semestr,
@@ -133,7 +144,7 @@ namespace RatingVolsuWP8
                     Total = item.Value[5]
                 });
             }
-            //SaveChangesRatingtoDb(App.CurrentFavorites);
+            SaveChangesRatingtoDb(App.CurrentFavorites);
         }
 
         public void SaveChangesRatingtoDb(int favoritesId)
@@ -191,10 +202,23 @@ namespace RatingVolsuWP8
                 for (int i = 0; i < rt.Count; i++)
                 {
                     var ratingItem = rt[i];
-
-                    if (rating.Rating.FirstOrDefault(x => x.StudentId == ratingItem.StudentId &&
-                                                          x.SubjectId == ratingItem.SubjectId) == null)
+                    var ratingitemFromDb =
+                        (from Rating itemFromDb in rating.Rating
+                            where itemFromDb.StudentId == ratingItem.StudentId &&
+                                  itemFromDb.SubjectId == ratingItem.SubjectId &&
+                                  itemFromDb.Semestr == ratingItem.Semestr
+                            select itemFromDb).FirstOrDefault();
+                    if (ratingitemFromDb == null)
                         rating.Rating.InsertOnSubmit(ratingItem);
+                    else
+                        {
+                            if (!String.IsNullOrEmpty(ratingItem.Att1)) ratingitemFromDb.Att1 = ratingItem.Att1;
+                            if (!String.IsNullOrEmpty(ratingItem.Att2)) ratingitemFromDb.Att2 = ratingItem.Att2;
+                            if (!String.IsNullOrEmpty(ratingItem.Att3)) ratingitemFromDb.Att3 = ratingItem.Att3;
+                            if (!String.IsNullOrEmpty(ratingItem.Exam)) ratingitemFromDb.Exam = ratingItem.Exam;
+                            if (!String.IsNullOrEmpty(ratingItem.Sum)) ratingitemFromDb.Sum = ratingItem.Sum;
+                        }
+
                 }
 
                 foreach (var subject in subjectCollection)
@@ -213,7 +237,10 @@ namespace RatingVolsuWP8
         {
             var favoritesList = from FavoritesItem item in rating.Favorites
                                                         select item;
+            var ratingList = from Rating item in rating.Rating
+                               select item;
             favotitesCollection = new ObservableCollection<FavoritesItem>(favoritesList);
+            ratingCollection = new ObservableCollection<Rating>(ratingList);
         }
         
     }

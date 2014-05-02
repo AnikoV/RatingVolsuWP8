@@ -30,8 +30,8 @@ namespace RatingVolsuAPI
             myHttpWebRequest.Method = "POST";
             myHttpWebRequest.ContentType = "application/x-www-form-urlencoded";
             
-            try
-            {
+            //try
+            //{
                 var webRequest = (HttpWebRequest) await myHttpWebRequest.GetRequestStreamAsync();
                 HttpWebResponse response = (HttpWebResponse) await webRequest.GetResponseAsync();
                 Debug.WriteLine(myHttpWebRequest.ContentType);
@@ -43,21 +43,21 @@ namespace RatingVolsuAPI
                 }
                 responseStream.Close();
                 return content;
-            }
-            catch (Exception ex)
-            {
-                var we = ex.InnerException as WebException;
-                if (we != null)
-                {
-                    var resp = we.Response as HttpWebResponse;
-                    var code = resp.StatusCode;
-                    MessageBox.Show("RespCallback Exception raised! Message:{0}" + we.Message);
-                    Debug.WriteLine("Status:{0}", we.Status);
-                }
-                else
-                    throw;
-                return null;
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    var we = ex.InnerException as WebException;
+            //    if (we != null)
+            //    {
+            //        var resp = we.Response as HttpWebResponse;
+            //        var code = resp.StatusCode;
+            //        MessageBox.Show("RespCallback Exception raised! Message:{0}" + we.Message);
+            //        Debug.WriteLine("Status:{0}", we.Status);
+            //    }
+            //    else
+            //        throw;
+            //    return null;
+            //}
         }
 
         public async Task<ObservableCollection<Facult>> GetFucultList()

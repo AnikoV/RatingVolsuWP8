@@ -13,8 +13,8 @@ namespace WinPhoneExtensions
             var taskComplete = new TaskCompletionSource<HttpWebRequest>();
             request.BeginGetRequestStream(asyncRequest =>
             {
-                try
-                {
+                //try
+                //{
                     var webRequest = (HttpWebRequest)asyncRequest.AsyncState;
 
                     using (var postStream = webRequest.EndGetRequestStream(asyncRequest))
@@ -26,11 +26,11 @@ namespace WinPhoneExtensions
                         taskComplete.TrySetResult(webRequest);
                     }
 
-                }
-                catch (WebException webExc)
-                {
-                    taskComplete.TrySetResult(null);
-                }
+                //}
+                //catch (WebException webExc)
+                //{
+                //    taskComplete.TrySetResult(null);
+                //}
             }, request);
 
             return taskComplete.Task;
@@ -41,18 +41,18 @@ namespace WinPhoneExtensions
 
             request.BeginGetResponse(asyncResponse =>
             {
-                try
-                {
+                //try
+                //{
                     HttpWebRequest responseRequest = (HttpWebRequest)asyncResponse.AsyncState;
                     HttpWebResponse someResponse = (HttpWebResponse)responseRequest.EndGetResponse(asyncResponse);
 
                     taskComplete.TrySetResult(someResponse);
-                }
-                catch (WebException webExc)
-                {
-                    HttpWebResponse failedResponse = (HttpWebResponse)webExc.Response;
-                    taskComplete.TrySetResult(failedResponse);
-                }
+                //}
+                //catch (WebException webExc)
+                //{
+                //    HttpWebResponse failedResponse = (HttpWebResponse)webExc.Response;
+                //    taskComplete.TrySetResult(failedResponse);
+                //}
             }, request);
             return taskComplete.Task;
         }
