@@ -20,7 +20,7 @@ namespace RatingVolsuWP8
             InitializeComponent();
             _viewModel = new MainViewModel();
             DataContext = _viewModel;
-            TextInAnimation.Begin();
+            ReviewTextIn.Begin();		
         }
 
         //private void Button_Click(object sender, RoutedEventArgs e)

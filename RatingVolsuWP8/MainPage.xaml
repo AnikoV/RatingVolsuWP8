@@ -12,33 +12,27 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
-    
 	<phone:PhoneApplicationPage.Resources>
-		<Storyboard x:Name="TextInAnimation">
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="textBlock">
-				<EasingDoubleKeyFrame KeyTime="0" Value="60.626"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-2.579"/>
-			</DoubleAnimationUsingKeyFrames>
+		<Storyboard x:Name="ReviewTextIn">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBlock">
 				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
-			</DoubleAnimationUsingKeyFrames>
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)" Storyboard.TargetName="textBlock">
-				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="-2.58"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1"/>
 			</DoubleAnimationUsingKeyFrames>
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBlock1">
 				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:1.4" Value="1"/>
 			</DoubleAnimationUsingKeyFrames>
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="textBlock1">
-				<EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="37.407"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="7.739"/>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.267" Value="4E-06"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="1"/>
 			</DoubleAnimationUsingKeyFrames>
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)" Storyboard.TargetName="textBlock1">
-				<EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="-1.29"/>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBlock2">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.267" Value="4E-06"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="1"/>
 			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
 	</phone:PhoneApplicationPage.Resources>
@@ -57,8 +51,8 @@
                     <phone:Pivot x:Name="RatingTypePivot" Margin="0,-30,0,0">
                         <phone:PivotItem>
                             <StackPanel>
-                                <Image Source="/Assets/Images/student_icon.png" Height="250"/>
-                                <TextBlock Text="Студента" TextAlignment="Center" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" FontSize="50"/>
+                                <Image x:Name="image" Source="/Assets/Images/student_icon.png" Height="250"/>
+                                <TextBlock x:Name="textBlock2" Text="Студента" TextAlignment="Center" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" FontSize="50"/>
                             </StackPanel>
                         </phone:PivotItem>
                         <phone:PivotItem>
