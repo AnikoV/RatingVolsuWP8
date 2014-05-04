@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -10,18 +9,13 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
 
-
-namespace RatingVolsuWP8
+namespace ForTesting
 {
-    public partial class RequestDataView : PhoneApplicationPage
+    public partial class TestPage : PhoneApplicationPage
     {
-        string FacultId;
-        string GroupId;
-        string Semestr;
-        string StudentId;
         private RequestDataViewModel _viewModel;
 
-        public RequestDataView()
+        public TestPage()
         {
             InitializeComponent();
 
@@ -33,14 +27,11 @@ namespace RatingVolsuWP8
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            NavigationContext.QueryString.TryGetValue("facult", out FacultId);
-            NavigationContext.QueryString.TryGetValue("group", out GroupId);
-            NavigationContext.QueryString.TryGetValue("semestr", out Semestr);
-            NavigationContext.QueryString.TryGetValue("student", out StudentId);
-            if (App.CacheManager.CurrentRatingType == RatingType.RatingOfStudent)
-                _viewModel.GetRatingOfStudent(FacultId, GroupId, Semestr, StudentId);
+           
+            if (RequestInfo.CurrentRatingType == RatingType.RatingOfStudent)
+                _viewModel.GetRatingOfStudent();
             else
-                _viewModel.GetRatingOfGroup(FacultId, GroupId, Semestr);
+                _viewModel.GetRatingOfGroup();
         }
 
         private void List_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -49,5 +40,6 @@ namespace RatingVolsuWP8
             if (SelectedIndex == -1) return;
             _viewModel.GetFavoritesRating();
         }
+        
     }
 }

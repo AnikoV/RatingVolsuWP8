@@ -1,0 +1,71 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="ForTesting.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <Grid x:Name="LayoutRoot">
+        <phone:Pivot x:Name="MainPivot">
+            <phone:PivotItem >
+                <phone:PivotItem.Header>
+                    <TextBlock Text="Рейтинг" 
+                               FontFamily="{StaticResource PhoneFontFamilyLight}"
+                               FontWeight="Light" 
+                               TextAlignment="Center"
+                               FontSize="70"/>
+                </phone:PivotItem.Header>
+                <StackPanel>
+                    <phone:Pivot x:Name="RatingTypePivot" Margin="0,-30,0,0">
+                        <phone:PivotItem>
+                            <StackPanel>
+                                <Image x:Name="image" Source="/Assets/Images/student_icon.png" Height="250"/>
+                                <TextBlock x:Name="textBlock2" Text="Студента" TextAlignment="Center" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" FontSize="50"/>
+                            </StackPanel>
+                        </phone:PivotItem>
+                        <phone:PivotItem>
+                            <StackPanel>
+                                <Image Source="/Assets/Images/group_icon.png" Height="250"/>
+                                <TextBlock Text="Группы" TextAlignment="Center" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" FontSize="50"/>
+                            </StackPanel>
+                        </phone:PivotItem>
+                    </phone:Pivot>
+                    <TextBlock x:Name="textBlock" Text="ВолГУ – университет, известный в стране
+                               и за рубежом качеством образования, высоким научным потенциалом, инновационными проектами и активной социальной позицией." 
+                               TextWrapping="Wrap" 
+                               TextAlignment="Center"
+                               FontFamily="{StaticResource PhoneFontFamilyLight}"
+                               Margin="18,40"
+                               FontSize="18" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <CompositeTransform/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock x:Name="textBlock1" Text="Разработчики: Анищенко В. О. , Васюра А. С.
+                               Научные руководители: Храпов С. С. , Бутенко М. А."
+                               TextWrapping="Wrap" 
+                               TextAlignment="Center"
+                               FontFamily="{StaticResource PhoneFontFamilyLight}"
+                               Margin="18,20"
+                               FontSize="18" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <CompositeTransform/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </StackPanel>
+            </phone:PivotItem>
+            <phone:PivotItem Header="Избранное">
+
+            </phone:PivotItem>
+        </phone:Pivot>
+    </Grid>
+    
+</phone:PhoneApplicationPage>

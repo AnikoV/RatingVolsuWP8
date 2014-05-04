@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="RatingVolsuWP8.RequestDataView"
+    x:Class="ForTesting.TestPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -12,8 +12,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
-    
-    <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
+
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <phone:Panorama HorizontalAlignment="Left" Height="758" Title="рейтинг" VerticalAlignment="Top" Width="470">
             <phone:PanoramaItem CacheMode="{x:Null}" Header="Избранное">
@@ -41,7 +40,7 @@
 							   Text="{Binding Att1}" 
                                FontSize="{StaticResource PhoneFontSizeMedium}" 
                                TextWrapping="Wrap"/>
-                    
+
                     <TextBlock Padding="3,0,3,0"
 							   Text="2 аттестация" 
                                FontSize="{StaticResource PhoneFontSizeMedium}" 

@@ -4,8 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using RatingVolsuAPI;
+using RatingVolsuAPI.Base;
 
-namespace RatingVolsuWP8
+namespace ForTesting
 {
     public class InputDataViewModel : PropertyChangedBase
     {
@@ -19,6 +20,7 @@ namespace RatingVolsuWP8
                 RaisePropertyChanged("facultCollection");
             }
         }
+
         public ObservableCollection<Group> _groupCollection;
         public ObservableCollection<Group> groupCollection
         {
@@ -29,6 +31,7 @@ namespace RatingVolsuWP8
                 RaisePropertyChanged("groupCollection");
             }
         }
+
         public ObservableCollection<Student> _studentCollection;
         public ObservableCollection<Student> studentCollection
         {
@@ -39,25 +42,21 @@ namespace RatingVolsuWP8
                 RaisePropertyChanged("studentCollection");
             }
         }
-       
-        public string FacultId;
-        public string GroupId;
-        public string StudentId;
-        public string Semestr;
 
-        private RatingDatabase rating;
         private RequestManager request;
+        private RatingDatabase rating;
 
         public InputDataViewModel(string toDoDBConnectionString)
         {
+            RequestInfo.CurrentRatingType = RatingType.RatingOfGroup;
             rating = new RatingDatabase(toDoDBConnectionString);
             LoadCollectionsFromDatabase();
             request = new RequestManager();
         }
-        
+
         public void LoadCollectionsFromDatabase()
         {
-            var students = from Student item in rating.Students.Where(x => x.GroupId == GroupId)
+            var students = from Student item in rating.Students.Where(x => x.GroupId == RequestInfo.GroupId)
                            select item;
 
             studentCollection = new ObservableCollection<Student>(students);
@@ -67,36 +66,29 @@ namespace RatingVolsuWP8
             groupCollection = new ObservableCollection<Group>(groups);
 
             var facults = from Facult item in rating.Facults
-                                select item;
+                          select item;
             facultCollection = new ObservableCollection<Facult>(facults);
-
-            
-
-            
         }
 
         public async Task GetFacults()
         {
             facultCollection = await request.GetFucultList();
-            App.CacheManager.facultCollection = new ObservableCollection<Facult>(facultCollection);
         }
 
         public async Task GetGroups(int SelectedId)
         {
-            FacultId = facultCollection[SelectedId].Id;
-            groupCollection = await request.GetGroupList(FacultId);
-            App.CacheManager.groupCollection = new ObservableCollection<Group>(groupCollection);
+            RequestInfo.FacultId = facultCollection[SelectedId].Id;
+            groupCollection = await request.GetGroupList(RequestInfo.FacultId);
         }
 
         public async Task GetStudents(int SelectedId)
         {
-            studentCollection = await request.GetStudentList(GroupId);
-            App.CacheManager.studentCollection = new ObservableCollection<Student>(studentCollection);
+            studentCollection = await request.GetStudentList(RequestInfo.GroupId);
         }
 
         public int GetSemestrCount()
         { 
-            int Period = DateTime.Now.Year - Convert.ToInt32(groupCollection.FirstOrDefault(x => x.Id == GroupId).Year);
+            int Period = DateTime.Now.Year - Convert.ToInt32(groupCollection.FirstOrDefault(x => x.Id == RequestInfo.GroupId).Year);
             Period *= 2;
             return Period;
         }

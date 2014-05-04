@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 
+
 namespace RatingVolsuAPI
 {
     [Table]
@@ -26,8 +27,7 @@ namespace RatingVolsuAPI
         private string _facultName;
         
         [Column]
-        public string Name
-        {
+        public string Name {
             get { return _facultName; }
             set
             {

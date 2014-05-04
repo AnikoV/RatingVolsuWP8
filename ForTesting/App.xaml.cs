@@ -6,19 +6,31 @@ using System.Windows.Markup;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using ForTesting.Resources;
 using RatingVolsuAPI;
-using RatingVolsuWP8.Resources;
 
-namespace RatingVolsuWP8
+namespace ForTesting
 {
     public partial class App : Application
     {
-        /// <summary>
-        /// Обеспечивает быстрый доступ к корневому кадру приложения телефона.
-        /// </summary>
-        /// <returns>Корневой кадр приложения телефона.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
         public static string DbConnectionString = @"isostore:/RatingDataBase.sdf";
+        private static InputDataViewModel _viewModel;
+        public static int CurrentYear;
+        public static InputDataViewModel ViewModel
+        {
+            get { return _viewModel; }
+        }
+        private static CacheManager _cacheManager;
+        public static CacheManager CacheManager
+        {
+            get
+            {
+                if (_cacheManager == null)
+                    _cacheManager = new CacheManager();
+                return _cacheManager;
+            }
+        }
         /// <summary>
         /// Конструктор объекта приложения.
         /// </summary>
@@ -60,7 +72,10 @@ namespace RatingVolsuWP8
                 if (db.DatabaseExists() == false)
                     db.CreateDatabase();
             }
-            
+
+            _viewModel = new InputDataViewModel(DbConnectionString);
+            _viewModel.LoadCollectionsFromDatabase();
+
         }
 
         // Код для выполнения при запуске приложения (например, из меню "Пуск")

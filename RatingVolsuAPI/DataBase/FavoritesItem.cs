@@ -41,6 +41,19 @@ namespace RatingVolsuAPI
             }
         }
 
+        public string _semestr;
+        [Column]
+        public string Semestr
+        {
+            get { return _semestr; }
+            set
+            {
+                NotifyPropertyChanging("Semestr");
+                _semestr = value;
+                RaisePropertyChanged("Semestr");
+            }
+        }
+
         private RatingType _type;
 
         [Column]

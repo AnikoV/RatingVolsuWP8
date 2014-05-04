@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,20 +10,17 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
-using RatingVolsuWP8.Resources;
 
-namespace RatingVolsuWP8
+namespace ForTesting.Pages
 {
-    public partial class InputData : PhoneApplicationPage
+    public partial class InputDataPage : PhoneApplicationPage
     {
-        private RatingType currRatingType;
-        public InputData()
+        public InputDataPage()
         {
             InitializeComponent();
             InitializeAppBar();
             DataContext = App.ViewModel;
-            currRatingType = App.CacheManager.CurrentRatingType;
-            if (currRatingType == RatingType.RatingOfGroup)
+            if (RequestInfo.CurrentRatingType == RatingType.RatingOfGroup)
                 StudentItem.Visibility = Visibility.Collapsed;
             else
                 StudentItem.Visibility = Visibility.Visible;
@@ -59,7 +51,7 @@ namespace RatingVolsuWP8
         {
             var SelectedIndex = GroupList.SelectedIndex;
             if (SelectedIndex == -1) return;
-            App.ViewModel.GroupId = App.ViewModel.groupCollection[SelectedIndex].Id;
+            RequestInfo.GroupId = App.ViewModel.groupCollection[SelectedIndex].Id;
             ApplicationBar.IsVisible = false;
             App.ViewModel.studentCollection.Clear();
             SemestrList.Items.Clear();
@@ -76,8 +68,8 @@ namespace RatingVolsuWP8
             if (SelectedIndex == -1) return;
             ApplicationBar.IsVisible = false;
             App.ViewModel.studentCollection.Clear();
-            App.ViewModel.Semestr = (SelectedIndex + 1).ToString();
-            if (currRatingType == RatingType.RatingOfStudent)
+           RequestInfo.Semestr = (SelectedIndex + 1).ToString();
+            if (RequestInfo.CurrentRatingType == RatingType.RatingOfStudent)
             {
                 App.ViewModel.GetStudents(SelectedIndex);
             }
@@ -85,7 +77,7 @@ namespace RatingVolsuWP8
             {
                 ApplicationBar.IsVisible = true;
             }
-            
+
         }
 
         private void StudentList_Tap(object sender, GestureEventArgs e)
@@ -93,11 +85,12 @@ namespace RatingVolsuWP8
             var SelectedIndex = StudentList.SelectedIndex;
             if (SelectedIndex == -1) return;
             ApplicationBar.IsVisible = true;
-            App.ViewModel.StudentId = App.ViewModel.studentCollection[SelectedIndex].Id;
-            
+            RequestInfo.StudentId = App.ViewModel.studentCollection[SelectedIndex].Id;
+
         }
 
         #region AppBar
+
         private void InitializeAppBar()
         {
             ApplicationBar = new ApplicationBar();
@@ -113,11 +106,9 @@ namespace RatingVolsuWP8
 
         private void appBarButtonOK_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Pages/TestPage.xaml?facult=" + App.ViewModel.FacultId +
-                                                                                    "&group=" + App.ViewModel.GroupId +
-                                                                                    "&semestr=" + App.ViewModel.Semestr +
-                                                                                    "&student=" + App.ViewModel.StudentId, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Pages/TestPage.xaml", UriKind.Relative));
         }
+
         #endregion
     }
 }
