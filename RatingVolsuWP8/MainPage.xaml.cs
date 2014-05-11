@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -9,9 +10,12 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
 using System.Threading.Tasks;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace RatingVolsuWP8
 {
+    //Todo Доделать Контекстное меню
+    //Todo Проверить работу с коллекцией
     public partial class MainPage
     {
         readonly MainViewModel _viewModel;
@@ -20,27 +24,234 @@ namespace RatingVolsuWP8
             InitializeComponent();
             _viewModel = new MainViewModel();
             DataContext = _viewModel;
-            ReviewTextIn.Begin();		
+            
+            ReviewTextIn.Begin();   // Start Animation		
+            InitializeMainAppBar();
+            RatingTypePivot.Focus();
         }
 
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    App.CacheManager.CurrentRatingType = RatingType.RatingOfStudent;
-        //    NavigationService.Navigate(new Uri("/Pages/InputData.xaml", UriKind.Relative));
-        //}
+        #region AppBar
 
-        //private void Button1_Click(object sender, RoutedEventArgs e)
-        //{
-        //    App.CacheManager.CurrentRatingType = RatingType.RatingOfGroup;
-        //    NavigationService.Navigate(new Uri("/Pages/InputData.xaml", UriKind.Relative));
-        //}
+        #region MainAppBar
 
-        //private  void LayoutRoot_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    //RequestManager rm = new RequestManager();
-        //    //rm.GetRatingCurrentYear();
-        //}
+        private ApplicationBarIconButton _appBarButtonAddFavorite;
+        private ApplicationBarIconButton _appBarButtonSelectItems;
+        private void InitializeMainAppBar()
+        {
+            ApplicationBar = new ApplicationBar {IsVisible = true, IsMenuEnabled = true};
 
-        
+            _appBarButtonAddFavorite = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/add.png", UriKind.Relative));
+            _appBarButtonAddFavorite.Text = "Добавить";
+            _appBarButtonAddFavorite.Click += appBarButtonAddFavorite_Click;
+            ApplicationBar.Buttons.Add(_appBarButtonAddFavorite);
+
+            if (_viewModel.FavoritesList != null && _viewModel.FavoritesList.Count > 0)
+            {
+                _appBarButtonSelectItems = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/check.png", UriKind.Relative));
+                _appBarButtonSelectItems.Text = "Выделить";
+                _appBarButtonSelectItems.Click += appBarButtonSelectItems_Click;
+                ApplicationBar.Buttons.Add(_appBarButtonSelectItems);
+            }
+        }
+
+        void appBarButtonSelectItems_Click(object sender, EventArgs e)
+        {
+            InitSelectionMode();// Включить режим выделения
+        }
+
+        void appBarButtonAddFavorite_Click(object sender, EventArgs e)
+        {
+            //Todo Перейти на страницу InputData и добавить выбранный шаблон 
+        }
+
+        #endregion
+
+        #region SelectionAppBar
+
+        private ApplicationBarIconButton _appBarButtonDelFavorite;
+        private ApplicationBarIconButton _appBarButtonEditFavorite;
+        private void InitializeSelectionAppBar()
+        {
+            ApplicationBar = new ApplicationBar { IsVisible = true, IsMenuEnabled = true };
+
+            _appBarButtonDelFavorite = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/delete.png", UriKind.Relative));
+            _appBarButtonDelFavorite.Text = "Удалить";
+            _appBarButtonDelFavorite.Click += appBarButtonDeleteFavorite_Click;
+            ApplicationBar.Buttons.Add(_appBarButtonDelFavorite);
+
+            _appBarButtonEditFavorite = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/edit.png", UriKind.Relative));
+            _appBarButtonEditFavorite.Text = "Редактировать";
+            _appBarButtonEditFavorite.Click += appBarButtonEditFavorite_Click;
+            ApplicationBar.Buttons.Add(_appBarButtonEditFavorite);
+        }
+        /// <summary>
+        /// Добавляет или убирает кнопку "редактировать" при изменении кол-ва выделенных объектов
+        /// </summary>
+        private void UpdateSelectionAppBar()
+        {
+            if (FavotitesMultiselectList.IsSelectionEnabled)
+            {
+                if (FavotitesMultiselectList.SelectedItems.Count > 1)
+                {
+                    if (ApplicationBar.Buttons.Contains(_appBarButtonEditFavorite))
+                    {
+                        ApplicationBar.Buttons.Remove(_appBarButtonEditFavorite);
+                    }
+                }
+                else if (FavotitesMultiselectList.SelectedItems.Count == 1)
+                {
+                    if (!ApplicationBar.Buttons.Contains(_appBarButtonEditFavorite))
+                    {
+                        if (_appBarButtonEditFavorite == null)
+                        {
+                            _appBarButtonEditFavorite = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/edit.png", UriKind.Relative));
+                            _appBarButtonEditFavorite.Text = "Редактировать";
+                            _appBarButtonEditFavorite.Click += appBarButtonEditFavorite_Click;
+                        }
+                        ApplicationBar.Buttons.Add(_appBarButtonEditFavorite);
+                    }
+                }
+            }
+        }
+
+        private void appBarButtonEditFavorite_Click(object sender, EventArgs e)
+        {
+            //Todo Редактировать выделенный элемент
+        }
+
+        private void appBarButtonDeleteFavorite_Click(object sender, EventArgs e)
+        {
+            //Todo удалить из коллекции выделенные элементы
+        }
+
+        #endregion
+
+        #endregion
+
+        #region FavoritesMultiSelectList
+
+        private void FavotitesMultiselectList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateSelectionAppBar();
+        }
+
+        private void FavotitesMultiselectList_OnIsSelectionEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            InitializeSelectionAppBar();
+        }
+
+        private void FavotitesMultiselectList_OnHold(object sender, GestureEventArgs e)
+        {
+            ContextMenuService.GetContextMenu(sender as DependencyObject).IsOpen = true;
+        }
+        #endregion
+
+        /// <summary>
+        /// Включает выделение
+        /// </summary>
+        private void InitSelectionMode()
+        {
+            //FavoritesListBox.SelectionMode = SelectionMode.Multiple;
+            FavotitesMultiselectList.IsSelectionEnabled = true;
+        }
+
+        private void MainPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var mainPivot = sender as Pivot;
+
+            if (mainPivot == null) 
+                return;
+
+            if (mainPivot.SelectedIndex == 0)
+            {
+                ApplicationBar.IsVisible = false;
+                ReviewTextIn.Begin();
+            }
+            else
+            {
+                ApplicationBar.IsVisible = true;
+            }
+        }
+
+        /// <summary>
+        /// Отменяет выделение, прежде чем уйти со страницы
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnBackKeyPress(CancelEventArgs e)
+        {
+            if (FavotitesMultiselectList.IsSelectionEnabled)
+            {
+                FavotitesMultiselectList.IsSelectionEnabled = false;
+                InitializeMainAppBar();
+                e.Cancel = true;
+            }
+        }
+
+        #region ContexMenuHandlers
+
+        /// <summary>
+        /// удаляет пункт из избранного
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DeleteFavorite(object sender, RoutedEventArgs e)
+        {
+            var contextMenu = sender as DependencyObject;
+            if (contextMenu != null)
+            {
+                var favItem = ContextMenuService.GetContextMenu(contextMenu).Owner as LongListMultiSelectorItem;
+                if (favItem != null)
+                {
+                    //Todo получить выбранный объект и удалить его
+                }
+            }
+        }
+
+        /// <summary>
+        /// Включает режим выделенияобъектов и выделяет выбранный пункт
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SelectFavorite(object sender, RoutedEventArgs e)
+        {
+            var contextMenu = sender as DependencyObject;
+            if (contextMenu != null)
+            {
+                var favItem = ContextMenuService.GetContextMenu(contextMenu).Owner as LongListMultiSelectorItem;
+                if (favItem != null)
+                {
+                    if (!FavotitesMultiselectList.IsSelectionEnabled)
+                        FavotitesMultiselectList.IsSelectionEnabled = true;
+
+                    favItem.IsSelected = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// редактирует выбранный пункт
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EditFavorite(object sender, RoutedEventArgs e)
+        {
+            var contextMenu = sender as DependencyObject;
+            if (contextMenu != null)
+            {
+                var favItem = ContextMenuService.GetContextMenu(contextMenu).Owner as LongListMultiSelectorItem;
+                if (favItem != null)
+                {
+                    //Todo получить выбранный объект и редактировать его
+                }
+            }
+        }
+
+        #endregion
+
+        private void OnItemContentTap(object sender, GestureEventArgs e)
+        {
+            var item = ((FrameworkElement)sender).DataContext as FavoritesItem;
+            //Todo навигироваться на InputData
+        }
     }
 }

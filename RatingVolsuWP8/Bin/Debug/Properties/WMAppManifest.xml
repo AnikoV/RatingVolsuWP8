@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="ru-RU" />
-  <App xmlns="" ProductID="{bc438189-9c94-461a-b6c1-6161d05eb16a}" Title="RatingVolsuWP8" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="RatingVolsuWP8 author" Description="Sample description" Publisher="RatingVolsuWP8" PublisherID="{ece78c3e-50ce-4ddc-81e0-d5c25a239ff5}">
+  <Languages xmlns="">
+    <Language code="ru" />
+    <Language code="ru-RU" />
+  </Languages>
+  <App xmlns="" ProductID="{bc438189-9c94-461a-b6c1-6161d05eb16a}" Title="RatingVolsuWP8" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Анищенко Владимир и Васюра Анастасия" Description="Sample description" Publisher="Анищенко Владимир и Васюра Анастасия" PublisherID="{ece78c3e-50ce-4ddc-81e0-d5c25a239ff5}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />

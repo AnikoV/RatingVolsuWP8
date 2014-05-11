@@ -10,7 +10,7 @@
         
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles\Styles.xaml"/>
+                <ResourceDictionary Source="Styles\StylesAndTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <local:LocalizedStrings xmlns:local="clr-namespace:RatingVolsuWP8" x:Key="LocalizedStrings"/>
         </ResourceDictionary>

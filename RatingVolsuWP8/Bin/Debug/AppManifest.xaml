@@ -2,6 +2,7 @@
   <Deployment.Parts>
     <AssemblyPart x:Name="RatingVolsuWP8" Source="RatingVolsuWP8.dll" />
     <AssemblyPart x:Name="Microsoft.Phone.Controls" Source="Microsoft.Phone.Controls.dll" />
+    <AssemblyPart x:Name="Microsoft.Phone.Controls.Toolkit" Source="Microsoft.Phone.Controls.Toolkit.dll" />
     <AssemblyPart x:Name="Newtonsoft.Json" Source="Newtonsoft.Json.dll" />
     <AssemblyPart x:Name="RatinVolsuAPI" Source="RatinVolsuAPI.dll" />
   </Deployment.Parts>
