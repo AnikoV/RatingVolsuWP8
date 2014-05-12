@@ -18,6 +18,12 @@ namespace RatingVolsuAPI
         RatingOfGroup
     }
 
+    public enum InputDataMode
+    {
+        UseTemplate,
+        AddTemplate,
+        EditTemplate
+    }
     public static class RequestInfo
     {
         public static int CurrentFavorites;

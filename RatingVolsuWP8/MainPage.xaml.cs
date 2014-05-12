@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
@@ -15,7 +16,7 @@ using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 namespace RatingVolsuWP8
 {
     //Todo Доделать Контекстное меню
-    //Todo Проверить работу с коллекцией
+    //Todo Проверить работу с коллекцией избранного
     public partial class MainPage
     {
         readonly MainViewModel _viewModel;
@@ -61,7 +62,7 @@ namespace RatingVolsuWP8
 
         void appBarButtonAddFavorite_Click(object sender, EventArgs e)
         {
-            //Todo Перейти на страницу InputData и добавить выбранный шаблон 
+            NavigationService.Navigate(new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}", InputDataMode.AddTemplate), UriKind.Relative));
         }
 
         #endregion
@@ -116,12 +117,30 @@ namespace RatingVolsuWP8
 
         private void appBarButtonEditFavorite_Click(object sender, EventArgs e)
         {
-            //Todo Редактировать выделенный элемент
+            if (FavotitesMultiselectList.SelectedItems.Count == 1)
+            {
+                var collection = FavotitesMultiselectList.SelectedItems as List<FavoritesItem>;
+                if (collection != null)
+                {
+                    var item = collection.First();
+                    NavigationService.Navigate(
+                    new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}templateId={1}", InputDataMode.EditTemplate, item.Id), UriKind.Relative));
+                }
+            }
         }
 
         private void appBarButtonDeleteFavorite_Click(object sender, EventArgs e)
         {
-            //Todo удалить из коллекции выделенные элементы
+            if (FavotitesMultiselectList.SelectedItems.Count > 0)
+            {
+                var selectedCollection = FavotitesMultiselectList.SelectedItems as List<FavoritesItem>;
+                if (selectedCollection != null)
+                {
+                    //Todo удалить из _viewModel.FavoritesItems выделенные элементы
+                    //Todo удалить из базы данных
+                }
+            }
+            
         }
 
         #endregion
@@ -145,47 +164,6 @@ namespace RatingVolsuWP8
             ContextMenuService.GetContextMenu(sender as DependencyObject).IsOpen = true;
         }
         #endregion
-
-        /// <summary>
-        /// Включает выделение
-        /// </summary>
-        private void InitSelectionMode()
-        {
-            //FavoritesListBox.SelectionMode = SelectionMode.Multiple;
-            FavotitesMultiselectList.IsSelectionEnabled = true;
-        }
-
-        private void MainPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var mainPivot = sender as Pivot;
-
-            if (mainPivot == null) 
-                return;
-
-            if (mainPivot.SelectedIndex == 0)
-            {
-                ApplicationBar.IsVisible = false;
-                ReviewTextIn.Begin();
-            }
-            else
-            {
-                ApplicationBar.IsVisible = true;
-            }
-        }
-
-        /// <summary>
-        /// Отменяет выделение, прежде чем уйти со страницы
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnBackKeyPress(CancelEventArgs e)
-        {
-            if (FavotitesMultiselectList.IsSelectionEnabled)
-            {
-                FavotitesMultiselectList.IsSelectionEnabled = false;
-                InitializeMainAppBar();
-                e.Cancel = true;
-            }
-        }
 
         #region ContexMenuHandlers
 
@@ -248,10 +226,59 @@ namespace RatingVolsuWP8
 
         #endregion
 
+        /// <summary>
+        /// Переход по выбранному шаблону
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnItemContentTap(object sender, GestureEventArgs e)
         {
             var item = ((FrameworkElement)sender).DataContext as FavoritesItem;
-            //Todo навигироваться на InputData
+            if (item != null)
+                NavigationService.Navigate(
+                    new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}templateId={1}", InputDataMode.UseTemplate, item.Id), UriKind.Relative));
         }
+
+        /// <summary>
+        /// Отменяет выделение, прежде чем уйти со страницы
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnBackKeyPress(CancelEventArgs e)
+        {
+            if (FavotitesMultiselectList.IsSelectionEnabled)
+            {
+                FavotitesMultiselectList.IsSelectionEnabled = false;
+                InitializeMainAppBar();
+                e.Cancel = true;
+            }
+        }
+
+        /// <summary>
+        /// Включает выделение
+        /// </summary>
+        private void InitSelectionMode()
+        {
+            //FavoritesListBox.SelectionMode = SelectionMode.Multiple;
+            FavotitesMultiselectList.IsSelectionEnabled = true;
+        }
+
+        private void MainPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var mainPivot = sender as Pivot;
+
+            if (mainPivot == null)
+                return;
+
+            if (mainPivot.SelectedIndex == 0)
+            {
+                ApplicationBar.IsVisible = false;
+                ReviewTextIn.Begin();
+            }
+            else
+            {
+                ApplicationBar.IsVisible = true;
+            }
+        }
+
     }
 }

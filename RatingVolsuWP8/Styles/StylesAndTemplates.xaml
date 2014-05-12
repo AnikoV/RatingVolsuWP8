@@ -15,6 +15,17 @@
         <Setter Property="Margin" Value="0,0,0,12"/>
     </Style>
     
+    <Style TargetType="TextBlock" x:Key="h">
+        <Setter Property="FontSize" Value="90"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyLight}"/>
+    </Style>
+    
+    <Style TargetType="TextBlock" x:Key="PivotHeaderStyle">
+        <Setter Property="FontSize" Value="50"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyLight}"/>
+    </Style>
     <!--DATA TEMPLATES-->
     
     

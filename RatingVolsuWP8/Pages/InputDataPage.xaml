@@ -1,0 +1,51 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="RatingVolsuWP8.InputDataPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True" toolkit:TiltEffect.IsTiltEnabled="True">
+
+    <Grid x:Name="LayoutRoot" Style="{StaticResource LayoutGrid}" >
+        <phone:Panorama Margin="0,12,0,0">
+            <phone:Panorama.TitleTemplate>
+                <DataTemplate>
+                    <TextBlock Style="{StaticResource h}" Text="Ввод данных" />
+                </DataTemplate>
+            </phone:Panorama.TitleTemplate>
+            
+            <phone:PanoramaItem x:Name="InstitutePanoramaItem">
+                <phone:PanoramaItem.Header>
+                    <TextBlock Text="Институт" Style="{StaticResource PivotHeaderStyle}"/>
+                </phone:PanoramaItem.Header>
+            </phone:PanoramaItem>
+            
+            <phone:PanoramaItem x:Name="GroupPanoramaItem">
+                <phone:PanoramaItem.Header>
+                    <TextBlock Text="Группа" Style="{StaticResource PivotHeaderStyle}"/>
+                </phone:PanoramaItem.Header>
+            </phone:PanoramaItem>
+            
+            <phone:PanoramaItem>
+                <phone:PanoramaItem.Header>
+                    <TextBlock Text="Семестр" Style="{StaticResource PivotHeaderStyle}"/>
+                </phone:PanoramaItem.Header>
+            </phone:PanoramaItem>
+            
+            <phone:PanoramaItem>
+                <phone:PanoramaItem.Header>
+                    <TextBlock Text="Зачетная книжка" Style="{StaticResource PivotHeaderStyle}"/>
+                </phone:PanoramaItem.Header>
+            </phone:PanoramaItem>
+        </phone:Panorama>
+    </Grid>
+
+</phone:PhoneApplicationPage>

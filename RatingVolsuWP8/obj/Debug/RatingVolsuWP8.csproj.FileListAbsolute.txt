@@ -121,3 +121,4 @@ D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\
 D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\vi-VN\Microsoft.Phone.Controls.Toolkit.resources.dll
 D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\zh-CN\Microsoft.Phone.Controls.Toolkit.resources.dll
 D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuWP8\Bin\Debug\zh-TW\Microsoft.Phone.Controls.Toolkit.resources.dll
+D:\Dropbox\Сторонние проекты\Рейтинг ВолГУ\WinPhone\RatingVolsuWP8\RatingVolsuWP8\obj\Debug\Pages\InputDataPage.g.cs
