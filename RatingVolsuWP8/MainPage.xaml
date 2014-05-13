@@ -6,39 +6,84 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
-	<phone:PhoneApplicationPage.Resources>
-		<Storyboard x:Name="ReviewTextIn">
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBlock">
-				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1"/>
-			</DoubleAnimationUsingKeyFrames>
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBlock1">
-				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:1.4" Value="1"/>
-			</DoubleAnimationUsingKeyFrames>
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
-				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.267" Value="4E-06"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="1"/>
-			</DoubleAnimationUsingKeyFrames>
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBlock2">
-				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.267" Value="4E-06"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="1"/>
-			</DoubleAnimationUsingKeyFrames>
-		</Storyboard>
-	</phone:PhoneApplicationPage.Resources>
+    shell:SystemTray.IsVisible="True" toolkit:TiltEffect.IsTiltEnabled="True">
+    
+    <phone:PhoneApplicationPage.Resources>
+        <Storyboard x:Name="ReviewTextIn">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBlock">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBlock1">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.4" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.267" Value="4E-06"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBlock2">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.267" Value="4E-06"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <DataTemplate x:Name="FavoritesItemTemplate">
+            <Grid Tap="OnItemContentTap">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <toolkit:ContextMenuService.ContextMenu>
+                    <toolkit:ContextMenu IsZoomEnabled="false">
+                        <toolkit:MenuItem Header="Удалить" Click="DeleteFavorite"/>
+                        <toolkit:MenuItem Header="Выделить" Click="SelectFavorite"/>
+                        <toolkit:MenuItem Header="Редактировать" Click="EditFavorite"/>
+                    </toolkit:ContextMenu>
+                </toolkit:ContextMenuService.ContextMenu>
+                <TextBlock x:Name="ItemNameTb" Text="Template1" FontSize="55"  Grid.Row="0" Grid.Column="0" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" TextWrapping="Wrap" TextAlignment="Left" HorizontalAlignment="Left"/>
+                <TextBlock x:Name="ItemInfoTb" Text="IMIT ist-101 2 semestr 10101" FontSize="20" FontWeight="SemiBold" Grid.Row="1" Grid.Column="0" Opacity="0.5" toolkit:SlideInEffect.LineIndex="1"/>
+                <Image Source="/Assets/Images/student_mini.png" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>
+
+            </Grid>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
 
     <Grid x:Name="LayoutRoot" Style="{StaticResource LayoutGrid}">
-        <phone:Pivot x:Name="MainPivot">
+        <phone:Pivot x:Name="MainPivot" SelectionChanged="MainPivot_OnSelectionChanged">
             <phone:PivotItem >
                 <phone:PivotItem.Header>
                     <TextBlock Text="Рейтинг" 
@@ -69,9 +114,9 @@
                                FontFamily="{StaticResource PhoneFontFamilyLight}"
                                Margin="18,40"
                                FontSize="18" RenderTransformOrigin="0.5,0.5">
-                    	<TextBlock.RenderTransform>
-                    		<CompositeTransform/>
-                    	</TextBlock.RenderTransform>
+                        <TextBlock.RenderTransform>
+                            <CompositeTransform/>
+                        </TextBlock.RenderTransform>
                     </TextBlock>
                     <TextBlock x:Name="textBlock1" Text="Разработчики: Анищенко В. О. , Васюра А. С.
                                Научные руководители: Храпов С. С. , Бутенко М. А."
@@ -80,16 +125,64 @@
                                FontFamily="{StaticResource PhoneFontFamilyLight}"
                                Margin="18,20"
                                FontSize="18" RenderTransformOrigin="0.5,0.5">
-                    	<TextBlock.RenderTransform>
-                    		<CompositeTransform/>
-                    	</TextBlock.RenderTransform>
+                        <TextBlock.RenderTransform>
+                            <CompositeTransform/>
+                        </TextBlock.RenderTransform>
                     </TextBlock>
                 </StackPanel>
             </phone:PivotItem>
-            <phone:PivotItem Header="Избранное">
+            <phone:PivotItem>
+                <phone:PivotItem.Header>
+                    <TextBlock Text="Избранное" 
+                               FontFamily="{StaticResource PhoneFontFamilyLight}"
+                               FontWeight="Light" 
+                               TextAlignment="Center"
+                               FontSize="70"/>
+                </phone:PivotItem.Header>
+                <!--<ListBox x:Name="FavoritesListBox" ItemContainerStyle="{StaticResource ListBoxContainer}" Hold="FavoritesListBox_OnHold">
+                    <ListBoxItem x:Name="Item1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock x:Name="ItemNameTb" Text="Шаблон1" FontSize="55"  Grid.Row="0" Grid.Column="0" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" TextWrapping="Wrap" TextAlignment="Left" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="ItemInfoTb" Text="ИМИТ ист-101 2 семестр 10101" FontSize="20" FontWeight="SemiBold" Grid.Row="1" Grid.Column="0" Opacity="0.5" toolkit:SlideInEffect.LineIndex="1"/>
+                            <Image Source="/Assets/Images/student_mini.png" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>
+                        </Grid>
+                    </ListBoxItem>
+                    <ListBoxItem x:Name="Item2">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock x:Name="ItemNameTb2" Text="Шаблон1" FontSize="55"  Grid.Row="0" Grid.Column="0" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" TextWrapping="Wrap" TextAlignment="Left" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="ItemInfoTb2" Text="ИМИТ ист-101 2 семестр" FontSize="20" FontWeight="SemiBold" Grid.Row="1" Grid.Column="0" Opacity="0.5" toolkit:SlideInEffect.LineIndex="1" />
+                            <Image Source="/Assets/Images/group_mini.png" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"  HorizontalAlignment="Left" />
+                        </Grid>
+                    </ListBoxItem>
+                </ListBox>-->
+                <toolkit:LongListMultiSelector x:Name="FavotitesMultiselectList" 
+                                               LayoutMode="List" 
+                                               SelectionChanged="FavotitesMultiselectList_OnSelectionChanged" 
+                                               IsSelectionEnabledChanged="FavotitesMultiselectList_OnIsSelectionEnabledChanged"
+                                               Hold="FavotitesMultiselectList_OnHold"
+                                               ItemsSource="{Binding FavoritesList}"
+                                               ItemTemplate="{StaticResource FavoritesItemTemplate}"/>
                 
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>
-    
+
 </phone:PhoneApplicationPage>
