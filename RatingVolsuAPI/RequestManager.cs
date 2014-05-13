@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using RatinVolsuAPI;
 using WinPhoneExtensions;
 
 using Data = System.Collections.Generic.Dictionary<string, string>;
@@ -100,30 +101,26 @@ namespace RatingVolsuAPI
             return students;
         }
 
-        public async Task<GroupRat> GetRatingOfGroup(string FacultId, string GroupId, string Semestr)
+        public async Task<GroupRat> GetRatingOfGroup(RequestManipulation requestInfo)
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/group_rat.php";
-            _data = new Data
-            {
-                {"Fak", FacultId},
-                {"Group", GroupId},
-                {"Semestr", Semestr}
-            };
-            string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+
+            string content = await SendRequest(requestInfo.GetParams());
 
             var rating = JsonConvert.DeserializeObject<GroupRat>(content);
             return rating;
         }
 
-        public async Task<StudentRat> GetRatingOfStudent(string FacultId, string GroupId, string Semestr, string Zach)
+        public async Task<StudentRat> GetRatingOfStudent(RequestManipulation requestInfo)
         {
+            var req = (RequestByStudent) requestInfo;
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/stud_rat.php";
             _data = new Data
             {
-                {"Fak", FacultId},
-                {"Group", GroupId},
-                {"Semestr", Semestr},
-                {"Zach", Zach}
+                {"Fak", req.FacultId},
+                {"Group", req.GroupId},
+                {"Semestr", req.Semestr},
+                {"Zach", req.StudentId}
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
 
@@ -137,8 +134,6 @@ namespace RatingVolsuAPI
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
             int a = Convert.ToInt32(content);
             
-        }
-
-        
+        }        
     }
 }

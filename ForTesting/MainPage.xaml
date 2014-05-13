@@ -25,13 +25,13 @@
                 </phone:PivotItem.Header>
                 <StackPanel>
                     <phone:Pivot x:Name="RatingTypePivot" Margin="0,-30,0,0">
-                        <phone:PivotItem>
+                        <phone:PivotItem Tap="PivotItem_Tap">
                             <StackPanel>
                                 <Image x:Name="image" Source="/Assets/Images/student_icon.png" Height="250"/>
                                 <TextBlock x:Name="textBlock2" Text="Студента" TextAlignment="Center" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" FontSize="50"/>
                             </StackPanel>
                         </phone:PivotItem>
-                        <phone:PivotItem>
+                        <phone:PivotItem Tap="PivotItem_Tap_1">
                             <StackPanel>
                                 <Image Source="/Assets/Images/group_icon.png" Height="250"/>
                                 <TextBlock Text="Группы" TextAlignment="Center" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" FontSize="50"/>
@@ -63,7 +63,19 @@
                 </StackPanel>
             </phone:PivotItem>
             <phone:PivotItem Header="Избранное">
-
+                <ListBox ItemsSource="{Binding favoritesCollection}" 
+                                x:Name="FavoritesList"
+				                Margin="10" 
+				                Tap="FavoritesList_Tap">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Padding="3,0,3,0"
+								Text="{Binding Name}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>

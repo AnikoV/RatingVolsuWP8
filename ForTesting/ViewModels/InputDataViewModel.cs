@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using RatingVolsuAPI;
 using RatingVolsuAPI.Base;
+using RatinVolsuAPI;
 
 namespace ForTesting
 {
@@ -43,31 +44,34 @@ namespace ForTesting
             }
         }
 
-        private RequestManager request;
+        private readonly RequestManager request;
         private RatingDatabase rating;
+        public RequestManipulation RequestInfo;
 
         public InputDataViewModel(string toDoDBConnectionString)
         {
-            RequestInfo.CurrentRatingType = RatingType.RatingOfGroup;
             rating = new RatingDatabase(toDoDBConnectionString);
             LoadCollectionsFromDatabase();
             request = new RequestManager();
+            facultCollection = new ObservableCollection<Facult>();
+            groupCollection = new ObservableCollection<Group>();
+            studentCollection = new ObservableCollection<Student>();
         }
 
         public void LoadCollectionsFromDatabase()
         {
-            var students = from Student item in rating.Students.Where(x => x.GroupId == RequestInfo.GroupId)
-                           select item;
+            //var students = from Student item in rating.Students.Where(x => x.GroupId == RequestInfo.GroupId)
+            //               select item;
 
-            studentCollection = new ObservableCollection<Student>(students);
+            //studentCollection = new ObservableCollection<Student>(students);
 
-            var groups = from Group item in rating.Groups
-                         select item;
-            groupCollection = new ObservableCollection<Group>(groups);
+            //var groups = from Group item in rating.Groups
+            //             select item;
+            //groupCollection = new ObservableCollection<Group>(groups);
 
-            var facults = from Facult item in rating.Facults
-                          select item;
-            facultCollection = new ObservableCollection<Facult>(facults);
+            //var facults = from Facult item in rating.Facults
+            //              select item;
+            //facultCollection = new ObservableCollection<Facult>(facults);
         }
 
         public async Task GetFacults()

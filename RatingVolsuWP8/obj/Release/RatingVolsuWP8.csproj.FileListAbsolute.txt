@@ -23,5 +23,3 @@ C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Release\RatingVo
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Release\RatingVolsuWP8.dll
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Release\RatingVolsuWP8.pdb
 C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Release\XapCacheFile.xml
-C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Release\Pages\InputData.g.cs
-C:\Users\Настя\Documents\RatingVolsuWP8\RatingVolsuWP8\obj\Release\Pages\TestPage.g.cs

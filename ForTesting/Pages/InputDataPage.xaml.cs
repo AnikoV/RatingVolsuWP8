@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,6 +11,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
+using RatinVolsuAPI;
 
 namespace ForTesting.Pages
 {
@@ -20,14 +22,27 @@ namespace ForTesting.Pages
             InitializeComponent();
             InitializeAppBar();
             DataContext = App.ViewModel;
-            if (RequestInfo.CurrentRatingType == RatingType.RatingOfGroup)
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            string type;
+            NavigationContext.QueryString.TryGetValue("type", out type);
+            var s = (RatingType)Enum.Parse(typeof(RatingType), type);
+            if (s == RatingType.RatingOfGroup)
+            {
+                App.ViewModel.RequestInfo = new RequestByGroup();
                 StudentItem.Visibility = Visibility.Collapsed;
+            }
             else
+            {
+                App.ViewModel.RequestInfo = new RequestByStudent();
                 StudentItem.Visibility = Visibility.Visible;
+            }
             bool isNetworkAvailable = NetworkInterface.GetIsNetworkAvailable();
             if (isNetworkAvailable)
             {
-                App.ViewModel.GetFacults();
+                await App.ViewModel.GetFacults();
             }
             else
             {
@@ -35,7 +50,7 @@ namespace ForTesting.Pages
             }
         }
 
-        private void FacultList_Tap(object sender, GestureEventArgs e)
+        private async void FacultList_Tap(object sender, GestureEventArgs e)
         {
             var SelectedIndex = FacultList.SelectedIndex;
             if (SelectedIndex == -1) return;
@@ -43,7 +58,7 @@ namespace ForTesting.Pages
             App.ViewModel.groupCollection.Clear();
             App.ViewModel.studentCollection.Clear();
             SemestrList.Items.Clear();
-            App.ViewModel.GetGroups(SelectedIndex);
+            await App.ViewModel.GetGroups(SelectedIndex);
 
         }
 
@@ -51,7 +66,7 @@ namespace ForTesting.Pages
         {
             var SelectedIndex = GroupList.SelectedIndex;
             if (SelectedIndex == -1) return;
-            RequestInfo.GroupId = App.ViewModel.groupCollection[SelectedIndex].Id;
+            App.ViewModel.RequestInfo.GroupId = App.ViewModel.groupCollection[SelectedIndex].Id;
             ApplicationBar.IsVisible = false;
             App.ViewModel.studentCollection.Clear();
             SemestrList.Items.Clear();
@@ -62,16 +77,16 @@ namespace ForTesting.Pages
             }
         }
 
-        private void Semestr_Tap(object sender, GestureEventArgs e)
+        private async void Semestr_Tap(object sender, GestureEventArgs e)
         {
             var SelectedIndex = SemestrList.SelectedIndex;
             if (SelectedIndex == -1) return;
             ApplicationBar.IsVisible = false;
             App.ViewModel.studentCollection.Clear();
-           RequestInfo.Semestr = (SelectedIndex + 1).ToString();
-            if (RequestInfo.CurrentRatingType == RatingType.RatingOfStudent)
+            App.ViewModel.RequestInfo.Semestr = (SelectedIndex + 1).ToString();
+            if (App.ViewModel.RequestInfo.GetType() == typeof(RequestByGroup))
             {
-                App.ViewModel.GetStudents(SelectedIndex);
+                await App.ViewModel.GetStudents(SelectedIndex);
             }
             else
             {
@@ -85,7 +100,8 @@ namespace ForTesting.Pages
             var SelectedIndex = StudentList.SelectedIndex;
             if (SelectedIndex == -1) return;
             ApplicationBar.IsVisible = true;
-            RequestInfo.StudentId = App.ViewModel.studentCollection[SelectedIndex].Id;
+            var req =(RequestByStudent)App.ViewModel.RequestInfo;
+            req.StudentId = App.ViewModel.studentCollection[SelectedIndex].Id;
 
         }
 
@@ -106,7 +122,8 @@ namespace ForTesting.Pages
 
         private void appBarButtonOK_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Pages/TestPage.xaml", UriKind.Relative));
+            var _params = App.ViewModel.RequestInfo.GetParams();
+            NavigationService.Navigate(new Uri("/Pages/TestPage.xaml?" + _params, UriKind.Relative));
         }
 
         #endregion

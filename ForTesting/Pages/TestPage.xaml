@@ -15,8 +15,8 @@
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <phone:Panorama HorizontalAlignment="Left" Height="758" Title="рейтинг" VerticalAlignment="Top" Width="470">
-            <phone:PanoramaItem CacheMode="{x:Null}" Header="Избранное">
-                <ListBox ItemsSource="{Binding favotitesCollection}" 
+            <phone:PanoramaItem CacheMode="{x:Null}" Header="Предметы">
+                <ListBox ItemsSource="{Binding subjectCollection}" 
                                 x:Name="List"
 				                Margin="10" Tap="List_Tap">
                     <ListBox.ItemTemplate>
@@ -29,64 +29,35 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </phone:PanoramaItem>
-            <phone:PanoramaItem CacheMode="{x:Null}" Header="Баллы">
-                <StackPanel x:Name="Panel" >
-                    <TextBlock Padding="3,0,3,0"
-							   Text="1 аттестация" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                    <TextBlock
-                               Padding="3,0,3,0"
-							   Text="{Binding Att1}" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-
-                    <TextBlock Padding="3,0,3,0"
-							   Text="2 аттестация" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                    <TextBlock 
-                               Padding="3,0,3,0"
-							   Text="{Binding Att2}" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                    <TextBlock Padding="3,0,3,0"
-							   Text="3 аттестация" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                    <TextBlock 
-                               Padding="3,0,3,0"
-							   Text="{Binding Att3}" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                    <TextBlock Padding="3,0,3,0"
-							   Text="Сумма баллов" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                    <TextBlock 
-                               Padding="3,0,3,0"
-							   Text="{Binding Sum}" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                    <TextBlock Padding="3,0,3,0"
-							   Text="Баллы за экзамен" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                    <TextBlock 
-                               Padding="3,0,3,0"
-							   Text="{Binding Exam}" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                    <TextBlock Padding="3,0,3,0"
-							   Text="Общее количество баллов" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                    <TextBlock x:Name="TotalTextBlock"
-                               Padding="3,0,3,0"
-							   Text="{Binding Total}" 
-                               FontSize="{StaticResource PhoneFontSizeMedium}" 
-                               TextWrapping="Wrap"/>
-                </StackPanel>
+            <phone:PanoramaItem CacheMode="{x:Null}" Header="По группе">
+                <ListBox ItemsSource="{Binding ratingOfGroupForView}" 
+                                x:Name="StudentList"
+				                Margin="10" Tap="StudentListTap">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Padding="3,0,3,0"
+								Text="{Binding Path= Student.Number }" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>             
+            </phone:PanoramaItem>
+            <phone:PanoramaItem CacheMode="{x:Null}" Header="По студенту">
+                <ListBox ItemsSource="{Binding ratingOfStudentCollection}" 
+                                x:Name="RatingtList"
+				                Margin="10" Tap="List_Tap">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Padding="3,0,3,0"
+								Text="{Binding Path = Subject.Name}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                                <TextBlock Padding="3,0,3,0"
+								Text="{Binding Path = Total}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </phone:PanoramaItem>
         </phone:Panorama>
 

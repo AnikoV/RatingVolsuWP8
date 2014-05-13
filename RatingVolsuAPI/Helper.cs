@@ -18,15 +18,6 @@ namespace RatingVolsuAPI
         RatingOfGroup
     }
 
-    public static class RequestInfo
-    {
-        public static int CurrentFavorites;
-        public static RatingType CurrentRatingType;
-        public static string FacultId;
-        public static string GroupId;
-        public static string Semestr;
-        public static string StudentId;
-    }
     public class CacheManager : PropertyChangedBase
     {
         

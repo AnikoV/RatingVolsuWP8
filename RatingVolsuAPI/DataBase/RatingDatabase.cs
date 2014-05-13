@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Linq;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace RatingVolsuAPI
 {
@@ -24,93 +27,166 @@ namespace RatingVolsuAPI
 
         public Table<FavoritesItem> Favorites;
 
-        public void SaveFavoritestoDb(ObservableCollection<Facult> facultCollection, ObservableCollection<Group> groupCollection,
-                                      ObservableCollection<Student> studentCollection, ObservableCollection<Subject> subjectCollection,
-                                      ObservableCollection<Rating> ratingCollection)
+
+        public void SaveFavoritestoDb(RequestInfo requestInfo)
         {
- 	        var currentFavorites = Favorites.FirstOrDefault(x => x.Id == RequestInfo.CurrentFavorites);
             string ItemName = "";
-            if (currentFavorites == null)
+            if (!String.IsNullOrEmpty(requestInfo.StudentId))
             {
-                if (RequestInfo.CurrentRatingType == RatingType.RatingOfStudent)
+                var orDefault = requestInfo.StudentCollection.FirstOrDefault(x => x.Id == requestInfo.StudentId);
+                if (orDefault != null)
+                    ItemName = "Студент " + orDefault.Number;
+                requestInfo.CurrentRatingType = RatingType.RatingOfStudent;
+            }
+            else
+            {
+                var orDefault = requestInfo.GroupCollection.FirstOrDefault(x => x.Id == requestInfo.GroupId);
+                if (orDefault != null)
+                    ItemName = "Группа " + orDefault.Name;
+                requestInfo.CurrentRatingType = RatingType.RatingOfGroup;
+            }
+
+            var item = new FavoritesItem()
+            {
+                StudentId = requestInfo.StudentId,
+                GroupId = requestInfo.GroupId,
+                Name = ItemName,
+                Type = requestInfo.CurrentRatingType,
+                Semestr = requestInfo.Semestr
+
+            };
+            Favorites.InsertOnSubmit(item);
+
+            foreach (var facult in requestInfo.FacultCollection)
+            {
+                if (Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
+                    Facults.InsertOnSubmit(facult);
+            }
+
+            foreach (var group in requestInfo.GroupCollection)
+            {
+                group.FacultId = requestInfo.FacultId;
+                if (Groups.FirstOrDefault(x => x.Id == group.Id) == null)
                 {
-                    var orDefault = studentCollection.FirstOrDefault(x => x.Id == RequestInfo.StudentId);
-                    if (orDefault != null)
-                        ItemName = "Студент " + orDefault.Number;
+                    Groups.InsertOnSubmit(group);
                 }
+
+            }
+            if (requestInfo.StudentCollection != null)
+                foreach (var student in requestInfo.StudentCollection)
+                {
+                    student.GroupId = requestInfo.GroupId;
+                    if (Students.FirstOrDefault(x => x.Id == student.Id) == null)
+                        Students.InsertOnSubmit(student);
+                }
+              
+            for (int i = 0; i < requestInfo.RatingCollection.Count; i++)
+            {
+                var ratingItem =requestInfo.RatingCollection[i];
+                var ratingitemFromDb =
+                    (from Rating itemFromDb in Rating
+                        where itemFromDb.StudentId == ratingItem.StudentId &&
+                                itemFromDb.SubjectId == ratingItem.SubjectId &&
+                                itemFromDb.Semestr == ratingItem.Semestr
+                        select itemFromDb).FirstOrDefault();
+                if (ratingitemFromDb == null)
+                    Rating.InsertOnSubmit(ratingItem);
                 else
                 {
-                    var orDefault = groupCollection.FirstOrDefault(x => x.Id == RequestInfo.GroupId);
-                    if (orDefault != null)
-                        ItemName = "Группа " + orDefault.Name;
+                    if (!String.IsNullOrEmpty(ratingItem.Att1)) ratingitemFromDb.Att1 = ratingItem.Att1;
+                    if (!String.IsNullOrEmpty(ratingItem.Att2)) ratingitemFromDb.Att2 = ratingItem.Att2;
+                    if (!String.IsNullOrEmpty(ratingItem.Att3)) ratingitemFromDb.Att3 = ratingItem.Att3;
+                    if (!String.IsNullOrEmpty(ratingItem.Exam)) ratingitemFromDb.Exam = ratingItem.Exam;
+                    if (!String.IsNullOrEmpty(ratingItem.Sum)) ratingitemFromDb.Sum = ratingItem.Sum;
                 }
 
-                var item = new FavoritesItem()
-                {
-                    StudentId = RequestInfo.StudentId,
-                    GroupId = RequestInfo.GroupId,
-                    Name = ItemName,
-                    Type = RequestInfo.CurrentRatingType,
-                    Semestr = RequestInfo.Semestr
-
-                };
-                Favorites.InsertOnSubmit(item);
-
-                foreach (var facult in facultCollection)
-                {
-                    if (Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
-                        Facults.InsertOnSubmit(facult);
-                }
-
-                foreach (var group in groupCollection)
-                {
-                    group.FacultId = RequestInfo.FacultId;
-                    if (Groups.FirstOrDefault(x => x.Id == group.Id) == null)
-                    {
-                        Groups.InsertOnSubmit(group);
-                    }
-
-                }
-                if (studentCollection != null)
-                    foreach (var student in studentCollection)
-                    {
-                        student.GroupId = RequestInfo.GroupId;
-                        if (Students.FirstOrDefault(x => x.Id == student.Id) == null)
-                            Students.InsertOnSubmit(student);
-                    }
-              
-                for (int i = 0; i < ratingCollection.Count; i++)
-                {
-                    var ratingItem = ratingCollection[i];
-                    var ratingitemFromDb =
-                        (from Rating itemFromDb in Rating
-                            where itemFromDb.StudentId == ratingItem.StudentId &&
-                                    itemFromDb.SubjectId == ratingItem.SubjectId &&
-                                    itemFromDb.Semestr == ratingItem.Semestr
-                            select itemFromDb).FirstOrDefault();
-                    if (ratingitemFromDb == null)
-                        Rating.InsertOnSubmit(ratingItem);
-                    else
-                    {
-                        if (!String.IsNullOrEmpty(ratingItem.Att1)) ratingitemFromDb.Att1 = ratingItem.Att1;
-                        if (!String.IsNullOrEmpty(ratingItem.Att2)) ratingitemFromDb.Att2 = ratingItem.Att2;
-                        if (!String.IsNullOrEmpty(ratingItem.Att3)) ratingitemFromDb.Att3 = ratingItem.Att3;
-                        if (!String.IsNullOrEmpty(ratingItem.Exam)) ratingitemFromDb.Exam = ratingItem.Exam;
-                        if (!String.IsNullOrEmpty(ratingItem.Sum)) ratingitemFromDb.Sum = ratingItem.Sum;
-                    }
-
-                }
-                
-                foreach (var subject in subjectCollection)
-                {
-                    if (Subjects.FirstOrDefault(x => x.Id == subject.Id) == null)
-                    {
-                        Subjects.InsertOnSubmit(subject);
-                    }
-                }
-                SubmitChanges();
             }
+                
+            foreach (var subject in requestInfo.SubjectCollection)
+            {
+                if (Subjects.FirstOrDefault(x => x.Id == subject.Id) == null)
+                {
+                    Subjects.InsertOnSubmit(subject);
+                }
+            }
+            SubmitChanges();
             
-        }       
+        }
+
+        public ObservableCollection<FavoritesItem> GetFavorites()
+        {
+            var favoritesList = from FavoritesItem item in Favorites
+                                select item;
+            var favorites = new ObservableCollection<FavoritesItem>(favoritesList);
+            return favorites;
+        }
+
+        public FavoritesItem GetFavoritesItem(int itemId)
+        {
+            var favoritesItem = (from FavoritesItem item in Favorites
+                                select item).FirstOrDefault(x => x.Id == itemId);
+            return favoritesItem;
+        }
+
+        public ObservableCollection<Facult> LoadFacults()
+        {
+            var facults = from Facult item in Facults
+                select item;
+            return new ObservableCollection<Facult>(facults);
+        }
+
+        public ObservableCollection<Group> LoadGroups(string id)
+        {
+            var groups = from @group in Groups
+                where @group.FacultId == id
+                select @group;
+            return new ObservableCollection<Group>(groups);
+        }
+
+        public ObservableCollection<Student> LoadStudents(string id)
+        {
+            var students = from @student in Students
+                where @student.GroupId == id
+                select @student;
+            return new ObservableCollection<Student>(students);
+        } 
+
+        public ObservableCollection<Subject> LoadSubjects( ) 
+        {
+            //IQueryable<Subject> subjects;
+            //if (favotites.Type == RatingType.RatingOfStudent)
+            //{
+            //        subjects = from Rating rat in Rating
+            //        where rat.StudentId == favotites.StudentId && favotites.Semestr == rat.Semestr
+            //        select rat.Subject;
+            //}
+            //else
+            //{
+            //        subjects = from Rating rat in Rating
+            //        where favotites.GroupId == rat.Student.GroupId && favotites.Semestr == rat.Semestr
+            //        select rat.Subject;
+            //}
+            //var subjectCollection = new ObservableCollection<Subject>(subjects.Distinct());
+            //return subjectCollection;
+        }
+
+        public ObservableCollection<Rating> GetRatingOfGroup(FavoritesItem favotites)
+        {
+            var rating = from Rating rat in Rating
+                         where rat.Student.GroupId == favotites.GroupId && rat.Semestr == favotites.Semestr
+                         select rat;
+            var ratingCollection = new ObservableCollection<Rating>(rating);
+            return ratingCollection;
+        }
+
+        public ObservableCollection<Rating> GetRatingOfStudent(FavoritesItem favotites)
+        {
+            var rating = from Rating rat in Rating
+                where rat.StudentId == favotites.StudentId && rat.Semestr == favotites.Semestr
+                select rat;
+            
+            var ratingCollection = new ObservableCollection<Rating>(rating);
+            return ratingCollection;
+        }
     }
 }
