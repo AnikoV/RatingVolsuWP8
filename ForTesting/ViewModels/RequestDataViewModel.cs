@@ -106,10 +106,8 @@ namespace ForTesting
         {
             ReqInfo = requestInfo;
             var _groupRating = await request.GetRatingOfGroup(ReqInfo);
-            ObservableCollection<Subject> subjects;
             ObservableCollection<Rating> ratings;
-            ReqInfo.GetRatingFromServer(_groupRating, out subjects, out ratings);
-            subjectCollection = subjects;
+            ReqInfo.GetRatingFromServer(_groupRating, rating, out ratings);
             ratingOfGroupCollection = ratings;
             ratingOfGroupForView = new ObservableCollection<Rating>(ratingOfGroupCollection.Distinct(new ItemsComparer()).ToList());
             //rating.SaveFavoritestoDb(ReqInfo);
@@ -119,10 +117,8 @@ namespace ForTesting
         {
             ReqInfo = requestInfo;
             _studentRating = await request.GetRatingOfStudent(ReqInfo);
-            ObservableCollection<Subject> subjects;
             ObservableCollection<Rating> ratings;
-            ReqInfo.GetRatingFromServer(_studentRating, out subjects, out ratings);
-            subjectCollection = subjects;
+            ReqInfo.GetRatingFromServer(_studentRating, rating, out ratings);
             ratingOfStudentCollection = ratings;
             //rating.SaveFavoritestoDb(ReqInfo);
         }

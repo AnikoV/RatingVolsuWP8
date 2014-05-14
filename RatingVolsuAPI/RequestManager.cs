@@ -61,7 +61,7 @@ namespace RatingVolsuAPI
             }
         }
 
-        public async Task<ObservableCollection<Facult>> GetFucultList()
+        public async Task<ObservableCollection<Facult>> GetFucultList(RatingDatabase db)
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/facult_req.php";
             _data = new Data
@@ -69,13 +69,19 @@ namespace RatingVolsuAPI
                 {"get_lists", "0"}
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
-
+            
             var facults = new ObservableCollection<Facult>(JsonConvert.DeserializeObject<ObservableCollection<Facult>>(content));
+            foreach (var facult in facults)
+            {
+                if (db.Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
+                    db.Facults.InsertOnSubmit(facult);
+            }
+            db.SubmitChanges();
             return facults;
 
         }
 
-        public async Task<ObservableCollection<Group>> GetGroupList(string FacultId)
+        public async Task<ObservableCollection<Group>> GetGroupList(RatingDatabase db, string FacultId)
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/group_req.php";
             _data = new Data
@@ -85,10 +91,21 @@ namespace RatingVolsuAPI
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
 
             var groups = new ObservableCollection<Group>(JsonConvert.DeserializeObject<ObservableCollection<Group>>(content));
+            foreach (var group in groups)
+            {
+                group.FacultId = FacultId;
+                if (db.Groups.FirstOrDefault(x => x.Id == group.Id) == null)
+                {
+                    db.Groups.InsertOnSubmit(group);
+                }
+
+            }
+            db.SubmitChanges();
+            groups = db.LoadGroups(FacultId);
             return groups;
         }
 
-        public async Task<ObservableCollection<Student>> GetStudentList(string GroupId)
+        public async Task<ObservableCollection<Student>> GetStudentList(RatingDatabase db, string GroupId)
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/sem_req.php";
             _data = new Data
@@ -98,14 +115,23 @@ namespace RatingVolsuAPI
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
 
             var students = new ObservableCollection<Student>(JsonConvert.DeserializeObject<ObservableCollection<Student>>(content));
+
+            foreach (var student in students)
+            {
+                student.GroupId = GroupId;
+                if (db.Students.FirstOrDefault(x => x.Id == student.Id) == null)
+                    db.Students.InsertOnSubmit(student);
+            }
+            db.SubmitChanges();
+            students = db.LoadStudents(GroupId);
             return students;
         }
 
         public async Task<GroupRat> GetRatingOfGroup(RequestManipulation requestInfo)
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/group_rat.php";
-
-            string content = await SendRequest(requestInfo.GetParams());
+            var parameters = requestInfo.GetParams();
+            string content = await SendRequest(parameters);
 
             var rating = JsonConvert.DeserializeObject<GroupRat>(content);
             return rating;
@@ -115,14 +141,9 @@ namespace RatingVolsuAPI
         {
             var req = (RequestByStudent) requestInfo;
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/stud_rat.php";
-            _data = new Data
-            {
-                {"Fak", req.FacultId},
-                {"Group", req.GroupId},
-                {"Semestr", req.Semestr},
-                {"Zach", req.StudentId}
-            };
-            string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+
+            var parametrs = req.GetParams();
+            string content = await SendRequest(parametrs);
 
             var rating = JsonConvert.DeserializeObject<StudentRat>(content);
             return rating;

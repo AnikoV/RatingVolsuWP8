@@ -14,8 +14,7 @@ namespace RatinVolsuAPI
         public string GroupId;
         public string Semestr;
 
-        public abstract void GetRatingFromServer(Object Rating, out ObservableCollection<Subject> subjectCollection,
-            out ObservableCollection<Rating> ratingOfGroupCollection);
+        public abstract void GetRatingFromServer(Object Rating, RatingDatabase db, out ObservableCollection<Rating> ratingOfGroupCollection);
 
         public abstract string GetParams();
 
@@ -34,44 +33,54 @@ namespace RatinVolsuAPI
             Semestr = favorites.Semestr;
         }
 
-        public override void GetRatingFromServer(Object rating, out ObservableCollection<Subject> subjectCollection, out ObservableCollection<Rating> ratingOfGroupCollection)
+        public override void GetRatingFromServer(Object rating, RatingDatabase db,  out ObservableCollection<Rating> ratingOfGroupCollection)
         {
-            ratingOfGroupCollection = new ObservableCollection<Rating>();
-            subjectCollection = new ObservableCollection<Subject>();
             var groupRating = (GroupRat)rating;
-            foreach (var basePredmet in groupRating.Predmet)
+            foreach (var subject in groupRating.Predmet)
             {
-                subjectCollection.Add(new Subject()
+                if (db.Subjects.FirstOrDefault(x => x.Id == subject.Key) == null)
                 {
-                    Id = basePredmet.Key,
-                    Name = basePredmet.Value.Name,
-                    Type = basePredmet.Value.Type
-                });
-            }
-            var studentCollection = new ObservableCollection<Student>();
-            foreach (var student in groupRating.Table)
-            {
-                studentCollection.Add(new Student()
-                {
-                    Id = student.Key,
-                    Number = student.Value.Name
-                });
-            }
-
-            foreach (var tableItem in groupRating.Table)
-            {
-                var stId = tableItem.Key;
-                foreach (var predmetItem in tableItem.Value.Predmet)
-                {
-                    ratingOfGroupCollection.Add(new Rating()
+                    db.Subjects.InsertOnSubmit(new Subject()
                     {
-                        StudentId = stId,
-                        SubjectId = predmetItem.Key,
-                        Total = predmetItem.Value,
-                        Semestr = Semestr,
+                        Id = subject.Key,
+                        Name = subject.Value.Name,
+                        Type = subject.Value.Type
                     });
                 }
             }
+          
+            foreach (var tableItem in groupRating.Table)
+            {
+                var stId = tableItem.Key;
+                if (db.Students.FirstOrDefault(x => x.Id == tableItem.Key) == null)
+                    db.Students.InsertOnSubmit(
+                        new Student()
+                        {
+                            Id = tableItem.Key,
+                            Number = tableItem.Value.Name
+                        });
+                foreach (var predmetItem in tableItem.Value.Predmet)
+                {
+                    var ratingitemFromDb =
+                        (from Rating itemFromDb in db.Rating
+                            where itemFromDb.StudentId == tableItem.Key &&
+                                    itemFromDb.SubjectId == predmetItem.Key &&
+                                    itemFromDb.Semestr == Semestr
+                            select itemFromDb).FirstOrDefault();
+                    if (ratingitemFromDb == null)
+                        db.Rating.InsertOnSubmit(new Rating()
+                        {
+                            StudentId = stId,
+                            SubjectId = predmetItem.Key,
+                            Total = predmetItem.Value,
+                            Semestr = Semestr,
+                        });
+                    else
+                        ratingitemFromDb.Total = predmetItem.Value;
+                }
+            }
+            db.SubmitChanges();
+            ratingOfGroupCollection = db.GetRatingOfGroup(this);
         }
 
         public override void LoadRatingFromDb(RatingDatabase rating, out ObservableCollection<Rating> groupRatings, out ObservableCollection<Rating> studentRatings)
@@ -82,9 +91,9 @@ namespace RatinVolsuAPI
 
         public override string GetParams()
         {
-            string s = "facult=" + FacultId +
-                       "&group=" + GroupId +
-                       "&semestr=" + Semestr;
+            string s = "Fak=" + FacultId +
+                       "&Group=" + GroupId +
+                       "&Semestr=" + Semestr;
             return s;
         }
     }
@@ -116,45 +125,64 @@ namespace RatinVolsuAPI
 
         public override string GetParams()
         {
-            string s = "facult=" + FacultId +
-                       "&group=" + GroupId +
-                       "&semestr=" + Semestr +
-                       "student=" + StudentId;
+            string s = "Fak=" + FacultId +
+                       "&Group=" + GroupId +
+                       "&Semestr=" + Semestr +
+                       "&Zach=" + StudentId;
             return s;
         }
 
-        public override void GetRatingFromServer(object rating, out ObservableCollection<Subject> subjectCollection,
-            out ObservableCollection<Rating> ratingOfGroupCollection)
+        public override void GetRatingFromServer(object rating, RatingDatabase db, out ObservableCollection<Rating> ratingOfStudentCollection)
         {
             var studentRating = (StudentRat) rating;
-            subjectCollection = new ObservableCollection<Subject>();
-            ratingOfGroupCollection = new ObservableCollection<Rating>();
-            foreach (var basePredmet in studentRating.Predmet)
+
+            foreach (var subject in studentRating.Predmet)
             {
-                subjectCollection.Add(new Subject()
+                if (db.Subjects.FirstOrDefault(x => x.Id == subject.Key) == null)
                 {
-                    Id = basePredmet.Key,
-                    Name = basePredmet.Value.Name,
-                    Type = basePredmet.Value.Type
-                });
+                    db.Subjects.InsertOnSubmit(new Subject()
+                    {
+                        Id = subject.Key,
+                        Name = subject.Value.Name,
+                        Type = subject.Value.Type    
+                    });
+                }
             }
 
-            int subjectItem = 0;
-            foreach (var item in studentRating.Table)
+            foreach (var ratingItem in studentRating.Table)
             {
-                ratingOfGroupCollection.Add(new Rating()
+                var ratingitemFromDb =
+                    (from Rating itemFromDb in db.Rating
+                     where itemFromDb.StudentId == StudentId &&
+                             itemFromDb.SubjectId == ratingItem.Key &&
+                             itemFromDb.Semestr == Semestr
+                     select itemFromDb).FirstOrDefault();
+                if (ratingitemFromDb == null)
+                    db.Rating.InsertOnSubmit(new Rating()
+                    {
+                        StudentId = StudentId,
+                        SubjectId = ratingItem.Key,
+                        Semestr = Semestr,
+                        Att1 = ratingItem.Value[0],
+                        Att2 = ratingItem.Value[1],
+                        Att3 = ratingItem.Value[2],
+                        Sum = ratingItem.Value[3],
+                        Exam = ratingItem.Value[4],
+                        Total = ratingItem.Value[5]
+                    });
+                else
                 {
-                    StudentId = StudentId,
-                    SubjectId = subjectCollection[subjectItem++].Id,
-                    Semestr = Semestr,
-                    Att1 = item.Value[0],
-                    Att2 = item.Value[1],
-                    Att3 = item.Value[2],
-                    Sum = item.Value[3],
-                    Exam = item.Value[4],
-                    Total = item.Value[5]
-                });
+                    if (!String.IsNullOrEmpty(ratingItem.Value[0])) ratingitemFromDb.Att1 = ratingItem.Value[0];
+                    if (!String.IsNullOrEmpty(ratingItem.Value[1])) ratingitemFromDb.Att2 = ratingItem.Value[1];
+                    if (!String.IsNullOrEmpty(ratingItem.Value[2])) ratingitemFromDb.Att3 = ratingItem.Value[2];
+                    if (!String.IsNullOrEmpty(ratingItem.Value[3])) ratingitemFromDb.Sum = ratingItem.Value[3];
+                    if (!String.IsNullOrEmpty(ratingItem.Value[4])) ratingitemFromDb.Exam = ratingItem.Value[4];
+                    if (!String.IsNullOrEmpty(ratingItem.Value[5])) ratingitemFromDb.Total = ratingItem.Value[5];
+                }
+
             }
+            db.SubmitChanges();
+            ratingOfStudentCollection = db.GetRatingOfStudent(this);
         }
 
         public override void LoadRatingFromDb(RatingDatabase rating, out ObservableCollection<Rating> groupRatings, out ObservableCollection<Rating> studentRatings)

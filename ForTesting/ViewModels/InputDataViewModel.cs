@@ -76,18 +76,18 @@ namespace ForTesting
 
         public async Task GetFacults()
         {
-            facultCollection = await request.GetFucultList();
+            facultCollection = await request.GetFucultList(rating);
         }
 
         public async Task GetGroups(int SelectedId)
         {
             RequestInfo.FacultId = facultCollection[SelectedId].Id;
-            groupCollection = await request.GetGroupList(RequestInfo.FacultId);
+            groupCollection = await request.GetGroupList(rating,RequestInfo.FacultId);
         }
 
         public async Task GetStudents(int SelectedId)
         {
-            studentCollection = await request.GetStudentList(RequestInfo.GroupId);
+            studentCollection = await request.GetStudentList(rating, RequestInfo.GroupId);
         }
 
         public int GetSemestrCount()
