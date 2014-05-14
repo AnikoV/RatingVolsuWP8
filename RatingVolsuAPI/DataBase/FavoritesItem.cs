@@ -8,6 +8,7 @@ using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RatinVolsuAPI;
 
 namespace RatingVolsuAPI
 {
@@ -137,6 +138,25 @@ namespace RatingVolsuAPI
         }
 
         #endregion
-         
+
+
+        public RequestManipulation GetRequest()
+        {
+            if (Type == RatingType.RatingOfStudent)
+                return new RequestByStudent()
+                {
+                    FacultId = Student.Group.FacultId,
+                    GroupId = Student.GroupId,
+                    Semestr = Semestr,
+                    StudentId = Student.Id
+                };
+            return new RequestByStudent()
+            {
+                FacultId = Student.Group.FacultId,
+                GroupId = Student.GroupId,
+                Semestr = Semestr,
+                StudentId = Student.Id
+            };
+        }
     }
 }

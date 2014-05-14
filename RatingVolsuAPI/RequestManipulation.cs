@@ -8,25 +8,38 @@ using RatingVolsuAPI;
 
 namespace RatinVolsuAPI
 {
-    public class RequestManipulation
+    public abstract class RequestManipulation
     {
         public string FacultId;
         public string GroupId;
         public string Semestr;
 
-        public virtual string GetParams()
+        public abstract void GetRatingFromServer(Object Rating, out ObservableCollection<Subject> subjectCollection,
+            out ObservableCollection<Rating> ratingOfGroupCollection);
+
+        public abstract string GetParams();
+
+        public abstract void LoadRatingFromDb(RatingDatabase rating, out ObservableCollection<Rating> groupRatings,
+            out ObservableCollection<Rating> studentRatings);
+
+    }
+
+    public class RequestByGroup : RequestManipulation
+    {
+        public RequestByGroup() { }
+        public RequestByGroup(FavoritesItem favorites)
         {
-            string s = "facult=" + FacultId +
-                       "&group=" + GroupId +
-                       "&semestr=" + Semestr;
-            return s;
+            FacultId = favorites.Student.Group.FacultId;
+            GroupId = favorites.Student.GroupId;
+            Semestr = favorites.Semestr;
         }
 
-        public virtual void GetRating(Object _groupRating, out ObservableCollection<Subject> subjectCollection, out ObservableCollection<Rating> ratingOfGroupCollection)
+        public override void GetRatingFromServer(Object rating, out ObservableCollection<Subject> subjectCollection, out ObservableCollection<Rating> ratingOfGroupCollection)
         {
             ratingOfGroupCollection = new ObservableCollection<Rating>();
             subjectCollection = new ObservableCollection<Subject>();
-            foreach (var basePredmet in _groupRating.Predmet)
+            var groupRating = (GroupRat)rating;
+            foreach (var basePredmet in groupRating.Predmet)
             {
                 subjectCollection.Add(new Subject()
                 {
@@ -36,7 +49,7 @@ namespace RatinVolsuAPI
                 });
             }
             var studentCollection = new ObservableCollection<Student>();
-            foreach (var student in _groupRating.Table)
+            foreach (var student in groupRating.Table)
             {
                 studentCollection.Add(new Student()
                 {
@@ -45,7 +58,7 @@ namespace RatinVolsuAPI
                 });
             }
 
-            foreach (var tableItem in _groupRating.Table)
+            foreach (var tableItem in groupRating.Table)
             {
                 var stId = tableItem.Key;
                 foreach (var predmetItem in tableItem.Value.Predmet)
@@ -60,27 +73,48 @@ namespace RatinVolsuAPI
                 }
             }
         }
-    }
 
-    public class RequestByGroup : RequestManipulation
-    {
-        
+        public override void LoadRatingFromDb(RatingDatabase rating, out ObservableCollection<Rating> groupRatings, out ObservableCollection<Rating> studentRatings)
+        {
+            groupRatings = rating.GetRatingOfGroup(this);
+            studentRatings = null;
+        }
+
+        public override string GetParams()
+        {
+            string s = "facult=" + FacultId +
+                       "&group=" + GroupId +
+                       "&semestr=" + Semestr;
+            return s;
+        }
     }
 
     public class RequestByStudent : RequestManipulation
     {
         public string StudentId;
-        private FavoritesItem CurrentFavoritesItem;
-
-        public RequestByStudent(FavoritesItem CurrentFavoritesItem)
+ 
+        public RequestByStudent(Student student, string semestr)
         {
-            FacultId = CurrentFavoritesItem.Group.FacultId;
-            GroupId = CurrentFavoritesItem.GroupId;
-            Semestr = CurrentFavoritesItem.Semestr;
-            StudentId = ratingOfGroupCollection[selectedIndex].Student.Id;
+            FacultId = student.Group.FacultId;
+            GroupId = student.GroupId;
+            Semestr = semestr;
+            StudentId = student.Id;
         }
 
-        public virtual string GetParams()
+        public RequestByStudent(FavoritesItem favorites)
+        {
+            FacultId = favorites.Student.Group.FacultId;
+            GroupId = favorites.Student.GroupId;
+            Semestr = favorites.Semestr;
+            StudentId = favorites.Student.Id;
+        }
+
+        public RequestByStudent()
+        {
+            // TODO: Complete member initialization
+        }
+
+        public override string GetParams()
         {
             string s = "facult=" + FacultId +
                        "&group=" + GroupId +
@@ -89,10 +123,46 @@ namespace RatinVolsuAPI
             return s;
         }
 
-        public virtual void GetRating(object _studRating, out ObservableCollection<Subject> subjectCollection,
+        public override void GetRatingFromServer(object rating, out ObservableCollection<Subject> subjectCollection,
             out ObservableCollection<Rating> ratingOfGroupCollection)
         {
-            
+            var studentRating = (StudentRat) rating;
+            subjectCollection = new ObservableCollection<Subject>();
+            ratingOfGroupCollection = new ObservableCollection<Rating>();
+            foreach (var basePredmet in studentRating.Predmet)
+            {
+                subjectCollection.Add(new Subject()
+                {
+                    Id = basePredmet.Key,
+                    Name = basePredmet.Value.Name,
+                    Type = basePredmet.Value.Type
+                });
+            }
+
+            int subjectItem = 0;
+            foreach (var item in studentRating.Table)
+            {
+                ratingOfGroupCollection.Add(new Rating()
+                {
+                    StudentId = StudentId,
+                    SubjectId = subjectCollection[subjectItem++].Id,
+                    Semestr = Semestr,
+                    Att1 = item.Value[0],
+                    Att2 = item.Value[1],
+                    Att3 = item.Value[2],
+                    Sum = item.Value[3],
+                    Exam = item.Value[4],
+                    Total = item.Value[5]
+                });
+            }
         }
+
+        public override void LoadRatingFromDb(RatingDatabase rating, out ObservableCollection<Rating> groupRatings, out ObservableCollection<Rating> studentRatings)
+        {
+            studentRatings = rating.GetRatingOfStudent(this);
+            groupRatings = null;
+        }
+
+
     }
 }

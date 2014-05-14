@@ -40,7 +40,8 @@ namespace ForTesting
             var SelectedIndex = FavoritesList.SelectedIndex;
             if (SelectedIndex == -1) return;
             var id = _viewModel.favoritesCollection[SelectedIndex].Id;
-            NavigationService.Navigate(new Uri("/Pages/TestPage.xaml?favoriteitem=" + id, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Pages/TestPage.xaml?favoriteitem=" + id+
+                                                "&type=" + _viewModel.favoritesCollection[SelectedIndex].Type, UriKind.Relative));
         }
     }
 }

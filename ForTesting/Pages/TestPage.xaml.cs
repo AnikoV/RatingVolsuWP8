@@ -29,36 +29,31 @@ namespace ForTesting
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             string ItemId;
+            string type;
+            RequestManipulation req;
             base.OnNavigatedTo(e);
             if (NavigationContext.QueryString.TryGetValue("favoriteitem", out ItemId))
             {
                 _viewModel.GetFavoriteItem(ItemId);
-                _viewModel.GetRatingFromDb();
+                req = _viewModel.CurrentFavoritesItem.GetRequest();
             }
             else
             {
-                string facultId, groupId, semestr, studentId;
-                NavigationContext.QueryString.TryGetValue("facult", out facultId);
-                NavigationContext.QueryString.TryGetValue("group", out groupId);
-                NavigationContext.QueryString.TryGetValue("semestr", out semestr);
-                NavigationContext.QueryString.TryGetValue("student", out studentId);
-                _viewModel.CreateRequest(facultId, groupId, semestr, studentId);
-                await _viewModel.GetRatingFromServer();
-
+                req = (RequestManipulation) NavigationService.GetNavigationData();
             }
+            NavigationContext.QueryString.TryGetValue("type", out type);
+            _viewModel.GetRatingFromDb(req);
+            if (type == RatingType.RatingOfStudent.ToString())
+                await _viewModel.GetRatingOfStudentFromServer(req);
+            else
+                await _viewModel.GetRatingOfGroupFromServer(req);
+
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
             _viewModel.CurrentFavoritesItem = null;
-        }
-
-        private void List_Tap(object sender, GestureEventArgs e)
-        {
-            var SelectedIndex = List.SelectedIndex;
-            if (SelectedIndex == -1) return;
-            _viewModel.GetFavoritesRating();
         }
 
         private async void StudentListTap(object sender, GestureEventArgs e)

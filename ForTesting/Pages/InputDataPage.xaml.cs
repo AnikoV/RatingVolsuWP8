@@ -17,6 +17,7 @@ namespace ForTesting.Pages
 {
     public partial class InputDataPage : PhoneApplicationPage
     {
+        string type;
         public InputDataPage()
         {
             InitializeComponent();
@@ -26,7 +27,7 @@ namespace ForTesting.Pages
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            string type;
+            
             NavigationContext.QueryString.TryGetValue("type", out type);
             var s = (RatingType)Enum.Parse(typeof(RatingType), type);
             if (s == RatingType.RatingOfGroup)
@@ -84,7 +85,7 @@ namespace ForTesting.Pages
             ApplicationBar.IsVisible = false;
             App.ViewModel.studentCollection.Clear();
             App.ViewModel.RequestInfo.Semestr = (SelectedIndex + 1).ToString();
-            if (App.ViewModel.RequestInfo.GetType() == typeof(RequestByGroup))
+            if (App.ViewModel.RequestInfo.GetType() == typeof(RequestByStudent))
             {
                 await App.ViewModel.GetStudents(SelectedIndex);
             }
@@ -122,8 +123,7 @@ namespace ForTesting.Pages
 
         private void appBarButtonOK_Click(object sender, EventArgs e)
         {
-            var _params = App.ViewModel.RequestInfo.GetParams();
-            NavigationService.Navigate(new Uri("/Pages/TestPage.xaml?" + _params, UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Pages/TestPage.xaml?type=" + type, UriKind.Relative), App.ViewModel.RequestInfo);
         }
 
         #endregion
