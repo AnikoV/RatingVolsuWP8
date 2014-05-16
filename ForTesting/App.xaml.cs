@@ -21,16 +21,6 @@ namespace ForTesting
         {
             get { return _viewModel; }
         }
-        private static CacheManager _cacheManager;
-        public static CacheManager CacheManager
-        {
-            get
-            {
-                if (_cacheManager == null)
-                    _cacheManager = new CacheManager();
-                return _cacheManager;
-            }
-        }
         /// <summary>
         /// Конструктор объекта приложения.
         /// </summary>

@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -71,7 +72,14 @@
                         <DataTemplate>
                             <StackPanel>
                                 <TextBlock Padding="3,0,3,0"
-								Text="{Binding Name}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+								Text="{Binding Name}" FontSize="{StaticResource PhoneFontSizeExtraLarge}" TextWrapping="Wrap"/>               
+                                <TextBlock Padding="3,0,3,0"
+								Text="{Binding SubName}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="Удалить" Click="DeleteFavorites_Click"/>
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

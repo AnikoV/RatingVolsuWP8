@@ -24,6 +24,7 @@ namespace RatingVolsuAPI
         AddTemplate,
         EditTemplate
     }
+
     public static class RequestInfo
     {
         public static int CurrentFavorites;
@@ -33,62 +34,10 @@ namespace RatingVolsuAPI
         public static string Semestr;
         public static string StudentId;
     }
-    public class CacheManager : PropertyChangedBase
+
+    public static class Info
     {
-        
-        
-    //    private ObservableCollection<Facult> _facultCollection;
-    //    public ObservableCollection<Facult> facultCollection
-    //    {
-    //        get { return _facultCollection; }
-    //        set
-    //        {
-    //            _facultCollection = value;
-    //            RaisePropertyChanged("facultCollection");
-    //        }
-    //    }
-    //    public ObservableCollection<Group> _groupCollection;
-    //    public ObservableCollection<Group> groupCollection
-    //    {
-    //        get { return _groupCollection; }
-    //        set
-    //        {
-    //            _groupCollection = value;
-    //            RaisePropertyChanged("groupCollection");
-    //        }
-    //    }
-    //    public ObservableCollection<Student> _studentCollection;
-    //    public ObservableCollection<Student> studentCollection
-    //    {
-    //        get { return _studentCollection; }
-    //        set
-    //        {
-    //            _studentCollection = value;
-    //            RaisePropertyChanged("studentCollection");
-    //        }
-    //    }
-
-    //    private ObservableCollection<Rating> _ratingCollection;
-    //    public ObservableCollection<Rating> ratingCollection
-    //    {
-    //        get { return _ratingCollection; }
-    //        set
-    //        {
-    //            _ratingCollection = value;
-    //            RaisePropertyChanged("ratingCollection");
-    //        }
-    //    }
-
-    //    private ObservableCollection<Subject> _subjectCollection;
-    //    public ObservableCollection<Subject> subjectCollection
-    //    {
-    //        get { return _subjectCollection; }
-    //        set
-    //        {
-    //            _subjectCollection = value;
-    //            RaisePropertyChanged("subjectCollection");
-    //        }
-    //    }
+        public static string DbConnectionString = @"isostore:/RatingDataBase.sdf";
     }
 
     public class StudentRat

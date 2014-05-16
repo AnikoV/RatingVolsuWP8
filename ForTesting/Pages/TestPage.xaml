@@ -17,8 +17,9 @@
         <phone:Panorama HorizontalAlignment="Left" Height="758" Title="рейтинг" VerticalAlignment="Top" Width="470">
             <phone:PanoramaItem CacheMode="{x:Null}" Header="Предметы">
                 <ListBox ItemsSource="{Binding subjectCollection}" 
-                                x:Name="List"
-				                Margin="10" >
+                                x:Name="SubjectList"
+				                Margin="10" Tap="SubjectList_Tap"
+                         >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -35,10 +36,15 @@
 				                Margin="10" Tap="StudentListTap">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Padding="3,0,3,0"
-								Text="{Binding Path= Student.Number }" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel>
+                                    <TextBlock Padding="3,0,3,0"
+								    Text="{Binding Path = Student.Number }" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                                    <TextBlock Padding="3,0,3,0"
+								    Text="{Binding Path = Total}" FontSize="{StaticResource PhoneFontSizeNormal}" TextWrapping="Wrap"/>
+                                </StackPanel>
                             </StackPanel>
+                            
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>             
@@ -53,7 +59,7 @@
                                 <TextBlock Padding="3,0,3,0"
 								Text="{Binding Path = Subject.Name}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
                                 <TextBlock Padding="3,0,3,0"
-								Text="{Binding Path = Total}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+								Text="{Binding Path = Total}" FontSize="{StaticResource PhoneFontSizeNormal}" TextWrapping="Wrap"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

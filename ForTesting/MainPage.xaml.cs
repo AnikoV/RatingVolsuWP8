@@ -11,6 +11,8 @@ using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 using ForTesting.Resources;
 using RatingVolsuAPI;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
+
 
 namespace ForTesting
 {
@@ -35,6 +37,11 @@ namespace ForTesting
             NavigationService.Navigate(new Uri("/Pages/InputDataPage.xaml?type=RatingOfGroup", UriKind.Relative));
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            _viewModel.UpdateFavoriteList();
+        }
         private void FavoritesList_Tap(object sender, GestureEventArgs e)
         {
             var SelectedIndex = FavoritesList.SelectedIndex;
@@ -42,6 +49,15 @@ namespace ForTesting
             var id = _viewModel.favoritesCollection[SelectedIndex].Id;
             NavigationService.Navigate(new Uri("/Pages/TestPage.xaml?favoriteitem=" + id+
                                                 "&type=" + _viewModel.favoritesCollection[SelectedIndex].Type, UriKind.Relative));
+        }
+
+        private void DeleteFavorites_Click(object sender, RoutedEventArgs e)
+        {
+            if (FavoritesList.ItemContainerGenerator == null) return;
+            var selectedListBoxItem = FavoritesList.ItemContainerGenerator.ContainerFromItem(((MenuItem)sender).DataContext) as ListBoxItem;
+            if (selectedListBoxItem == null) return;
+            var selectedIndex = FavoritesList.ItemContainerGenerator.IndexFromContainer(selectedListBoxItem);
+            _viewModel.DeleteFavorites(selectedIndex);
         }
     }
 }

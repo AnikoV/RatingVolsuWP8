@@ -26,6 +26,20 @@ namespace ForTesting
         }
     }
 
+    public class SubjectsComparer : IEqualityComparer<Subject>
+    {
+        public bool Equals(Subject x, Subject y)
+        {
+            return x.Id == y.Id;
+        }
+
+        public int GetHashCode(Subject obj)
+        {
+            return obj.Id.GetHashCode();
+        }
+    }
+
+
     class RequestDataViewModel : PropertyChangedBase
     {
         private ObservableCollection<Rating> _ratingOfGroupCollection;
@@ -83,18 +97,16 @@ namespace ForTesting
             }
         }
 
-        private RatingDatabase rating;
-        private RequestManager request;
-        private StudentRat _studentRating;
-        private GroupRat _groupRating;
+        private readonly RatingDatabase _rating;
+        private readonly RequestManager _request;
         public FavoritesItem CurrentFavoritesItem;
         public RequestManipulation ReqInfo;
     
 
         public RequestDataViewModel()
         {
-            rating = new RatingDatabase(App.DbConnectionString);
-            request = new RequestManager();
+            _rating = new RatingDatabase(App.DbConnectionString);
+            _request = new RequestManager();
             ratingOfGroupCollection = new ObservableCollection<Rating>();
             ratingOfStudentCollection = new ObservableCollection<Rating>();
             subjectCollection = new ObservableCollection<Subject>();
@@ -105,22 +117,15 @@ namespace ForTesting
         public async Task GetRatingOfGroupFromServer(RequestManipulation requestInfo)
         {
             ReqInfo = requestInfo;
-            var _groupRating = await request.GetRatingOfGroup(ReqInfo);
-            ObservableCollection<Rating> ratings;
-            ReqInfo.GetRatingFromServer(_groupRating, rating, out ratings);
-            ratingOfGroupCollection = ratings;
+            ratingOfGroupCollection = await _request.GetRatingOfGroup(ReqInfo);
             ratingOfGroupForView = new ObservableCollection<Rating>(ratingOfGroupCollection.Distinct(new ItemsComparer()).ToList());
-            //rating.SaveFavoritestoDb(ReqInfo);
+            subjectCollection = new ObservableCollection<Subject>(ratingOfGroupCollection.Select(x => x.Subject).Distinct(new SubjectsComparer()));
         }
 
         public async Task GetRatingOfStudentFromServer(RequestManipulation requestInfo)
         {
             ReqInfo = requestInfo;
-            _studentRating = await request.GetRatingOfStudent(ReqInfo);
-            ObservableCollection<Rating> ratings;
-            ReqInfo.GetRatingFromServer(_studentRating, rating, out ratings);
-            ratingOfStudentCollection = ratings;
-            //rating.SaveFavoritestoDb(ReqInfo);
+            ratingOfStudentCollection = await _request.GetRatingOfStudent(ReqInfo);
         }
 
         public void GetRatingFromDb(RequestManipulation requestInfo)
@@ -128,7 +133,7 @@ namespace ForTesting
             ReqInfo = requestInfo;
             ObservableCollection<Rating> groupRatings;
             ObservableCollection<Rating> studentRatings;
-            ReqInfo.LoadRatingFromDb(rating, out groupRatings, out studentRatings);
+            ReqInfo.LoadRatingFromDb(out groupRatings, out studentRatings);
             if (groupRatings != null) ratingOfGroupCollection = groupRatings;
             if (studentRatings != null) ratingOfStudentCollection = studentRatings;
             ratingOfGroupForView = new ObservableCollection<Rating>(ratingOfGroupCollection.Distinct(new ItemsComparer()).ToList());
@@ -136,34 +141,23 @@ namespace ForTesting
 
         internal async Task GetRatingOfStudent(int selectedIndex)
         {
-            if (CurrentFavoritesItem != null && (CurrentFavoritesItem.Student != null &&
-                                                 CurrentFavoritesItem.Student.Id ==
-                                                 ratingOfGroupCollection[selectedIndex].Student.Id))
+            var reqInfo = new RequestByStudent()
             {
-                GetRatingFromDb(new RequestByStudent(CurrentFavoritesItem));
-            }
-            else
-            {
-                var reqInfo = new RequestByStudent()
-                {
-                    FacultId = CurrentFavoritesItem.Group.FacultId,
-                    GroupId = CurrentFavoritesItem.GroupId,
-                    Semestr = CurrentFavoritesItem.Semestr,
-                    StudentId = ratingOfGroupCollection[selectedIndex].Student.Id
-                };
+                FacultId = ReqInfo.FacultId,
+                GroupId = ReqInfo.GroupId,
+                Semestr = ReqInfo.Semestr,
+                StudentId = ratingOfGroupForView[selectedIndex].Student.Id
+            };
 
-                GetRatingFromDb(reqInfo);
-                await GetRatingOfStudentFromServer(reqInfo);
-            }
-               
+            GetRatingFromDb(reqInfo);
+            await GetRatingOfStudentFromServer(reqInfo);
         }
 
-        internal void GetFavoriteItem(string ItemId)
+        internal void GetFavoriteItem(string itemId)
         {
-            int id = Convert.ToInt32(ItemId);
-            CurrentFavoritesItem = rating.GetFavoritesItem(id);
+            int id = Convert.ToInt32(itemId);
+            CurrentFavoritesItem = _rating.GetFavoritesItem(id);
         }
-
 
         public void CreateRequest(string facultId, string groupId, string semestr, string studentId)
         {
@@ -182,6 +176,18 @@ namespace ForTesting
                     GroupId = groupId,
                     Semestr = semestr
                 };
+        }
+
+        internal void GetRatingBySubject(int selectedIndex)
+        {
+            ratingOfGroupForView = new ObservableCollection<Rating>(ratingOfGroupCollection
+                                                                        .Where(x => x.SubjectId == subjectCollection[selectedIndex].Id).ToList());
+        }
+
+        internal bool SaveFavorites()
+        {
+            var favorites = ReqInfo.GetFavorites();
+            return _rating.SaveFavorites(favorites);
         }
     }
 }

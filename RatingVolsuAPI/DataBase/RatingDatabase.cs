@@ -28,91 +28,6 @@ namespace RatingVolsuAPI
 
         public Table<FavoritesItem> Favorites;
 
-        //public void SaveFavoritestoDb(RequestManipulation requestInfo)
-        //{
-        //    string ItemName = "";
-        //    if (!String.IsNullOrEmpty(requestInfo.StudentId))
-        //    {
-        //        var orDefault = requestInfo.StudentCollection.FirstOrDefault(x => x.Id == requestInfo.StudentId);
-        //        if (orDefault != null)
-        //            ItemName = "Студент " + orDefault.Number;
-        //        requestInfo.CurrentRatingType = RatingType.RatingOfStudent;
-        //    }
-        //    else
-        //    {
-        //        var orDefault = requestInfo.GroupCollection.FirstOrDefault(x => x.Id == requestInfo.GroupId);
-        //        if (orDefault != null)
-        //            ItemName = "Группа " + orDefault.Name;
-        //        requestInfo.CurrentRatingType = RatingType.RatingOfGroup;
-        //    }
-
-        //    var item = new FavoritesItem()
-        //    {
-        //        StudentId = requestInfo.StudentId,
-        //        GroupId = requestInfo.GroupId,
-        //        Name = ItemName,
-        //        Type = requestInfo.CurrentRatingType,
-        //        Semestr = requestInfo.Semestr
-
-        //    };
-        //    Favorites.InsertOnSubmit(item);
-
-        //    foreach (var facult in requestInfo.FacultCollection)
-        //    {
-        //        if (Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
-        //            Facults.InsertOnSubmit(facult);
-        //    }
-
-        //    foreach (var group in requestInfo.GroupCollection)
-        //    {
-        //        group.FacultId = requestInfo.FacultId;
-        //        if (Groups.FirstOrDefault(x => x.Id == group.Id) == null)
-        //        {
-        //            Groups.InsertOnSubmit(group);
-        //        }
-
-        //    }
-        //    if (requestInfo.StudentCollection != null)
-        //        foreach (var student in requestInfo.StudentCollection)
-        //        {
-        //            student.GroupId = requestInfo.GroupId;
-        //            if (Students.FirstOrDefault(x => x.Id == student.Id) == null)
-        //                Students.InsertOnSubmit(student);
-        //        }
-              
-        //    for (int i = 0; i < requestInfo.RatingCollection.Count; i++)
-        //    {
-        //        var ratingItem =requestInfo.RatingCollection[i];
-        //        var ratingitemFromDb =
-        //            (from Rating itemFromDb in Rating
-        //                where itemFromDb.StudentId == ratingItem.StudentId &&
-        //                        itemFromDb.SubjectId == ratingItem.SubjectId &&
-        //                        itemFromDb.Semestr == ratingItem.Semestr
-        //                select itemFromDb).FirstOrDefault();
-        //        if (ratingitemFromDb == null)
-        //            Rating.InsertOnSubmit(ratingItem);
-        //        else
-        //        {
-        //            if (!String.IsNullOrEmpty(ratingItem.Att1)) ratingitemFromDb.Att1 = ratingItem.Att1;
-        //            if (!String.IsNullOrEmpty(ratingItem.Att2)) ratingitemFromDb.Att2 = ratingItem.Att2;
-        //            if (!String.IsNullOrEmpty(ratingItem.Att3)) ratingitemFromDb.Att3 = ratingItem.Att3;
-        //            if (!String.IsNullOrEmpty(ratingItem.Exam)) ratingitemFromDb.Exam = ratingItem.Exam;
-        //            if (!String.IsNullOrEmpty(ratingItem.Sum)) ratingitemFromDb.Sum = ratingItem.Sum;
-        //        }
-
-        //    }
-                
-        //    foreach (var subject in requestInfo.SubjectCollection)
-        //    {
-        //        if (Subjects.FirstOrDefault(x => x.Id == subject.Id) == null)
-        //        {
-        //            Subjects.InsertOnSubmit(subject);
-        //        }
-        //    }
-        //    SubmitChanges();
-            
-        //}
-
         public ObservableCollection<FavoritesItem> GetFavorites()
         {
             var favoritesList = from FavoritesItem item in Favorites
@@ -151,26 +66,6 @@ namespace RatingVolsuAPI
             return new ObservableCollection<Student>(students);
         } 
 
-        //public ObservableCollection<Subject> LoadSubjects() 
-        //{
-            //IQueryable<Subject> subjects;
-            //if (favotites.Type == RatingType.RatingOfStudent)
-            //{
-            //    subjects = from Rating rat in Rating
-            //               where rat.StudentId == favotites.StudentId && favotites.Semestr == rat.Semestr
-            //               select rat.Subject;
-            //}
-            //else
-            //{
-            //    subjects = from Rating rat in Rating
-            //               where favotites.GroupId == rat.Student.GroupId && favotites.Semestr == rat.Semestr
-            //               select rat.Subject;
-            //}
-            //var subjectCollection = new ObservableCollection<Subject>(subjects.Distinct());
-            //return subjectCollection;
-
-        //}
-
         public ObservableCollection<Rating> GetRatingOfGroup(RequestByGroup rm)
         {
             var rating = from Rating rat in Rating
@@ -188,6 +83,30 @@ namespace RatingVolsuAPI
             
             var ratingCollection = new ObservableCollection<Rating>(rating);
             return ratingCollection;
+        }
+
+        public bool SaveFavorites(FavoritesItem favorites)
+        {
+            FavoritesItem favoritesItem;
+            if (favorites.Type == RatingType.RatingOfGroup)
+                 favoritesItem = (from FavoritesItem item in Favorites
+                                 select item).FirstOrDefault(x => x.GroupId == favorites.GroupId &&
+                                                                  x.Semestr == favorites.Semestr);
+            else
+                favoritesItem = (from FavoritesItem item in Favorites
+                                 select item).FirstOrDefault(x => x.StudentId == favorites.StudentId &&
+                                                                      x.Semestr == favorites.Semestr);
+            if (favoritesItem != null)
+                return false;
+            Favorites.InsertOnSubmit(favorites);
+            SubmitChanges();
+            return true;
+        }
+
+        public void DeleteFavorites(FavoritesItem favoritesItem)
+        {
+            Favorites.DeleteOnSubmit(favoritesItem);
+            SubmitChanges();
         }
     }
 }

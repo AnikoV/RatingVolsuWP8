@@ -29,19 +29,6 @@ namespace RatingVolsuAPI
             }
         }
 
-        public string _name;
-        [Column]
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                NotifyPropertyChanging("Name");
-                _name = value;
-                RaisePropertyChanged("Name");
-            }
-        }
-
         public string _semestr;
         [Column]
         public string Semestr
@@ -139,6 +126,27 @@ namespace RatingVolsuAPI
 
         #endregion
 
+        public string Name
+        {
+            get
+            {
+                if (Type == RatingType.RatingOfGroup)
+                    return "Группа " + Group.Name;
+                return "Студент " + Student.Number;
+            }
+            private set { }
+        }
+
+        public string SubName
+        {
+            get
+            {
+                if (Type == RatingType.RatingOfGroup)
+                    return "Семестр " + Semestr;
+                return "Группа " + Student.Group.Name + " Семестр " + Semestr;
+            }
+            private set { }
+        }
 
         public RequestManipulation GetRequest()
         {
@@ -150,12 +158,11 @@ namespace RatingVolsuAPI
                     Semestr = Semestr,
                     StudentId = Student.Id
                 };
-            return new RequestByStudent()
+            return new RequestByGroup()
             {
-                FacultId = Student.Group.FacultId,
-                GroupId = Student.GroupId,
-                Semestr = Semestr,
-                StudentId = Student.Id
+                FacultId = Group.FacultId,
+                GroupId = GroupId,
+                Semestr = Semestr
             };
         }
     }

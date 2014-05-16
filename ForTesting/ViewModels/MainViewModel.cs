@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using RatingVolsuAPI;
 
 namespace ForTesting
@@ -27,9 +28,20 @@ namespace ForTesting
         public MainViewModel()
         {
             VolsuReview = "ВолГУ – университет, известный в стране и за рубежом качеством образования, высоким научным потенциалом, инновационными проектами, активной социальной позицией.";
-            rating = new RatingDatabase(RatingVolsuWP8.App.DbConnectionString);
+            rating = new RatingDatabase(App.DbConnectionString);
             favoritesCollection = rating.GetFavorites();
         }
 
+
+        internal void DeleteFavorites(int SelectedIndex)
+        {
+            rating.DeleteFavorites(favoritesCollection[SelectedIndex]);
+            favoritesCollection = rating.GetFavorites();
+        }
+
+        public void UpdateFavoriteList()
+        {
+            favoritesCollection = rating.GetFavorites();
+        }
     }
 }

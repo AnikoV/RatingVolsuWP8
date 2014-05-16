@@ -23,6 +23,12 @@ namespace RatingVolsuAPI
     {
         private string _url;
         private Data _data;
+        private RatingDatabase rating;
+
+        public RequestManager()
+        {
+            rating = new RatingDatabase(Info.DbConnectionString);
+        }
 
         private async Task<string> SendRequest(string DataRequest)
         {
@@ -60,8 +66,11 @@ namespace RatingVolsuAPI
                 return null;
             }
         }
-
-        public async Task<ObservableCollection<Facult>> GetFucultList(RatingDatabase db)
+        /// <summary>
+        /// Выполняет запрос на сервер для получения списка факультетов 
+        /// </summary>
+        /// <returns>Коллекция факультетов</returns>
+        public async Task<ObservableCollection<Facult>> GetFucultList()
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/facult_req.php";
             _data = new Data
@@ -73,15 +82,20 @@ namespace RatingVolsuAPI
             var facults = new ObservableCollection<Facult>(JsonConvert.DeserializeObject<ObservableCollection<Facult>>(content));
             foreach (var facult in facults)
             {
-                if (db.Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
-                    db.Facults.InsertOnSubmit(facult);
+                if (rating.Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
+                    rating.Facults.InsertOnSubmit(facult);
             }
-            db.SubmitChanges();
+            rating.SubmitChanges();
             return facults;
 
         }
 
-        public async Task<ObservableCollection<Group>> GetGroupList(RatingDatabase db, string FacultId)
+        /// <summary>
+        ///  Выполняет запрос на сервер для получения списка групп по заданному факультету
+        /// </summary>
+        /// <param name="FacultId">Идентификатор факультета</param>
+        /// <returns>Коллекция групп</returns>
+        public async Task<ObservableCollection<Group>> GetGroupList(string FacultId)
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/group_req.php";
             _data = new Data
@@ -94,18 +108,23 @@ namespace RatingVolsuAPI
             foreach (var group in groups)
             {
                 group.FacultId = FacultId;
-                if (db.Groups.FirstOrDefault(x => x.Id == group.Id) == null)
+                if (rating.Groups.FirstOrDefault(x => x.Id == group.Id) == null)
                 {
-                    db.Groups.InsertOnSubmit(group);
+                    rating.Groups.InsertOnSubmit(group);
                 }
 
             }
-            db.SubmitChanges();
-            groups = db.LoadGroups(FacultId);
+            rating.SubmitChanges();
+            groups = rating.LoadGroups(FacultId);
             return groups;
         }
 
-        public async Task<ObservableCollection<Student>> GetStudentList(RatingDatabase db, string GroupId)
+        /// <summary>
+        /// Выполняет запрос на сервер для получения списка студентов по заданной группе
+        /// </summary>
+        /// <param name="GroupId">Идентификатор группы</param>
+        /// <returns>Коллекция студентов</returns>
+        public async Task<ObservableCollection<Student>> GetStudentList(string GroupId)
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/sem_req.php";
             _data = new Data
@@ -119,25 +138,35 @@ namespace RatingVolsuAPI
             foreach (var student in students)
             {
                 student.GroupId = GroupId;
-                if (db.Students.FirstOrDefault(x => x.Id == student.Id) == null)
-                    db.Students.InsertOnSubmit(student);
+                if (rating.Students.FirstOrDefault(x => x.Id == student.Id) == null)
+                    rating.Students.InsertOnSubmit(student);
             }
-            db.SubmitChanges();
-            students = db.LoadStudents(GroupId);
+            rating.SubmitChanges();
+            students = rating.LoadStudents(GroupId);
             return students;
         }
 
-        public async Task<GroupRat> GetRatingOfGroup(RequestManipulation requestInfo)
+        /// <summary>
+        /// Выполняет запрос на рейтинг по группе
+        /// </summary>
+        /// <param name="requestInfo">Объект, содержащий параметры запроса</param>
+        /// <returns>Коллекция рейтинга по группе</returns>
+        public async Task<ObservableCollection<Rating>> GetRatingOfGroup(RequestManipulation requestInfo)
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/group_rat.php";
             var parameters = requestInfo.GetParams();
             string content = await SendRequest(parameters);
 
-            var rating = JsonConvert.DeserializeObject<GroupRat>(content);
-            return rating;
+            var groupRating = JsonConvert.DeserializeObject<GroupRat>(content);
+            return requestInfo.GetRatingFromServer(groupRating);
         }
 
-        public async Task<StudentRat> GetRatingOfStudent(RequestManipulation requestInfo)
+        /// <summary>
+        /// Выполняет запрос на рейтинг по студенту
+        /// </summary>
+        /// <param name="requestInfo">Объект, содержащий параметры запроса</param>
+        /// <returns></returns>
+        public async Task<ObservableCollection<Rating>> GetRatingOfStudent(RequestManipulation requestInfo)
         {
             var req = (RequestByStudent) requestInfo;
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/stud_rat.php";
@@ -145,15 +174,15 @@ namespace RatingVolsuAPI
             var parametrs = req.GetParams();
             string content = await SendRequest(parametrs);
 
-            var rating = JsonConvert.DeserializeObject<StudentRat>(content);
-            return rating;
+            var studentRating = JsonConvert.DeserializeObject<StudentRat>(content);
+            return requestInfo.GetRatingFromServer(studentRating);
         }
 
-        public async Task GetRatingCurrentYear()
+        public async Task<string> GetRatingCurrentYear()
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/current_year.php";
-            string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
-            int a = Convert.ToInt32(content);
+            string content = await SendRequest("");
+            return content;
             
         }        
     }

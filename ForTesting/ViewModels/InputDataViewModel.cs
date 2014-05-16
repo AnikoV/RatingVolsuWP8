@@ -45,7 +45,6 @@ namespace ForTesting
         }
 
         private readonly RequestManager request;
-        private RatingDatabase rating;
         public RequestManipulation RequestInfo;
 
         public InputDataViewModel(string toDoDBConnectionString)
@@ -76,25 +75,27 @@ namespace ForTesting
 
         public async Task GetFacults()
         {
-            facultCollection = await request.GetFucultList(rating);
+            facultCollection = await request.GetFucultList();
         }
 
         public async Task GetGroups(int SelectedId)
         {
             RequestInfo.FacultId = facultCollection[SelectedId].Id;
-            groupCollection = await request.GetGroupList(rating,RequestInfo.FacultId);
+            groupCollection = await request.GetGroupList(RequestInfo.FacultId);
         }
 
         public async Task GetStudents(int SelectedId)
         {
-            studentCollection = await request.GetStudentList(rating, RequestInfo.GroupId);
+            studentCollection = await request.GetStudentList(RequestInfo.GroupId);
         }
 
-        public int GetSemestrCount()
-        { 
-            int Period = DateTime.Now.Year - Convert.ToInt32(groupCollection.FirstOrDefault(x => x.Id == RequestInfo.GroupId).Year);
-            Period *= 2;
-            return Period;
+        public async Task<int> GetSemestrCount()
+        {
+           // string s = await request.GetRatingCurrentYear();
+           // int year = Convert.ToInt32(s);
+            int period = DateTime.Now.Year - Convert.ToInt32(groupCollection.FirstOrDefault(x => x.Id == RequestInfo.GroupId).Year);
+            period *= 2;
+            return period;
         }
     }
 }

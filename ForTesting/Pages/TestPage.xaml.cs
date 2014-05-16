@@ -11,6 +11,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
 using RatinVolsuAPI;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace ForTesting
 {
@@ -22,6 +23,7 @@ namespace ForTesting
         public TestPage()
         {
             InitializeComponent();
+            InitializeAppBar();
             _viewModel = new RequestDataViewModel();
             DataContext = _viewModel;
         }
@@ -58,9 +60,40 @@ namespace ForTesting
 
         private async void StudentListTap(object sender, GestureEventArgs e)
         {
-            var SelectedIndex = StudentList.SelectedIndex;
-            if (SelectedIndex == -1) return;
-            await _viewModel.GetRatingOfStudent(SelectedIndex);
+            var selectedIndex = StudentList.SelectedIndex;
+            if (selectedIndex == -1) return;
+            await _viewModel.GetRatingOfStudent(selectedIndex);
         }
+
+        private void SubjectList_Tap(object sender, GestureEventArgs e)
+        {
+            var selectedIndex = SubjectList.SelectedIndex;
+            if (selectedIndex == -1) return;
+            _viewModel.GetRatingBySubject(selectedIndex);
+        }
+
+        #region AppBar
+
+        private void InitializeAppBar()
+        {
+            ApplicationBar = new ApplicationBar();
+            ApplicationBar.IsVisible = true;
+            ApplicationBar.IsMenuEnabled = true;
+
+            var addFavoritesByGroup =
+                new ApplicationBarIconButton(new Uri("/Images/Tiles/check.png", UriKind.Relative));
+            addFavoritesByGroup.Text = "В Избранное";
+            addFavoritesByGroup.Click += appBarButtonGroup_Click;
+            ApplicationBar.Buttons.Add(addFavoritesByGroup);
+
+        }
+
+        private void appBarButtonGroup_Click(object sender, EventArgs e)
+        {
+            if (!_viewModel.SaveFavorites())
+                MessageBox.Show("Низя!");
+        }
+
+        #endregion
     }
 }

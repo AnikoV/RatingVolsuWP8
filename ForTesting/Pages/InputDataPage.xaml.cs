@@ -12,6 +12,8 @@ using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
 using RatinVolsuAPI;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
+
 
 namespace ForTesting.Pages
 {
@@ -63,18 +65,18 @@ namespace ForTesting.Pages
 
         }
 
-        private void GroupList_Tap(object sender, GestureEventArgs e)
+        private async void GroupList_Tap(object sender, GestureEventArgs e)
         {
-            var SelectedIndex = GroupList.SelectedIndex;
-            if (SelectedIndex == -1) return;
-            App.ViewModel.RequestInfo.GroupId = App.ViewModel.groupCollection[SelectedIndex].Id;
+            var selectedIndex = GroupList.SelectedIndex;
+            if (selectedIndex == -1) return;
+            App.ViewModel.RequestInfo.GroupId = App.ViewModel.groupCollection[selectedIndex].Id;
             ApplicationBar.IsVisible = false;
             App.ViewModel.studentCollection.Clear();
             SemestrList.Items.Clear();
-            int n = App.ViewModel.GetSemestrCount();
+            int n = await App.ViewModel.GetSemestrCount();
             for (int i = 1; i <= n; i++)
             {
-                SemestrList.Items.Add(i.ToString());
+                SemestrList.Items.Add(i);
             }
         }
 
