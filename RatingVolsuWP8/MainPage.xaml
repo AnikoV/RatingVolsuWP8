@@ -96,13 +96,13 @@
                     <phone:Pivot x:Name="RatingTypePivot" Margin="0,-30,0,0">
                         <phone:PivotItem>
                             <StackPanel>
-                                <Image x:Name="image" Source="/Assets/Images/student_icon.png" Height="250"/>
+                                <Image x:Name="image" Source="/Assets/Images/student_icon.png" Height="250" Tap="Student_OnTap"/>
                                 <TextBlock x:Name="textBlock2" Text="Студента" TextAlignment="Center" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" FontSize="50"/>
                             </StackPanel>
                         </phone:PivotItem>
                         <phone:PivotItem>
                             <StackPanel>
-                                <Image Source="/Assets/Images/group_icon.png" Height="250"/>
+                                <Image Source="/Assets/Images/group_icon.png" Height="250" Tap="Group_OnTap"/>
                                 <TextBlock Text="Группы" TextAlignment="Center" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" FontSize="50"/>
                             </StackPanel>
                         </phone:PivotItem>

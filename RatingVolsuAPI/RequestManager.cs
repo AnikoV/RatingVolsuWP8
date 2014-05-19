@@ -32,7 +32,7 @@ namespace RatingVolsuAPI
 
         private async Task<string> SendRequest(string DataRequest)
         {
-            HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create(_url);
+            var myHttpWebRequest = (HttpWebRequest)WebRequest.Create(_url);
             HttpExtensions.PostString = DataRequest;
             myHttpWebRequest.Method = "POST";
             myHttpWebRequest.ContentType = "application/x-www-form-urlencoded";
@@ -40,7 +40,7 @@ namespace RatingVolsuAPI
             try
             {
                 var webRequest = (HttpWebRequest) await myHttpWebRequest.GetRequestStreamAsync();
-                HttpWebResponse response = (HttpWebResponse) await webRequest.GetResponseAsync();
+                var response = (HttpWebResponse) await webRequest.GetResponseAsync();
                 Debug.WriteLine(myHttpWebRequest.ContentType);
                 Stream responseStream = response.GetResponseStream();
                 string content;
@@ -70,7 +70,7 @@ namespace RatingVolsuAPI
         /// Выполняет запрос на сервер для получения списка факультетов 
         /// </summary>
         /// <returns>Коллекция факультетов</returns>
-        public async Task<ObservableCollection<Facult>> GetFucultList()
+        public async Task<ObservableCollection<Facult>> GetFacultList()
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/facult_req.php";
             _data = new Data
@@ -78,16 +78,18 @@ namespace RatingVolsuAPI
                 {"get_lists", "0"}
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
-            
-            var facults = new ObservableCollection<Facult>(JsonConvert.DeserializeObject<ObservableCollection<Facult>>(content));
-            foreach (var facult in facults)
+            if (!String.IsNullOrEmpty(content))
             {
-                if (rating.Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
-                    rating.Facults.InsertOnSubmit(facult);
+                var facults = new ObservableCollection<Facult>(JsonConvert.DeserializeObject<ObservableCollection<Facult>>(content));
+                foreach (var facult in facults)
+                {
+                    if (rating.Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
+                        rating.Facults.InsertOnSubmit(facult);
+                }
+                rating.SubmitChanges();
+                return facults;
             }
-            rating.SubmitChanges();
-            return facults;
-
+            return new ObservableCollection<Facult>();
         }
 
         /// <summary>
@@ -184,6 +186,8 @@ namespace RatingVolsuAPI
             string content = await SendRequest("");
             return content;
             
-        }        
+        }
+
+        
     }
 }

@@ -13,6 +13,7 @@ using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
 using RatinVolsuAPI;
 using GestureEventArgs = System.Windows.Input.GestureEventArgs;
+using NetworkInterface = System.Net.NetworkInformation.NetworkInterface;
 
 
 namespace ForTesting.Pages

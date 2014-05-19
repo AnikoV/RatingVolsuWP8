@@ -5,16 +5,19 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Windows.Networking.Connectivity;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
+using RatinVolsuAPI;
+using NetworkInterface = System.Net.NetworkInformation.NetworkInterface;
 
 namespace RatingVolsuWP8
 {
-    public partial class InputDataPage
+    public partial class InputDataPage : PhoneApplicationPage
     {
         readonly InputDataViewModel _viewModel;
-
         public InputDataPage()
         {
             InitializeComponent();
@@ -22,25 +25,56 @@ namespace RatingVolsuWP8
             DataContext = _viewModel;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             string mode;
+            // Парсим мод
             if (NavigationContext.QueryString.TryGetValue("mode", out mode))
             {
-                switch (mode)
+                _viewModel.CurrentInputMode = (InputDataMode) Enum.Parse(typeof (InputDataMode), mode);
+            }
+            //Парсим тип рейтинга инициализируем тип запроса
+            string type;
+            if(NavigationContext.QueryString.TryGetValue("type", out type))
+            {
+                _viewModel.CurrentRatingType = (RatingType)Enum.Parse(typeof(RatingType), type);
+                if (_viewModel.CurrentRatingType == RatingType.RatingOfStudent)
                 {
-                    case "UseTemplate": 
-                        _viewModel.CurrentMode = InputDataMode.UseTemplate;
-                        break;
-                    case "AddTemplate":
-                        _viewModel.CurrentMode = InputDataMode.AddTemplate;
-                        break;
-                    case "EditTemplate":
-                        _viewModel.CurrentMode = InputDataMode.EditTemplate;
-                        break;
+                    _viewModel.RequestManip = new RequestByStudent();
+                }
+                else
+                {
+                    _viewModel.RequestManip = new RequestByGroup();
                 }
             }
+            App.InitProgressIndicator(true,"Загрузка институтов...",this);
+            if (await App.IsInternetAvailable())
+            {
+                await _viewModel.GetFacults();
+                App.ProgressIndicator.IsVisible = false;
+            }
+            else
+            {
+                App.ProgressIndicator.IsVisible = false;
+                MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
+            }
+            
         }
+
+        #region OnSelectionChanged
+
+        private void InstituteListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region AppBar
+
+
+
+        #endregion
     }
 }

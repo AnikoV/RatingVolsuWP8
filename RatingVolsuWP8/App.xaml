@@ -3,7 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
-    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone">
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:rating="clr-namespace:RatingVolsuWP8">
 
     <!--Ресурсы приложения-->
     <Application.Resources>
@@ -12,7 +13,11 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles\StylesAndTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            
             <local:LocalizedStrings xmlns:local="clr-namespace:RatingVolsuWP8" x:Key="LocalizedStrings"/>
+            
+            <rating:InstuteNameToFilialConverter x:Key="InstuteNameToFilialConverter"/>
+            <rating:InstituteNameCutConverter x:Key="InstituteNameCutConverter"/>
         </ResourceDictionary>
         
     </Application.Resources>

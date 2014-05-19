@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using System.Resources;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
@@ -19,6 +21,7 @@ namespace RatingVolsuWP8
         /// <returns>Корневой кадр приложения телефона.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
         public static string DbConnectionString = @"isostore:/RatingDataBase.sdf";
+        public static ProgressIndicator ProgressIndicator;
         /// <summary>
         /// Конструктор объекта приложения.
         /// </summary>
@@ -67,6 +70,7 @@ namespace RatingVolsuWP8
         // Этот код не будет выполняться при повторной активации приложения
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            ProgressIndicator = new ProgressIndicator {IsIndeterminate = true, IsVisible = false};
         }
 
         // Код для выполнения при активации приложения (переводится в основной режим)
@@ -103,7 +107,8 @@ namespace RatingVolsuWP8
             if (Debugger.IsAttached)
             {
                 // Произошло необработанное исключение; перейти в отладчик
-                Debugger.Break();
+                MessageBox.Show(e.ExceptionObject.Message);
+                //Debugger.Break();
             }
         }
 
@@ -224,6 +229,42 @@ namespace RatingVolsuWP8
 
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Проверяет наличие интернета
+        /// </summary>
+        /// <returns></returns>
+        public static Task<bool> IsInternetAvailable()
+        {
+            var completed = new TaskCompletionSource<bool>();
+            var client = new WebClient();
+            client.DownloadStringCompleted += (s, e) =>
+            {
+                if (e.Error == null && !e.Cancelled)
+                {
+                    completed.TrySetResult(true);
+                }
+                else
+                {
+                    completed.TrySetResult(false);
+                }
+            };
+            client.DownloadStringAsync(new Uri("http://www.google.com/"));
+            return completed.Task;
+        }
+
+        /// <summary>
+        /// Устанавливнает или отключает ProgressIndicator на текущей странице
+        /// </summary>
+        /// <param name="isVisible">Указывает видимость индикатора прогресса</param>
+        /// <param name="text"> Текст отображаемый при загрузке</param>
+        /// <param name="obj"> ссылка на текущую страницу</param>
+        public static void InitProgressIndicator(bool isVisible,string text,DependencyObject obj)
+        {
+            ProgressIndicator.Text = text;
+            ProgressIndicator.IsVisible = isVisible;
+            SystemTray.SetProgressIndicator(obj, ProgressIndicator);
         }
     }
 }

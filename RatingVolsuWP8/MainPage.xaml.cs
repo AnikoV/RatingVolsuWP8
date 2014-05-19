@@ -31,6 +31,7 @@ namespace RatingVolsuWP8
             RatingTypePivot.Focus();
         }
 
+        
         #region AppBar
 
         #region MainAppBar
@@ -147,6 +148,8 @@ namespace RatingVolsuWP8
 
         #endregion
 
+        #region Favorites
+
         #region FavoritesMultiSelectList
 
         private void FavotitesMultiselectList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -262,6 +265,28 @@ namespace RatingVolsuWP8
             FavotitesMultiselectList.IsSelectionEnabled = true;
         }
 
+        #endregion
+
+       
+
+        #region MiniPivot
+
+        private void Student_OnTap(object sender, GestureEventArgs e)
+        {
+            NavigationService.Navigate(
+                new Uri(
+                    String.Format("/Pages/InputDataPage.xaml?type={0}&mode={1}", RatingType.RatingOfStudent,
+                        InputDataMode.Standart), UriKind.Relative));
+        }
+        private void Group_OnTap(object sender, GestureEventArgs e)
+        {
+            NavigationService.Navigate(
+                new Uri(
+                    String.Format("/Pages/InputDataPage.xaml?type={0}&mode={1}", RatingType.RatingOfGroup,
+                        InputDataMode.Standart), UriKind.Relative));
+        }
+        #endregion
+
         private void MainPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var mainPivot = sender as Pivot;
@@ -279,6 +304,5 @@ namespace RatingVolsuWP8
                 ApplicationBar.IsVisible = true;
             }
         }
-
     }
 }

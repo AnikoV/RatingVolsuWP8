@@ -21,12 +21,42 @@
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyLight}"/>
     </Style>
     
+    <Style TargetType="TextBlock" x:Key="LbItemTitle">
+        <Setter Property="FontSize" Value="25"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyLight}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    
+    <Style TargetType="TextBlock" x:Key="LbItem2NdLevel">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="Opacity" Value="0.5"/>
+    </Style>
     <Style TargetType="TextBlock" x:Key="PivotHeaderStyle">
         <Setter Property="FontSize" Value="50"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyLight}"/>
     </Style>
     <!--DATA TEMPLATES-->
-    
+    <DataTemplate x:Key="InstituteItemTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="InstName" 
+                       Text="{Binding Name, Converter={StaticResource InstituteNameCutConverter}}" 
+                       Style="{StaticResource LbItemTitle}" Grid.Row="0"/>
+            <TextBlock x:Name="FilialName" 
+                       Text="{Binding Name, Converter={StaticResource InstuteNameToFilialConverter}}" 
+                       Style="{StaticResource LbItem2NdLevel}" Grid.Row="1"/>
+        </Grid>
+    </DataTemplate>
     
 </ResourceDictionary>

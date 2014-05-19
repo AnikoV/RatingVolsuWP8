@@ -26,21 +26,26 @@
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Институт" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>
+                <ListBox x:Name="InstituteListBox"
+                         ItemsSource="{Binding Facults}"
+                         ItemTemplate="{StaticResource InstituteItemTemplate}"
+                         ItemContainerStyle="{StaticResource ListBoxContainer}"
+                         SelectionChanged="InstituteListBox_OnSelectionChanged"/>
             </phone:PanoramaItem>
             
-            <phone:PanoramaItem x:Name="GroupPanoramaItem">
+            <phone:PanoramaItem x:Name="GroupPanoramaItem" Visibility="Collapsed">
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Группа" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>
             </phone:PanoramaItem>
             
-            <phone:PanoramaItem>
+            <phone:PanoramaItem x:Name="SemestrPanoramaItem" Visibility="Collapsed">
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Семестр" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>
             </phone:PanoramaItem>
             
-            <phone:PanoramaItem>
+            <phone:PanoramaItem x:Name="ZachetkaPanoramaItem" Visibility="Collapsed">
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Зачетная книжка" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>

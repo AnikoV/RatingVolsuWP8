@@ -49,7 +49,6 @@ namespace ForTesting
 
         public InputDataViewModel(string toDoDBConnectionString)
         {
-            rating = new RatingDatabase(toDoDBConnectionString);
             LoadCollectionsFromDatabase();
             request = new RequestManager();
             facultCollection = new ObservableCollection<Facult>();
@@ -75,7 +74,7 @@ namespace ForTesting
 
         public async Task GetFacults()
         {
-            facultCollection = await request.GetFucultList();
+            facultCollection = await request.GetFacultList();
         }
 
         public async Task GetGroups(int SelectedId)
