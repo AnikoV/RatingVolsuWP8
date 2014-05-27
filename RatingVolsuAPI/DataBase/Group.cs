@@ -57,7 +57,7 @@ namespace RatingVolsuAPI
             get { return _type; }
             set
             {
-                _type = value;
+                _type = value.Contains("спец") ? "специалитет" : value;
                 RaisePropertyChanged("Type");
             }
         }

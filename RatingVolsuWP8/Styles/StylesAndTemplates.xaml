@@ -9,7 +9,7 @@
     <Style TargetType="Grid" x:Key="LayoutGrid">
         <Setter Property="Background" Value="#254586"/>
     </Style>
-
+    
     <Style TargetType="ListBoxItem" x:Key="ListBoxContainer">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="0,0,0,12"/>
@@ -40,6 +40,7 @@
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyLight}"/>
     </Style>
+    
     <!--DATA TEMPLATES-->
     <DataTemplate x:Key="InstituteItemTemplate">
         <Grid>
@@ -55,7 +56,7 @@
                        Style="{StaticResource LbItemTitle}" Grid.Row="0"/>
             <TextBlock x:Name="FilialName" 
                        Text="{Binding Name, Converter={StaticResource InstuteNameToFilialConverter}}" 
-                       Style="{StaticResource LbItem2NdLevel}" Grid.Row="1"/>
+                       Style="{StaticResource LbItem2NdLevel}" Grid.Row="1" toolkit:SlideInEffect.LineIndex="1"/>
         </Grid>
     </DataTemplate>
     

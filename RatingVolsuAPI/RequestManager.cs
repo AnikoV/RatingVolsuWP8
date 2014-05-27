@@ -78,6 +78,7 @@ namespace RatingVolsuAPI
                 {"get_lists", "0"}
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+            Debug.WriteLine("[RESPONSE] \n" + content + "\n[END_RESPONSE]\n");
             if (!String.IsNullOrEmpty(content))
             {
                 var facults = new ObservableCollection<Facult>(JsonConvert.DeserializeObject<ObservableCollection<Facult>>(content));
@@ -105,7 +106,11 @@ namespace RatingVolsuAPI
                 {"fak_id", FacultId}
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+            // Временный костыль до исправления на серваке
+            //content = content.Substring(5, content.Length - 6);
 
+            //////////////////////////////////////////////
+            Debug.WriteLine("[RESPONSE] \n" + content + "\n[END_RESPONSE]\n");
             var groups = new ObservableCollection<Group>(JsonConvert.DeserializeObject<ObservableCollection<Group>>(content));
             foreach (var group in groups)
             {
@@ -134,7 +139,7 @@ namespace RatingVolsuAPI
                 {"group_id", GroupId}
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
-
+            Debug.WriteLine("[RESPONSE] \n" + content + "\n[END_RESPONSE]\n");
             var students = new ObservableCollection<Student>(JsonConvert.DeserializeObject<ObservableCollection<Student>>(content));
 
             foreach (var student in students)
@@ -158,6 +163,7 @@ namespace RatingVolsuAPI
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/group_rat.php";
             var parameters = requestInfo.GetParams();
             string content = await SendRequest(parameters);
+            Debug.WriteLine("[RESPONSE] \n" + content + "\n[END_RESPONSE]\n");
 
             var groupRating = JsonConvert.DeserializeObject<GroupRat>(content);
             return requestInfo.GetRatingFromServer(groupRating);
@@ -175,6 +181,7 @@ namespace RatingVolsuAPI
 
             var parametrs = req.GetParams();
             string content = await SendRequest(parametrs);
+            Debug.WriteLine("[RESPONSE] \n" + content + "\n[END_RESPONSE]\n");
 
             var studentRating = JsonConvert.DeserializeObject<StudentRat>(content);
             return requestInfo.GetRatingFromServer(studentRating);
@@ -184,6 +191,7 @@ namespace RatingVolsuAPI
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/current_year.php";
             string content = await SendRequest("");
+            Debug.WriteLine("[RESPONSE] \n" + content + "\n[END_RESPONSE]\n");
             return content;
             
         }

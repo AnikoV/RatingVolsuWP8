@@ -14,8 +14,19 @@
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True" toolkit:TiltEffect.IsTiltEnabled="True">
 
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
     <Grid x:Name="LayoutRoot" Style="{StaticResource LayoutGrid}" >
-        <phone:Panorama Margin="0,12,0,0">
+        <phone:Panorama x:Name="InputDataPanorama" Margin="0,12,0,0">
             <phone:Panorama.TitleTemplate>
                 <DataTemplate>
                     <TextBlock Style="{StaticResource h}" Text="Ввод данных" />
@@ -28,21 +39,86 @@
                 </phone:PanoramaItem.Header>
                 <ListBox x:Name="InstituteListBox"
                          ItemsSource="{Binding Facults}"
-                         ItemTemplate="{StaticResource InstituteItemTemplate}"
-                         ItemContainerStyle="{StaticResource ListBoxContainer}"
-                         SelectionChanged="InstituteListBox_OnSelectionChanged"/>
+                         SelectionChanged="InstituteListBox_OnSelectionChanged"
+                         SelectionMode="Single" 
+                         ItemContainerStyle="{StaticResource ListBoxContainer}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock x:Name="InstName" 
+                                           Text="{Binding Name, Converter={StaticResource InstituteNameCutConverter}}" 
+                                           Style="{StaticResource LbItemTitle}" Grid.Row="0"/>
+                                <TextBlock x:Name="FilialName" 
+                                           Text="{Binding Name, Converter={StaticResource InstuteNameToFilialConverter}}" 
+                                           Style="{StaticResource LbItem2NdLevel}" Grid.Row="1" toolkit:SlideInEffect.LineIndex="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </phone:PanoramaItem>
             
             <phone:PanoramaItem x:Name="GroupPanoramaItem" Visibility="Collapsed">
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Группа" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>
+                <ListBox x:Name="GroupListBox"
+                         ItemsSource="{Binding Groups}"
+                         ItemContainerStyle="{StaticResource ListBoxContainer}"
+                         SelectionChanged="GroupListBox_OnSelectionChanged"
+                         SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock x:Name="GroupName" 
+                                           Text="{Binding Name}" 
+                                           Style="{StaticResource LbItemTitle}" Grid.Row="0"/>
+                                <TextBlock x:Name="EduLevel" 
+                                           Text="{Binding Type}" 
+                                           Style="{StaticResource LbItem2NdLevel}" Grid.Row="1" toolkit:SlideInEffect.LineIndex="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </phone:PanoramaItem>
             
-            <phone:PanoramaItem x:Name="SemestrPanoramaItem" Visibility="Collapsed">
+            <phone:PanoramaItem x:Name="SemesterPanoramaItem" Visibility="Collapsed">
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Семестр" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>
+                <ListBox x:Name="SemestrListBox"
+                         ItemsSource="{Binding Semesters}"
+                         ItemContainerStyle="{StaticResource ListBoxContainer}"
+                         SelectionChanged="SemestrListBox_OnSelectionChanged"
+                         SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="SemesterNumberTb" 
+                                           Text="{Binding Number}" 
+                                           Style="{StaticResource LbItemTitle}"/>
+                                <TextBlock x:Name="SemesterPeriod" 
+                                           Text="{Binding YearsPeriod}" 
+                                           Style="{StaticResource LbItem2NdLevel}" 
+                                           toolkit:SlideInEffect.LineIndex="1"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                    
             </phone:PanoramaItem>
             
             <phone:PanoramaItem x:Name="ZachetkaPanoramaItem" Visibility="Collapsed">
