@@ -19,8 +19,7 @@ namespace RatinVolsuAPI
 
         public abstract string GetParams();
 
-        public abstract void LoadRatingFromDb(out ObservableCollection<Rating> groupRatings,
-            out ObservableCollection<Rating> studentRatings);
+        public abstract ObservableCollection<Rating> LoadRatingFromDb();
 
         public abstract FavoritesItem GetFavorites();
     }
@@ -86,10 +85,9 @@ namespace RatinVolsuAPI
             return rating.GetRatingOfGroup(this);
         }
 
-        public override void LoadRatingFromDb(out ObservableCollection<Rating> groupRatings, out ObservableCollection<Rating> studentRatings)
+        public override ObservableCollection<Rating> LoadRatingFromDb()
         {
-            groupRatings = rating.GetRatingOfGroup(this);
-            studentRatings = null;
+            return rating.GetRatingOfGroup(this);
         }
 
         public override string GetParams()
@@ -209,12 +207,10 @@ namespace RatinVolsuAPI
             return rating.GetRatingOfStudent(this);
         }
 
-        public override void LoadRatingFromDb( out ObservableCollection<Rating> groupRatings, out ObservableCollection<Rating> studentRatings)
+        public override ObservableCollection<Rating> LoadRatingFromDb()
         {
-            studentRatings = rating.GetRatingOfStudent(this);
-            groupRatings = null;
+            return rating.GetRatingOfStudent(this);
         }
-
 
     }
 }

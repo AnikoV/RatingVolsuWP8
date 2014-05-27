@@ -44,6 +44,17 @@ namespace ForTesting
             }
         }
 
+        private List<string> _semestrCollection;
+        public List<string> semestrCollection
+        {
+            get { return _semestrCollection; }
+            set
+            {
+                _semestrCollection = value;
+                RaisePropertyChanged("semestrCollection");
+            }
+        }
+
         private readonly RequestManager request;
         public RequestManipulation RequestInfo;
 
@@ -77,24 +88,21 @@ namespace ForTesting
             facultCollection = await request.GetFacultList();
         }
 
-        public async Task GetGroups(int SelectedId)
+        public async Task GetGroups(int selectedId)
         {
-            RequestInfo.FacultId = facultCollection[SelectedId].Id;
+            RequestInfo.FacultId = facultCollection[selectedId].Id;
             groupCollection = await request.GetGroupList(RequestInfo.FacultId);
         }
 
-        public async Task GetStudents(int SelectedId)
+        public async Task GetSemestrList(int selectedIndex)
         {
-            studentCollection = await request.GetStudentList(RequestInfo.GroupId);
+            RequestInfo.GroupId = groupCollection[selectedIndex].Id;
+            semestrCollection = await request.GetSemestrList(RequestInfo.GroupId);
         }
 
-        public async Task<int> GetSemestrCount()
+        public async Task GetStudents(int selectedId)
         {
-           // string s = await request.GetRatingCurrentYear();
-           // int year = Convert.ToInt32(s);
-            int period = DateTime.Now.Year - Convert.ToInt32(groupCollection.FirstOrDefault(x => x.Id == RequestInfo.GroupId).Year);
-            period *= 2;
-            return period;
+            studentCollection = await request.GetStudentList(RequestInfo.GroupId);
         }
     }
 }

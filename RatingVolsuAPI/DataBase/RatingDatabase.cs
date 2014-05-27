@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using RatinVolsuAPI;
+using RatinVolsuAPI.DataBase;
 
 namespace RatingVolsuAPI
 {
@@ -19,6 +20,8 @@ namespace RatingVolsuAPI
         public Table<Facult> Facults;
 
         public Table<Group> Groups;
+
+        public Table<Semestr> SemestrItems;
 
         public Table<Student> Students;
 

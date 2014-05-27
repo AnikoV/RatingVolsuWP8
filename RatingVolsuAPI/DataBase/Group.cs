@@ -1,5 +1,8 @@
-﻿using RatingVolsuAPI.Base;
+﻿using System.Linq;
+using RatingVolsuAPI.Base;
+using RatinVolsuAPI.DataBase;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -62,6 +65,24 @@ namespace RatingVolsuAPI
             }
         }
 
+        //private List<string> _semestrList;
+
+        //[Column]
+        //public List<string> SemestrList
+        //{
+        //    get { return _semestrList; }
+        //    set
+        //    {
+        //        _semestrList = value;
+        //        RaisePropertyChanged("SemestrList");
+        //    }
+        //}
+
+        public List<string> SemList
+        {
+            get { return Semestr.ToList().Select(x => x.Number).ToList(); }
+        }
+        
         [Column(IsVersion = true)]
         private Binary _version;
 
@@ -92,38 +113,37 @@ namespace RatingVolsuAPI
 
         #endregion
 
-        //#region relation group-student
+        #region relation group-semestr
+        private EntitySet<Semestr> _semestr;
 
-        //private EntitySet<Student> _students;
+        [Association(Storage = "_semestr", OtherKey = "GroupId", ThisKey = "Id")]
 
-        //[Association(Storage = "_students", OtherKey = "GroupId", ThisKey = "Id")]
-        //public EntitySet<Student> Student
-        //{
-        //    get { return this._students; }
-        //    set { this._students.Assign(value); }
-        //}
+        internal EntitySet<Semestr> Semestr
+        {
+            get { return this._semestr; }
+            set { this._semestr.Assign(value); }
+        }
 
-        //public Group()
-        //{
-        //    _students = new EntitySet<Student>(
-        //        new Action<Student>(this.attach_stud),
-        //        new Action<Student>(this.detach_stud)
-        //        );
-        //}
+        public Group()
+        {
+            _semestr = new EntitySet<Semestr>(
+                new Action<Semestr>(this.attach_semestr),
+                new Action<Semestr>(this.detach_semestr)
+                );
+        }
 
-        //private void attach_stud(Student student)
-        //{
-        //    NotifyPropertyChanging("Student");
-        //    student.Group = this;
-        //}
+        private void attach_semestr(Semestr sem)
+        {
+            NotifyPropertyChanging("Semestr");
+            sem.GroupItem = this;
+        }
 
-        //private void detach_stud(Student student)
-        //{
-        //    NotifyPropertyChanging("Student");
-        //    student.Group = null;
-        //}
-
-        //#endregion
+        private void detach_semestr(Semestr sem)
+        {
+            NotifyPropertyChanging("Semestr");
+            sem.GroupItem = null;
+        }
+        #endregion
 
         #region INotifyPropertyChanging Members
 

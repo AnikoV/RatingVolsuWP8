@@ -89,6 +89,7 @@
     <Compile Include="DataBase\Group.cs" />
     <Compile Include="DataBase\Rating.cs" />
     <Compile Include="DataBase\RatingDatabase.cs" />
+    <Compile Include="DataBase\Semestr.cs" />
     <Compile Include="DataBase\Student.cs" />
     <Compile Include="DataBase\Subject.cs" />
     <Compile Include="Helper.cs" />

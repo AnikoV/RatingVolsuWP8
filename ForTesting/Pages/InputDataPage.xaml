@@ -47,10 +47,18 @@
                     </ListBox>
                 </phone:PivotItem>
                 <phone:PivotItem CacheMode="{x:Null}" Header="Семестр">
-                    <ListBox 
+                    <ListBox ItemsSource="{Binding semestrCollection}"
 			                x:Name="SemestrList"
 			                Margin="10,10,24,0" 
 			                Tap="Semestr_Tap">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Padding="3,0,3,0"
+				                                Text="{Binding}" FontSize="{StaticResource PhoneFontSizeMedium}" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                 </phone:PivotItem>
                 <phone:PivotItem x:Name="StudentItem" CacheMode="{x:Null}" Header="Студент">

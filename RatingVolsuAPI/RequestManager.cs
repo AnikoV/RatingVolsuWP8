@@ -14,6 +14,7 @@ using WinPhoneExtensions;
 
 using Data = System.Collections.Generic.Dictionary<string, string>;
 using FacultCollection = System.Collections.Generic.Dictionary<string, RatingVolsuAPI.Facult>;
+using RatinVolsuAPI.DataBase;
 
 namespace RatingVolsuAPI
 {
@@ -78,18 +79,26 @@ namespace RatingVolsuAPI
                 {"get_lists", "0"}
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
-            if (!String.IsNullOrEmpty(content))
+            try
             {
-                var facults = new ObservableCollection<Facult>(JsonConvert.DeserializeObject<ObservableCollection<Facult>>(content));
-                foreach (var facult in facults)
+                var str = content;
+                if (!String.IsNullOrEmpty(content))
                 {
-                    if (rating.Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
-                        rating.Facults.InsertOnSubmit(facult);
+                    var facults = new ObservableCollection<Facult>(JsonConvert.DeserializeObject<ObservableCollection<Facult>>(content));
+                    foreach (var facult in facults)
+                    {
+                        if (rating.Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
+                            rating.Facults.InsertOnSubmit(facult);
+                    }
+                    rating.SubmitChanges();
+                    return facults;
                 }
-                rating.SubmitChanges();
-                return facults;
             }
-            return new ObservableCollection<Facult>();
+            catch (Exception)
+            {
+                return null;
+            }
+            return null;
         }
 
         /// <summary>
@@ -105,20 +114,70 @@ namespace RatingVolsuAPI
                 {"fak_id", FacultId}
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
-
-            var groups = new ObservableCollection<Group>(JsonConvert.DeserializeObject<ObservableCollection<Group>>(content));
-            foreach (var group in groups)
+            try
             {
-                group.FacultId = FacultId;
-                if (rating.Groups.FirstOrDefault(x => x.Id == group.Id) == null)
+                var groups =
+                    new ObservableCollection<Group>(JsonConvert.DeserializeObject<ObservableCollection<Group>>(content));
+                foreach (var group in groups)
                 {
-                    rating.Groups.InsertOnSubmit(group);
-                }
+                    group.FacultId = FacultId;
+                    if (rating.Groups.FirstOrDefault(x => x.Id == group.Id) == null)
+                    {
+                        rating.Groups.InsertOnSubmit(group);
+                    }
 
+                }
+                rating.SubmitChanges();
+                groups = rating.LoadGroups(FacultId);
+                return groups;
             }
-            rating.SubmitChanges();
-            groups = rating.LoadGroups(FacultId);
-            return groups;
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///  Выполняет запрос на сервер для получения списка семестров по заданной группе
+        /// </summary>
+        /// <param name="groupId"> Идентификатор группы</param>
+        /// <returns>Коллекция групп</returns>
+        public async Task<List<string>> GetSemestrList(string groupId)
+        {
+            _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/sem_req.php";
+            _data = new Data
+            {
+                {"gr_id", groupId}
+            };
+            string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+            try
+            {
+                var str = content;
+                var semNumbers =
+                    new List<string>(JsonConvert.DeserializeObject<List<string>>(content));
+                foreach (var item in semNumbers)
+                {
+                    var sem = new Semestr()
+                    {
+                        Number = item,
+                        GroupId = groupId
+                    };
+                    if (rating.SemestrItems.FirstOrDefault(x => x.Number == item && x.GroupId == groupId ) == null)
+                    {
+                        rating.SemestrItems.InsertOnSubmit(sem);
+                    }
+
+                }
+                rating.SubmitChanges();
+                var group = rating.Groups.FirstOrDefault(x => x.Id == groupId);
+                
+                return group.SemList;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
         }
 
         /// <summary>
@@ -134,18 +193,26 @@ namespace RatingVolsuAPI
                 {"group_id", GroupId}
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
-
-            var students = new ObservableCollection<Student>(JsonConvert.DeserializeObject<ObservableCollection<Student>>(content));
-
-            foreach (var student in students)
+            try
             {
-                student.GroupId = GroupId;
-                if (rating.Students.FirstOrDefault(x => x.Id == student.Id) == null)
-                    rating.Students.InsertOnSubmit(student);
+                var str = content;
+                var students = new ObservableCollection<Student>(JsonConvert.DeserializeObject<ObservableCollection<Student>>(content));
+
+                foreach (var student in students)
+                {
+                    student.GroupId = GroupId;
+                    if (rating.Students.FirstOrDefault(x => x.Id == student.Id) == null)
+                        rating.Students.InsertOnSubmit(student);
+                }
+                rating.SubmitChanges();
+                students = rating.LoadStudents(GroupId);
+                return students;
             }
-            rating.SubmitChanges();
-            students = rating.LoadStudents(GroupId);
-            return students;
+            catch (Exception)
+            {
+                return null;
+            }
+            
         }
 
         /// <summary>
@@ -158,9 +225,17 @@ namespace RatingVolsuAPI
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/group_rat.php";
             var parameters = requestInfo.GetParams();
             string content = await SendRequest(parameters);
-
-            var groupRating = JsonConvert.DeserializeObject<GroupRat>(content);
-            return requestInfo.GetRatingFromServer(groupRating);
+            try
+            {
+                var str = content;
+                var groupRating = JsonConvert.DeserializeObject<GroupRat>(content);
+                return requestInfo.GetRatingFromServer(groupRating);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            
         }
 
         /// <summary>
@@ -175,9 +250,15 @@ namespace RatingVolsuAPI
 
             var parametrs = req.GetParams();
             string content = await SendRequest(parametrs);
-
-            var studentRating = JsonConvert.DeserializeObject<StudentRat>(content);
-            return requestInfo.GetRatingFromServer(studentRating);
+            try
+            {
+                var studentRating = JsonConvert.DeserializeObject<StudentRat>(content);
+                return requestInfo.GetRatingFromServer(studentRating);
+            }
+            catch (Exception)
+            {
+                return null; 
+            }
         }
 
         public async Task<string> GetRatingCurrentYear()
@@ -185,9 +266,6 @@ namespace RatingVolsuAPI
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/current_year.php";
             string content = await SendRequest("");
             return content;
-            
         }
-
-        
     }
 }
