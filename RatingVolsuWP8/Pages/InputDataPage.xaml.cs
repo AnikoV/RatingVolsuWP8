@@ -95,9 +95,6 @@ namespace RatingVolsuWP8
                 InputDataPanorama.Items.RemoveAt(indexItem);
                 InputDataPanorama.Items.Insert(indexItem, GroupPanoramaItem);
                 GroupPanoramaItem.Visibility = Visibility.Visible;
-
-                //InputDataPanorama.SetValue(Panorama.SelectedItemProperty, InputDataPanorama.Items[1]);
-                //SlidePanorama(InputDataPanorama);
             }
         }
 
@@ -116,18 +113,24 @@ namespace RatingVolsuWP8
                     #region Generate Semesters
 
                     var selectedGroupName = _viewModel.Groups[selectedIndex].Name;
-                    int introYear = Convert.ToInt32(selectedGroupName.Substring(selectedGroupName.Length - 3, 2));
                     _viewModel.RequestManip.GroupId = _viewModel.Groups[selectedIndex].Id;
-                    int semestrCount = _viewModel.GetSemestrCount();
+
+                    int introYear = Convert.ToInt32(selectedGroupName.Substring(selectedGroupName.Length - 3, 2));
+                    var semesterList = await _viewModel.GetSemestrList(_viewModel.RequestManip.GroupId);
                     int temp = introYear;
                     _viewModel.Semesters.Clear();
-                    for (int i = 0; i < semestrCount; i++)
+
+                    for (int i = 0; i < semesterList.Count; i++)
                     {
-                        var semestr = new Semester();
-                        semestr.Number = (i + 1).ToString(CultureInfo.InvariantCulture) + " семестр";
-                        semestr.YearsPeriod = String.Format("20{0} - 20{1}", temp, temp + 1);
+                        var semestr = new Semester
+                        {
+                            Number = semesterList[i] + " семестр",
+                            YearsPeriod = String.Format("20{0} - 20{1}", temp, temp + 1)
+                        };
+
                         if (i%2 != 0)
                             temp++;
+
                         Debug.WriteLine(String.Format("Semestr: " + semestr.Number + " | " + semestr.YearsPeriod));
                         _viewModel.Semesters.Add(semestr);
                     }
@@ -141,7 +144,6 @@ namespace RatingVolsuWP8
                     MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
                     return;
                 }
-
 
                 int indexItem = InputDataPanorama.Items.IndexOf(SemesterPanoramaItem);
                 InputDataPanorama.Items.RemoveAt(indexItem);
@@ -158,10 +160,10 @@ namespace RatingVolsuWP8
             _viewModel.RequestManip.Semestr = (SelectedIndex + 1).ToString();
             if (_viewModel.RequestManip.GetType() == typeof(RequestByStudent))
             {
-                App.InitProgressIndicator(true, "Загрузка институтов...", this);
+                App.InitProgressIndicator(true, "Загрузка номеров зачеток...", this);
                 if (await App.IsInternetAvailable())
                 {
-                    await _viewModel.GetStudents(SelectedIndex);
+                    await _viewModel.GetStudents();
                     App.ProgressIndicator.IsVisible = false;
                 }
                 else
@@ -170,6 +172,7 @@ namespace RatingVolsuWP8
                     MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
                     return;
                 }
+
             }
             else
             {

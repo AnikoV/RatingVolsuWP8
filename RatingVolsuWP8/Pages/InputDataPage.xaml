@@ -64,7 +64,7 @@
                 </ListBox>
             </phone:PanoramaItem>
             
-            <phone:PanoramaItem x:Name="GroupPanoramaItem" Visibility="Collapsed">
+            <phone:PanoramaItem x:Name="GroupPanoramaItem" Visibility="Visible">
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Группа" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>

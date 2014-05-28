@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,12 +58,24 @@ namespace RatingVolsuWP8
             return 0;
         }
 
-        public async Task GetStudents(int selectedIndex)
+        public async Task GetStudents()
         {
             Students = await _requestManager.GetStudentList(RequestManip.GroupId);
+            foreach (var student in Students)
+            {
+                Debug.WriteLine(student.Number);
+            }
         }
         #endregion
 
-        
+        public async Task<List<string>> GetSemestrList(string groupId)
+        {
+            var list = await _requestManager.GetSemestrList(groupId);
+            foreach (var item in list)
+            {
+                Debug.WriteLine(item);
+            }
+            return list;
+        }
     }
 }
