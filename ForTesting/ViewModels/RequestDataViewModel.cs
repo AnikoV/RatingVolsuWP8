@@ -131,12 +131,17 @@ namespace ForTesting
         public void GetRatingFromDb(RequestManipulation requestInfo)
         {
             ReqInfo = requestInfo;
-            ObservableCollection<Rating> groupRatings;
-            ObservableCollection<Rating> studentRatings;
-            ReqInfo.LoadRatingFromDb(out groupRatings, out studentRatings);
-            if (groupRatings != null) ratingOfGroupCollection = groupRatings;
-            if (studentRatings != null) ratingOfStudentCollection = studentRatings;
-            ratingOfGroupForView = new ObservableCollection<Rating>(ratingOfGroupCollection.Distinct(new ItemsComparer()).ToList());
+            var listRatings = ReqInfo.LoadRatingFromDb();
+            if (ReqInfo.GetType() == typeof(RequestByStudent))
+                ratingOfStudentCollection = listRatings;
+            else
+            {
+                ratingOfGroupCollection = listRatings;
+                ratingOfGroupForView =
+                    new ObservableCollection<Rating>(ratingOfGroupCollection.Distinct(new ItemsComparer()).ToList());
+
+                subjectCollection = new ObservableCollection<Subject>(ratingOfGroupCollection.Select(x => x.Subject).Distinct(new SubjectsComparer()));
+            }
         }
 
         internal async Task GetRatingOfStudent(int selectedIndex)
