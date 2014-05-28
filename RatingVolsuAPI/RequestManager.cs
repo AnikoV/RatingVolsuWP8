@@ -187,7 +187,7 @@ namespace RatingVolsuAPI
         /// <returns>Коллекция студентов</returns>
         public async Task<ObservableCollection<Student>> GetStudentList(string GroupId)
         {
-            _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/sem_req.php";
+            _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/stud_req.php";
             _data = new Data
             {
                 {"group_id", GroupId}
