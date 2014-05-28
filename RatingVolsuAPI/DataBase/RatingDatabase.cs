@@ -88,8 +88,9 @@ namespace RatingVolsuAPI
             return ratingCollection;
         }
 
-        public bool SaveFavorites(FavoritesItem favorites)
+        public bool SaveFavorites(RequestManipulation request)
         {
+            var favorites = request.GetFavorites();
             FavoritesItem favoritesItem;
             if (favorites.Type == RatingType.RatingOfGroup)
                  favoritesItem = (from FavoritesItem item in Favorites

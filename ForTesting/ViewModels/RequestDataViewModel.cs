@@ -191,8 +191,7 @@ namespace ForTesting
 
         internal bool SaveFavorites()
         {
-            var favorites = ReqInfo.GetFavorites();
-            return _rating.SaveFavorites(favorites);
+            return _rating.SaveFavorites(ReqInfo);
         }
     }
 }
