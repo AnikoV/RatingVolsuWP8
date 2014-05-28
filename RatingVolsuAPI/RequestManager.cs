@@ -193,6 +193,7 @@ namespace RatingVolsuAPI
                 {"group_id", GroupId}
             };
             string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+            Debug.WriteLine(content);
             try
             {
                 var str = content;

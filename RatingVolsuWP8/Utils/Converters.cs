@@ -50,8 +50,7 @@ namespace RatingVolsuWP8
             var institute = value as string;
             if (!String.IsNullOrEmpty(institute))
             {
-                return institute;
-                    //= institute.Substring(0, institute.IndexOf("(", System.StringComparison.Ordinal) - 1);
+                return institute.Substring(0, institute.IndexOf("(", System.StringComparison.Ordinal) - 1);
             }
             return "";
         }

@@ -64,4 +64,10 @@ namespace RatingVolsuAPI
         public string Name;
         public string Type;
     }
+
+    public class Semester : PropertyChangedBase
+    {
+        public string Number { get; set; }
+        public string YearsPeriod { get; set; }
+    }
 }
