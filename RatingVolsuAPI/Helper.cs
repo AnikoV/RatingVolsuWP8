@@ -20,8 +20,8 @@ namespace RatingVolsuAPI
 
     public enum InputDataMode
     {
-        Standart,
         UseTemplate,
+        Standart,
         AddTemplate,
         EditTemplate
     }

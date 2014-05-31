@@ -82,9 +82,6 @@ namespace RatingVolsuAPI
         {
             get { return Semestr.ToList().Select(x => x.Number).ToList(); }
         }
-        
-        [Column(IsVersion = true)]
-        private Binary _version;
 
         #region relation facult-group
         [Column]

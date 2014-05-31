@@ -107,7 +107,6 @@ namespace ForTesting.Pages
             ApplicationBar.IsVisible = true;
             var req =(RequestByStudent)App.ViewModel.RequestInfo;
             req.StudentId = App.ViewModel.studentCollection[SelectedIndex].Id;
-
         }
 
         #region AppBar

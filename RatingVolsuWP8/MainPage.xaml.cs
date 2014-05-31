@@ -31,13 +31,14 @@ namespace RatingVolsuWP8
             RatingTypePivot.Focus();
         }
 
-        
         #region AppBar
 
         #region MainAppBar
 
         private ApplicationBarIconButton _appBarButtonAddFavorite;
         private ApplicationBarIconButton _appBarButtonSelectItems;
+        private ApplicationBarIconButton _appBarButtonAddStudent;
+        private ApplicationBarIconButton _appBarButtonAddGroup;
         private void InitializeMainAppBar()
         {
             ApplicationBar = new ApplicationBar {IsVisible = true, IsMenuEnabled = true};
@@ -63,7 +64,23 @@ namespace RatingVolsuWP8
 
         void appBarButtonAddFavorite_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}", InputDataMode.AddTemplate), UriKind.Relative));
+            ApplicationBar.Buttons.Clear();
+
+            _appBarButtonAddStudent = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/studentAppBar.png", UriKind.Relative));
+            _appBarButtonAddStudent.Text = "Студент";
+            _appBarButtonAddStudent.Click += (o, args) => NavigationService.Navigate(
+                new Uri(
+                    String.Format("/Pages/InputDataPage.xaml?type={0}&mode={1}", RatingType.RatingOfStudent,
+                        InputDataMode.AddTemplate), UriKind.Relative));
+            ApplicationBar.Buttons.Add(_appBarButtonAddStudent);
+
+            _appBarButtonAddGroup = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/groupAppBar.png", UriKind.Relative));
+            _appBarButtonAddGroup.Text = "Группа";
+            _appBarButtonAddGroup.Click += (o, args) => NavigationService.Navigate(
+                new Uri(
+                    String.Format("/Pages/InputDataPage.xaml?type={0}&mode={1}", RatingType.RatingOfGroup,
+                        InputDataMode.AddTemplate), UriKind.Relative));
+            ApplicationBar.Buttons.Add(_appBarButtonAddGroup);
         }
 
         #endregion
@@ -267,8 +284,6 @@ namespace RatingVolsuWP8
 
         #endregion
 
-       
-
         #region MiniPivot
 
         private void Student_OnTap(object sender, GestureEventArgs e)
@@ -285,6 +300,7 @@ namespace RatingVolsuWP8
                     String.Format("/Pages/InputDataPage.xaml?type={0}&mode={1}", RatingType.RatingOfGroup,
                         InputDataMode.Standart), UriKind.Relative));
         }
+
         #endregion
 
         private void MainPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

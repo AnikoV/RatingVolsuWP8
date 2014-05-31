@@ -35,9 +35,6 @@ namespace RatingVolsuAPI
             }
         }
 
-        [Column(IsVersion = true)]
-        private Binary _version;
-
         #region relation group-student
 
         [Column]

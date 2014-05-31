@@ -33,8 +33,8 @@ namespace RatingVolsuWP8
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            string mode;
             // Парсим мод
+            string mode;
             if (NavigationContext.QueryString.TryGetValue("mode", out mode))
             {
                 _viewModel.CurrentInputMode = (InputDataMode) Enum.Parse(typeof (InputDataMode), mode);
@@ -82,6 +82,8 @@ namespace RatingVolsuWP8
                 App.InitProgressIndicator(true, "Загрузка групп...", this);
                 if (await App.IsInternetAvailable())
                 {
+                    ApplicationBar.IsVisible = false;
+                    _viewModel.Groups.Clear(); _viewModel.Semesters.Clear(); _viewModel.Students.Clear();
                     await _viewModel.GetGroups(selectedIndex);
                     App.ProgressIndicator.IsVisible = false;
                 }
@@ -110,6 +112,8 @@ namespace RatingVolsuWP8
                 App.InitProgressIndicator(true, "Загрузка семестров...", this);
                 if (await App.IsInternetAvailable())
                 {
+                    ApplicationBar.IsVisible = false;
+                    _viewModel.Semesters.Clear(); _viewModel.Students.Clear();
                     #region Generate Semesters
 
                     var selectedGroupName = _viewModel.Groups[selectedIndex].Name;
@@ -160,6 +164,8 @@ namespace RatingVolsuWP8
             _viewModel.RequestManip.Semestr = (SelectedIndex + 1).ToString();
             if (_viewModel.RequestManip.GetType() == typeof(RequestByStudent))
             {
+                ApplicationBar.IsVisible = false;
+                _viewModel.Students.Clear();
                 App.InitProgressIndicator(true, "Загрузка номеров зачеток...", this);
                 if (await App.IsInternetAvailable())
                 {
@@ -173,6 +179,11 @@ namespace RatingVolsuWP8
                     return;
                 }
 
+                int indexItem = InputDataPanorama.Items.IndexOf(ZachetkaPanoramaItem);
+                InputDataPanorama.Items.RemoveAt(indexItem);
+                InputDataPanorama.Items.Insert(indexItem, ZachetkaPanoramaItem);
+                ZachetkaPanoramaItem.Visibility = Visibility.Visible;
+
             }
             else
             {
@@ -180,97 +191,39 @@ namespace RatingVolsuWP8
             }
         }
 
-        private void SlidePanorama(Panorama pan)
+        private void ZachetkaListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var panWrapper = VisualTreeHelper.GetChild(pan, 0) as FrameworkElement;
-            var panTitle = VisualTreeHelper.GetChild(panWrapper, 1) as FrameworkElement;
-            //Get the panorama layer to calculate all panorama items size     
-            var panLayer = VisualTreeHelper.GetChild(panWrapper, 2) as FrameworkElement;
-            //Get the title presenter to calculate the title size     
-            var panTitlePresenter =
-                VisualTreeHelper.GetChild(VisualTreeHelper.GetChild(panTitle, 0) as FrameworkElement, 1) as
-                    FrameworkElement;
-            //Current panorama item index     
-            int curIndex = pan.SelectedIndex;
-            //Get the next of next panorama item     
-            var third =
-                VisualTreeHelper.GetChild(pan.Items[curIndex + 1] as PanoramaItem, 0) as
-                    FrameworkElement;
-            //Be sure the RenderTransform is TranslateTransform     
-            if (!(pan.RenderTransform is TranslateTransform) || !(panTitle.RenderTransform is TranslateTransform))
-            {
-                pan.RenderTransform = new TranslateTransform();
-                panTitle.RenderTransform = new TranslateTransform();
-            }
-            //Increase width of panorama to let it render the next slide (if not, default panorama is 480px and the null area appear if we transform it)     
-            pan.Width = 960;
-            //Animate panorama control to the right     
-            var sb = new Storyboard();
-            var a = new DoubleAnimation
-            {
-                From = 0,
-                To = -(pan.Items[curIndex] as PanoramaItem).ActualWidth,
-                Duration = new Duration(TimeSpan.FromMilliseconds(700)),
-                EasingFunction = new CircleEase()
-            };
-            //Animate the x transform to a width of one item    
-            //This is default panorama easing effect    
-            sb.Children.Add(a);
-            Storyboard.SetTarget(a, pan.RenderTransform);
-            Storyboard.SetTargetProperty(a, new PropertyPath(TranslateTransform.XProperty));
-            //Animate panorama title separately     
-            var aTitle = new DoubleAnimation
-            {
-                From = 0,
-                To = (panLayer.ActualWidth - panTitlePresenter.ActualWidth)/(pan.Items.Count - 1)*1.5,
-                Duration = a.Duration,
-                EasingFunction = a.EasingFunction
-            };
-            //Calculate where should the title animate to     
-            //This is default panorama easing effect     sb.Children.Add(aTitle);
-            Storyboard.SetTarget(aTitle, panTitle.RenderTransform);
-            Storyboard.SetTargetProperty(aTitle, new PropertyPath(TranslateTransform.XProperty));
-            //Start the effect     
-            sb.Begin();
-            //After effect completed, we change the selected item   
-            a.Completed += (obj, args) =>
-            {
-                //Reset panorama width         
-                pan.Width = 480;
-                //Change the selected item        
-                (pan.Items[curIndex] as PanoramaItem).Visibility = Visibility.Collapsed;
-                pan.SetValue(Panorama.SelectedItemProperty, pan.Items[(curIndex + 1)%pan.Items.Count]);
-                pan.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                (pan.Items[curIndex] as PanoramaItem).Visibility = Visibility.Visible;
-                //Reset panorama render transform         
-                (pan.RenderTransform as TranslateTransform).X = 0;
-                //Reset title render transform         
-                (panTitle.RenderTransform as TranslateTransform).X = 0;
-                //Because of the next of next item will be load after we change the selected index to next item        
-                //I do not want it appear immediately without any effect, so I create a custom effect for it         
-                if (!(third.RenderTransform is TranslateTransform))
-                {
-                    third.RenderTransform = new TranslateTransform();
-                }
-                Storyboard sb2 = new Storyboard();
-                var aThird = new DoubleAnimation()
-                {
-                    From = 100,
-                    To = 0,
-                    Duration = new Duration(TimeSpan.FromMilliseconds(300))
-                };
-                sb2.Children.Add(aThird);
-                Storyboard.SetTarget(aThird, third.RenderTransform);
-                Storyboard.SetTargetProperty(aThird, new PropertyPath(TranslateTransform.XProperty));
-                sb2.Begin();
-            };
+            var SelectedIndex = ZachetkaListBox.SelectedIndex;
+            if (SelectedIndex == -1) return;
+            ApplicationBar.IsVisible = true;
+            var reqManipStud = (RequestByStudent)_viewModel.RequestManip;
+            reqManipStud.StudentId = _viewModel.Students[SelectedIndex].Id;
         }
-
         #endregion
 
         #region AppBar
 
-
+        private void ApplicationBarIconButton_OnClick(object sender, EventArgs e)
+        {
+            switch (_viewModel.CurrentInputMode)
+            {
+                case InputDataMode.Standart:
+                    //Todo уходим на рейтинг
+                    break;
+                case InputDataMode.AddTemplate:
+                    //Todo добавить шаблон и вернуться на список шаблонов
+                    using (var ratingDb = new RatingDatabase(App.DbConnectionString))
+                    {
+                        ratingDb.SaveFavorites(_viewModel.RequestManip);
+                        NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+                    }
+                    break;
+                case InputDataMode.EditTemplate:
+                    //Todo изменить шаблон и вернуться на список шаблонов
+                    break;
+            }
+            //Todo запрос на рейтинг и переход на страницу рейтинга
+        }
 
         #endregion
 

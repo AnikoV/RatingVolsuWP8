@@ -36,9 +36,6 @@ namespace RatingVolsuAPI
             }
         }
 
-        [Column(IsVersion = true)]
-        private Binary _version;
-
         #region relation facult-group
 
         private EntitySet<Group> _groups;

@@ -107,8 +107,8 @@ namespace RatingVolsuWP8
             if (Debugger.IsAttached)
             {
                 // Произошло необработанное исключение; перейти в отладчик
-                MessageBox.Show(e.ExceptionObject.Message);
-                //Debugger.Break();
+                //MessageBox.Show(e.ExceptionObject.Message);
+                Debugger.Break();
             }
         }
 

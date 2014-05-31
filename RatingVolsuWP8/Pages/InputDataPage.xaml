@@ -64,7 +64,7 @@
                 </ListBox>
             </phone:PanoramaItem>
             
-            <phone:PanoramaItem x:Name="GroupPanoramaItem" Visibility="Visible">
+            <phone:PanoramaItem x:Name="GroupPanoramaItem" Visibility="Collapsed">
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Группа" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>
@@ -125,8 +125,24 @@
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Зачетная книжка" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>
+                <ListBox x:Name="ZachetkaListBox"
+                         ItemsSource="{Binding Students}"
+                         ItemContainerStyle="{StaticResource ListBoxContainer}"
+                         SelectionMode="Single"
+                         SelectionChanged="ZachetkaListBox_OnSelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock x:Name="StudNum" Text="{Binding Number}" FontSize="45" Foreground="White" TextWrapping="Wrap" FontFamily="{StaticResource PhoneFontFamilyLight}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </phone:PanoramaItem>
         </phone:Panorama>
     </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Assets/Images/AppBar/check.png" Text="готово" Click="ApplicationBarIconButton_OnClick"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

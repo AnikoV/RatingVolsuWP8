@@ -54,9 +54,6 @@ namespace RatingVolsuAPI
             }
         }
 
-        [Column(IsVersion = true)]
-        private Binary _version;
-
         #region INotifyPropertyChanging Members
 
         public event PropertyChangingEventHandler PropertyChanging;

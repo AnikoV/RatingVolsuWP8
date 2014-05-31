@@ -61,10 +61,6 @@ namespace RatingVolsuWP8
         public async Task GetStudents()
         {
             Students = await _requestManager.GetStudentList(RequestManip.GroupId);
-            foreach (var student in Students)
-            {
-                Debug.WriteLine(student.Number);
-            }
         }
         #endregion
 
