@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using Windows.Devices.Sensors;
 using Windows.Foundation.Metadata;
 
 namespace RatingVolsuWP8
@@ -53,6 +54,21 @@ namespace RatingVolsuWP8
                 return institute.Substring(0, institute.IndexOf("(", System.StringComparison.Ordinal) - 1);
             }
             return "";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class IncrementPlaceConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var val = value;
+
+            return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

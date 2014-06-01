@@ -209,6 +209,7 @@ namespace RatingVolsuWP8
             {
                 case InputDataMode.Standart:
                     //Todo уходим на рейтинг
+                    NavigationService.Navigate(new Uri(String.Format("/Pages/RatingPage.xaml?type={0}",_viewModel.CurrentRatingType), UriKind.Relative), _viewModel.RequestManip);
                     break;
                 case InputDataMode.AddTemplate:
                     //Todo добавить шаблон и вернуться на список шаблонов

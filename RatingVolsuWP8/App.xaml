@@ -18,6 +18,7 @@
             
             <rating:InstuteNameToFilialConverter x:Key="InstuteNameToFilialConverter"/>
             <rating:InstituteNameCutConverter x:Key="InstituteNameCutConverter"/>
+            <rating:IncrementPlaceConverter x:Key="IncrementPlaceConverter"/>
         </ResourceDictionary>
         
     </Application.Resources>

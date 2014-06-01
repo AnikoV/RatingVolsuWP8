@@ -14,7 +14,180 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="0,0,0,12"/>
     </Style>
-    
+
+    <Style TargetType="ListBoxItem" x:Key="InstituteItemStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="0,0,0,12"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="InstituteStateGroup">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames 
+                                            Storyboard.TargetName="InstName" 
+                                            Storyboard.TargetProperty="FontFamily"
+                                            Duration="0">
+                                            <DiscreteObjectKeyFrame 
+                                                Value="{StaticResource PhoneFontFamilySemiBold}"
+                                                KeyTime="0">
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unselected"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="InstName" 
+                                        Text="{Binding Name, Converter={StaticResource InstituteNameCutConverter}}" 
+                                        Style="{StaticResource LbItemTitle}" Grid.Row="0"/>
+                        <TextBlock x:Name="FilialName" 
+                                        Text="{Binding Name, Converter={StaticResource InstuteNameToFilialConverter}}" 
+                                        Style="{StaticResource LbItem2NdLevel}" Grid.Row="1" toolkit:SlideInEffect.LineIndex="1"/>
+                        
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListBoxItem" x:Key="GroupItemStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="0,0,0,12"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="GroupStateGroup">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames 
+                                            Storyboard.TargetName="GroupName" 
+                                            Storyboard.TargetProperty="FontFamily"
+                                            Duration="0">
+                                            <DiscreteObjectKeyFrame 
+                                                Value="{StaticResource PhoneFontFamilySemiBold}"
+                                                KeyTime="0">
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unselected"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name="GroupName" 
+                                           Text="{Binding Name}" 
+                                           Style="{StaticResource LbItemTitle}" FontSize="35" Grid.Row="0"/>
+                        <TextBlock x:Name="EduLevel" 
+                                           Text="{Binding Type}" 
+                                           Style="{StaticResource LbItem2NdLevel}" Grid.Row="1" toolkit:SlideInEffect.LineIndex="1"/>
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListBoxItem" x:Key="SemestrItemStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="0,0,0,12"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <StackPanel Orientation="Vertical">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="GroupStateGroup">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames 
+                                            Storyboard.TargetName="SemesterNumberTb" 
+                                            Storyboard.TargetProperty="FontFamily"
+                                            Duration="0">
+                                            <DiscreteObjectKeyFrame 
+                                                Value="{StaticResource PhoneFontFamilySemiBold}"
+                                                KeyTime="0">
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unselected"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <TextBlock x:Name="SemesterNumberTb" 
+                                           Text="{Binding Number}" 
+                                           Style="{StaticResource LbItemTitle}" FontSize="35"/>
+                        <TextBlock x:Name="SemesterPeriod" 
+                                           Text="{Binding YearsPeriod}" 
+                                           Style="{StaticResource LbItem2NdLevel}" 
+                                           toolkit:SlideInEffect.LineIndex="1"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListBoxItem" x:Key="StudentItemStyle">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="0,0,0,12"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <StackPanel Orientation="Vertical">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="GroupStateGroup">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames 
+                                            Storyboard.TargetName="StudNum" 
+                                            Storyboard.TargetProperty="FontFamily"
+                                            Duration="0">
+                                            <DiscreteObjectKeyFrame 
+                                                Value="{StaticResource PhoneFontFamilySemiBold}"
+                                                KeyTime="0">
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unselected"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <TextBlock x:Name="StudNum" Text="{Binding Number}" FontSize="45" Foreground="White" TextWrapping="Wrap" FontFamily="{StaticResource PhoneFontFamilyLight}"/>
+
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="TextBlock" x:Key="h">
         <Setter Property="FontSize" Value="90"/>
         <Setter Property="Foreground" Value="White"/>

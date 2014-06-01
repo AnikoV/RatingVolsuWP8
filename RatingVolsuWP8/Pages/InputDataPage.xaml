@@ -40,27 +40,8 @@
                 <ListBox x:Name="InstituteListBox"
                          ItemsSource="{Binding Facults}"
                          SelectionChanged="InstituteListBox_OnSelectionChanged"
-                         SelectionMode="Single" 
-                         ItemContainerStyle="{StaticResource ListBoxContainer}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock x:Name="InstName" 
-                                           Text="{Binding Name, Converter={StaticResource InstituteNameCutConverter}}" 
-                                           Style="{StaticResource LbItemTitle}" Grid.Row="0"/>
-                                <TextBlock x:Name="FilialName" 
-                                           Text="{Binding Name, Converter={StaticResource InstuteNameToFilialConverter}}" 
-                                           Style="{StaticResource LbItem2NdLevel}" Grid.Row="1" toolkit:SlideInEffect.LineIndex="1"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                         ItemContainerStyle="{StaticResource InstituteItemStyle}"
+                         SelectionMode="Single">
                 </ListBox>
             </phone:PanoramaItem>
             
@@ -70,28 +51,9 @@
                 </phone:PanoramaItem.Header>
                 <ListBox x:Name="GroupListBox"
                          ItemsSource="{Binding Groups}"
-                         ItemContainerStyle="{StaticResource ListBoxContainer}"
+                         ItemContainerStyle="{StaticResource GroupItemStyle}"
                          SelectionChanged="GroupListBox_OnSelectionChanged"
                          SelectionMode="Single">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock x:Name="GroupName" 
-                                           Text="{Binding Name}" 
-                                           Style="{StaticResource LbItemTitle}" Grid.Row="0"/>
-                                <TextBlock x:Name="EduLevel" 
-                                           Text="{Binding Type}" 
-                                           Style="{StaticResource LbItem2NdLevel}" Grid.Row="1" toolkit:SlideInEffect.LineIndex="1"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
                 </ListBox>
             </phone:PanoramaItem>
             
@@ -101,22 +63,9 @@
                 </phone:PanoramaItem.Header>
                 <ListBox x:Name="SemestrListBox"
                          ItemsSource="{Binding Semesters}"
-                         ItemContainerStyle="{StaticResource ListBoxContainer}"
+                         ItemContainerStyle="{StaticResource SemestrItemStyle}"
                          SelectionChanged="SemestrListBox_OnSelectionChanged"
                          SelectionMode="Single">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock x:Name="SemesterNumberTb" 
-                                           Text="{Binding Number}" 
-                                           Style="{StaticResource LbItemTitle}"/>
-                                <TextBlock x:Name="SemesterPeriod" 
-                                           Text="{Binding YearsPeriod}" 
-                                           Style="{StaticResource LbItem2NdLevel}" 
-                                           toolkit:SlideInEffect.LineIndex="1"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
                 </ListBox>
                     
             </phone:PanoramaItem>
@@ -127,18 +76,14 @@
                 </phone:PanoramaItem.Header>
                 <ListBox x:Name="ZachetkaListBox"
                          ItemsSource="{Binding Students}"
-                         ItemContainerStyle="{StaticResource ListBoxContainer}"
+                         ItemContainerStyle="{StaticResource StudentItemStyle}"
                          SelectionMode="Single"
                          SelectionChanged="ZachetkaListBox_OnSelectionChanged">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock x:Name="StudNum" Text="{Binding Number}" FontSize="45" Foreground="White" TextWrapping="Wrap" FontFamily="{StaticResource PhoneFontFamilyLight}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
                 </ListBox>
             </phone:PanoramaItem>
         </phone:Panorama>
     </Grid>
+    
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Assets/Images/AppBar/check.png" Text="готово" Click="ApplicationBarIconButton_OnClick"/>
