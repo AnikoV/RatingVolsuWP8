@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using Windows.Devices.Sensors;
 using Windows.Foundation.Metadata;
+using RatingVolsuAPI;
 
 namespace RatingVolsuWP8
 {
@@ -62,13 +64,30 @@ namespace RatingVolsuWP8
         }
     }
 
+    
     public class IncrementPlaceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var val = value;
-
-            return value;
+            var collectionViewSource = parameter as CollectionViewSource;
+            int counter = 1;
+            if (collectionViewSource.Source != null)
+            {
+                foreach (object item in collectionViewSource.View)
+                {
+                    if (item == value)
+                    {
+                        return counter.ToString();
+                    }
+                    counter++;
+                }
+                return string.Empty;
+            }
+            else
+            {
+                return String.Empty;
+            }
+            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

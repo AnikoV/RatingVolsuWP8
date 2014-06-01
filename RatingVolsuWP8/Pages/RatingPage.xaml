@@ -13,6 +13,10 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
+    <phone:PhoneApplicationPage.Resources>
+        <CollectionViewSource x:Key="sortedRatingList" Source="{Binding Path=RatingOfGroupForView}" />
+    </phone:PhoneApplicationPage.Resources>
+    
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
     <Grid x:Name="LayoutRoot" Style="{StaticResource LayoutGrid}">
         <phone:Panorama x:Name="RatingPanorama">
@@ -25,53 +29,92 @@
             <phone:PanoramaItem x:Name="SubjectsPanoramaItem" Header="предметы">
                 <ListBox x:Name="SubjectsListBox"
                          ItemsSource="{Binding Subjects}"
-                         ItemContainerStyle="{StaticResource ListBoxContainer}"
+                         ItemContainerStyle="{StaticResource SubjectItemStyle}"
                          SelectionChanged="SubjectsListBox_OnSelectionChanged">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding Name}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="22" TextWrapping="Wrap"/>
-                                <TextBlock Text="{Binding Type}" Style="{StaticResource LbItem2NdLevel}"/>
-                            </StackPanel> 
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
                 </ListBox>
             </phone:PanoramaItem>
 
             <phone:PanoramaItem x:Name="GroupRatingPanoramaItem" Header="группы">
                 <ListBox x:Name="GroupRatingListBox"
-                         ItemContainerStyle="{StaticResource ListBoxContainer}"
                          ItemsSource="{Binding RatingOfGroupForView}"
-                         >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock x:Name="StudentPlace" Grid.Column="0" Text="{Binding Source=Place, Converter={StaticResource IncrementPlaceConverter}}" FontSize="100" FontFamily="{StaticResource PhoneFontFamilyLight}"/>
-                                <StackPanel Orientation="Vertical" Grid.Column="1">
-                                    <TextBlock x:Name="Zachetka" Text="{Binding Path=Student.Number, NotifyOnValidationError=True}"/>
-                                    <TextBlock x:Name="Balls" Text="{Binding Path=Total}"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Grid.Column="2">
-                                    <Image/>
-                                    <TextBlock x:Name="BallsToNextPlace"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Grid.Column="3">
-                                    <Image/>
-                                    <TextBlock x:Name="BallsToFirstPlace"></TextBlock>
-                                </StackPanel>
-                            </Grid> 
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
+                         SelectionChanged="GroupRatingListBox_OnSelectionChanged">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Margin" Value="0,0,0,0"/>
+
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Grid>
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="GroupStateGroup">
+                                                    <VisualState x:Name="Normal"/>
+                                                    <VisualState x:Name="Selected">
+                                                        <Storyboard>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Zachetka" Storyboard.TargetProperty="FontFamily" Duration="0">
+                                                                <DiscreteObjectKeyFrame Value="{StaticResource PhoneFontFamilySemiBold}" KeyTime="0"/>
+                                                            </ObjectAnimationUsingKeyFrames>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="StudentPlace" Storyboard.TargetProperty="FontFamily" Duration="0">
+                                                                <DiscreteObjectKeyFrame Value="{StaticResource PhoneFontFamilySemiBold}" KeyTime="0"/>
+                                                            </ObjectAnimationUsingKeyFrames>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FirstStat" Storyboard.TargetProperty="Visibility" Duration="0">
+                                                                <DiscreteObjectKeyFrame Value="Visible" KeyTime="0"/>
+                                                            </ObjectAnimationUsingKeyFrames>
+                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredStat" Storyboard.TargetProperty="Visibility" Duration="0">
+                                                                <DiscreteObjectKeyFrame Value="Visible" KeyTime="0"/>
+                                                            </ObjectAnimationUsingKeyFrames>
+                                                        </Storyboard>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Unselected"/>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            
+                                            <TextBlock x:Name="StudentPlace"
+                                                       Margin="0,0,15,0"
+                                                       Grid.Column="0"
+                                                       Text="{Binding Converter={StaticResource IncrementPlaceConverter}, ConverterParameter={StaticResource sortedRatingList}}" 
+                                                       FontSize="80" 
+                                                       FontFamily="{StaticResource PhoneFontFamilyLight}"/>
+                                            <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
+                                                <StackPanel Orientation="Vertical" Margin="0,0,30,0">
+                                                    <TextBlock x:Name="Zachetka" Text="{Binding Path=Student.Number}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="35" TextWrapping="NoWrap"/>
+                                                    <TextBlock x:Name="Balls" Text="{Binding Path=Total}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="25" TextWrapping="NoWrap" Opacity="0.5"/>
+                                                </StackPanel>
+                                                <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
+                                                    <Image Source="/Assets/Images/stat_icon1.png" />
+                                                    <TextBlock x:Name="BallsToNextPlace" 
+                                                               Text="+1" 
+                                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
+                                                               FontSize="35" 
+                                                               TextWrapping="NoWrap"/>
+                                                </StackPanel>
+                                                <StackPanel Name="FirstStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
+                                                    <Image Source="/Assets/Images/stat_icon2.png"/>
+                                                    <TextBlock x:Name="BallsToFirstPlace" 
+                                                               Text="+1" 
+                                                               FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
+                                                               FontSize="35" 
+                                                               TextWrapping="NoWrap"
+                                                               VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                 </ListBox>
+                
             </phone:PanoramaItem>
 
             <phone:PanoramaItem x:Name="StudentPanoramaItem" Header="студента">

@@ -44,11 +44,34 @@ namespace RatingVolsuWP8
                 {
                     SubjectsPanoramaItem.Visibility = Visibility.Collapsed;
                     GroupRatingPanoramaItem.Visibility = Visibility.Collapsed;
-                    await _viewModel.GetWebRatingOfStudent(reqManip);
+                    App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
+                    if (await App.IsInternetAvailable())
+                    {
+                        await _viewModel.GetWebRatingOfStudent(reqManip);
+                        App.ProgressIndicator.IsVisible = false;
+                    }
+                    else
+                    {
+                        App.ProgressIndicator.IsVisible = false;
+                        MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
+                        return;
+                    }
+                    
                 }
                 else
                 {
-                    await _viewModel.GetWebRatingOfGroup(reqManip);
+                    App.InitProgressIndicator(true, "Загрузка рейтинга группы...", this);
+                    if (await App.IsInternetAvailable())
+                    {
+                        await _viewModel.GetWebRatingOfGroup(reqManip);
+                        App.ProgressIndicator.IsVisible = false;
+                    }
+                    else
+                    {
+                        App.ProgressIndicator.IsVisible = false;
+                        MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
+                        return;
+                    }
                 }
             }
 
@@ -57,9 +80,14 @@ namespace RatingVolsuWP8
 
         private void SubjectsListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            
         }
-
+        private void GroupRatingListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
         #endregion
+
+        
     }
 }

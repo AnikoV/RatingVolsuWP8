@@ -156,6 +156,8 @@
     <Content Include="Assets\Images\AppBar\studentAppBar.png" />
     <Content Include="Assets\Images\group_icon.png" />
     <Content Include="Assets\Images\group_mini.png" />
+    <Content Include="Assets\Images\stat_icon2.png" />
+    <Content Include="Assets\Images\stat_icon1.png" />
     <Content Include="Assets\Images\student_icon.png" />
     <Content Include="Assets\Images\student_mini.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
