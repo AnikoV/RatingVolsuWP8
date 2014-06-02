@@ -14,7 +14,7 @@
     shell:SystemTray.IsVisible="True">
 
     <phone:PhoneApplicationPage.Resources>
-        <CollectionViewSource x:Key="sortedRatingList" Source="{Binding Path=RatingOfGroupForView}" />
+        <CollectionViewSource x:Key="SortedRatingList" Source="{Binding Path=RatingOfGroupForView}" />
     </phone:PhoneApplicationPage.Resources>
     
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
@@ -81,7 +81,7 @@
                                             <TextBlock x:Name="StudentPlace"
                                                        Margin="0,0,15,0"
                                                        Grid.Column="0"
-                                                       Text="{Binding Converter={StaticResource IncrementPlaceConverter}, ConverterParameter={StaticResource sortedRatingList}}" 
+                                                       Text="{Binding Converter={StaticResource IncrementPlaceConverter}, ConverterParameter={StaticResource SortedRatingList}}" 
                                                        FontSize="80" 
                                                        FontFamily="{StaticResource PhoneFontFamilyLight}"/>
                                             <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
@@ -92,7 +92,7 @@
                                                 <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
                                                     <Image Source="/Assets/Images/stat_icon1.png" />
                                                     <TextBlock x:Name="BallsToNextPlace" 
-                                                               Text="+1" 
+                                                               Text="{Binding Source={Binding BallsToNextPlace}}"
                                                                FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
                                                                FontSize="35" 
                                                                TextWrapping="NoWrap"/>

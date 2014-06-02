@@ -80,11 +80,13 @@ namespace RatingVolsuWP8
 
         private void SubjectsListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            var selectedIndex = SubjectsListBox.SelectedIndex;
+            if (selectedIndex == -1) return;
+            _viewModel.GetRatingBySubject(selectedIndex);
         }
         private void GroupRatingListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            _viewModel.BallsToNextPlace = 20.ToString();
         }
         #endregion
 

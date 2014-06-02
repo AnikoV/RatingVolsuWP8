@@ -51,7 +51,8 @@ namespace RatingVolsuWP8
         public ObservableCollection<Rating> RatingOfGroup { get; set; }
         public ObservableCollection<Rating> RatingOfGroupForView { get; set; }
         public ObservableCollection<Subject> Subjects { get; set; }
-        
+        public string BallsToNextPlace { get; set; }
+
         public RatingViewModel()
         {
             _ratingDb = new RatingDatabase(App.DbConnectionString);
@@ -98,33 +99,38 @@ namespace RatingVolsuWP8
         }
         #endregion
 
-        //public static string GetStatisticForPred(int itemId, string curTotal)
-        //{
-        //    string result;
-        //    int totalCur = Convert.ToInt32(curTotal.Substring(0, 2).Replace("(", ""));
-        //    //Generate 1st
-        //    var idx = RatingOfGroupForView.IndexOf(RatingOfGroup.First(x => x.Id == itemId));
-        //    if(idx == 0)
-        //        return null;
-        //    if (!String.IsNullOrEmpty(RatingOfGroupForView[idx - 1].Total))
-        //    {
-        //        int totalPred = Convert.ToInt32(RatingOfGroupForView[idx - 1].Total.Substring(0, 2).Replace("(", ""));
-        //        result = (totalPred - totalCur).ToString();
-        //    }
-        //    else
-        //    {
-        //        result = String.Empty;
-        //    }
-        //    return result;
-        //}
+        internal void GetRatingBySubject(int selectedIndex)
+        {
+            RatingOfGroupForView = new ObservableCollection<Rating>(RatingOfGroup.Where(x => x.SubjectId == Subjects[selectedIndex].Id).OrderByDescending(x => x.Total).ToList());
+        }
 
-        //public static string GetStatisticForFirst(int itemId, string curTotal)
-        //{
-        //    int totalCur = Convert.ToInt32(curTotal.Substring(0, 2).Replace("(", ""));
-        //    int totalFirst = Convert.ToInt32(RatingOfGroupForView.First().Total.Substring(0, 2).Replace("(", ""));
-        //    string result = (totalFirst - totalCur).ToString();
+        public string GetStatisticForPred(int itemId, string curTotal)
+        {
+            string result;
+            int totalCur = Convert.ToInt32(curTotal.Substring(0, 2).Replace("(", ""));
+            //Generate 1st
+            var idx = RatingOfGroupForView.IndexOf(RatingOfGroup.First(x => x.Id == itemId));
+            if (idx == 0)
+                return null;
+            if (!String.IsNullOrEmpty(RatingOfGroupForView[idx - 1].Total))
+            {
+                int totalPred = Convert.ToInt32(RatingOfGroupForView[idx - 1].Total.Substring(0, 2).Replace("(", ""));
+                result = (totalPred - totalCur).ToString();
+            }
+            else
+            {
+                result = String.Empty;
+            }
+            return result;
+        }
 
-        //    return result;
-        //}
+        public string GetStatisticForFirst(int itemId, string curTotal)
+        {
+            int totalCur = Convert.ToInt32(curTotal.Substring(0, 2).Replace("(", ""));
+            int totalFirst = Convert.ToInt32(RatingOfGroupForView.First().Total.Substring(0, 2).Replace("(", ""));
+            string result = (totalFirst - totalCur).ToString();
+
+            return result;
+        }
     }
 }
