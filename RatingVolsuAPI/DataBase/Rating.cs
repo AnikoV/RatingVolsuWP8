@@ -185,6 +185,11 @@ namespace RatingVolsuAPI
             }
         }
 
+        public string BallsToNextPlace { get; set;}
+
+        public string BallsToFirstPlace { get; set;}
+    
+
         [Column(IsVersion = true)]
         private Binary _version;
 
