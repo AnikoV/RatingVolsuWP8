@@ -8,7 +8,6 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
-using RatinVolsuAPI;
 using Rating = RatingVolsuAPI.Rating;
 
 namespace RatingVolsuWP8
