@@ -10,7 +10,6 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
-using RatinVolsuAPI;
 using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace ForTesting
@@ -46,9 +45,18 @@ namespace ForTesting
             NavigationContext.QueryString.TryGetValue("type", out type);
             _viewModel.GetRatingFromDb(req);
             if (type == RatingType.RatingOfStudent.ToString())
+            {
+                App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
                 await _viewModel.GetRatingOfStudentFromServer(req);
+                App.ProgressIndicator.IsVisible = false;
+            }
             else
+            {
+                App.InitProgressIndicator(true, "Загрузка рейтинга группы...", this);
                 await _viewModel.GetRatingOfGroupFromServer(req);
+                App.ProgressIndicator.IsVisible = false;
+            }
+                
 
         }
 

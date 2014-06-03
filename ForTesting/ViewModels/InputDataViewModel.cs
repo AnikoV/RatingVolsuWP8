@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using RatingVolsuAPI;
-using RatingVolsuAPI.Base;
-using RatinVolsuAPI;
 
 namespace ForTesting
 {

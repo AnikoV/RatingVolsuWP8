@@ -9,12 +9,12 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using RatinVolsuAPI;
+using RatingVolsuAPI;
 using WinPhoneExtensions;
 
 using Data = System.Collections.Generic.Dictionary<string, string>;
 using FacultCollection = System.Collections.Generic.Dictionary<string, RatingVolsuAPI.Facult>;
-using RatinVolsuAPI.DataBase;
+using RatingVolsuAPI.DataBase;
 
 namespace RatingVolsuAPI
 {
@@ -131,7 +131,7 @@ namespace RatingVolsuAPI
                 groups = rating.LoadGroups(FacultId);
                 return groups;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -173,7 +173,7 @@ namespace RatingVolsuAPI
                 
                 return group.SemList;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

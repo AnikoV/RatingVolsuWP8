@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using RatingVolsuAPI.Base;
-using RatinVolsuAPI.DataBase;
+using RatingVolsuAPI.DataBase;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

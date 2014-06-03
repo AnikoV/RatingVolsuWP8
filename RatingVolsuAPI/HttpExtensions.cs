@@ -27,7 +27,7 @@ namespace WinPhoneExtensions
                     }
 
                 }
-                catch (WebException webExc)
+                catch (WebException)
                 {
                     taskComplete.TrySetResult(null);
                 }

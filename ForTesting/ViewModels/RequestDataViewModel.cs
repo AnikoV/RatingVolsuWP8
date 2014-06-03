@@ -8,8 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using RatingVolsuAPI;
-using RatingVolsuAPI.Base;
-using RatinVolsuAPI;
+
 
 namespace ForTesting
 {

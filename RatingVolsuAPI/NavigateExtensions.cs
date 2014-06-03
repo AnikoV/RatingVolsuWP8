@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 
-namespace RatinVolsuAPI
+namespace RatingVolsuAPI
 {
     public static class NavigateExtensions
     {

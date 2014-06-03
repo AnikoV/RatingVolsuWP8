@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="file:///C:/PROGRAM FILES (X86)/MICROSOFT VISUAL STUDIO 12.0/COMMON7/IDE/EXTENSIONS/MICROSOFT/ARCHITECTURE TOOLS/EXTENSIBILITY/Logging/ReverseEngineeringLog.xslt"?>
+<Log xmlns="http://schemas.microsoft.com/VisualStudio/2010/CodeGen.RE.Log" Label="Журнал создания кода/преобразования текста">
+  <MessageClass Name="Message" Label="Сообщение" Option="Показывать информационные сообщения" />
+  <MessageClass Name="Warning" Label="Предупреждение" Option="Показывать предупреждения" />
+  <MessageClass Name="Error" Label="Ошибка" Option="Показывать ошибки" />
+  <MessageClass Name="Property" Label="Свойство" Option="Показывать метаданные" />
+  <MessageClass Name="Diagnostic" Label="Сообщение" Option="Показывать диагностические сообщения" />
+  <Message Timestamp="2014-06-03T11:49:32" Importance="High" Text="Реконструирование запущено." />
+  <Error Timestamp="2014-06-03T11:49:47" Importance="High" Text="Процесс реконструирования Длина не может быть меньше нуля.&#xD;&#xA;Имя параметра: length остановлен." />
+  <Message Timestamp="2014-06-03T11:49:48" Importance="Diagnostic" Text="Элемент реконструирован в модели UML: &quot;ModelingProject1::RatingVolsuAPI&quot; -  (Package)" />
+  <Message Timestamp="2014-06-03T11:49:48" Importance="High" Text="Полностью реконструировано (0) типов." />
+  <Message Timestamp="2014-06-03T11:49:48" Importance="High" Text="Операция реконструирования завершена; ошибок: (1), предупреждений: (0)." />
+</Log>

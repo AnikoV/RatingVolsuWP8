@@ -21,12 +21,9 @@ namespace RatingVolsuAPI
             get { return _id; }
             set
             {
-                if (_id != value)
-                {
-                    NotifyPropertyChanging("Id");
-                    _id = value;
-                    RaisePropertyChanged("Id");
-                }
+                NotifyPropertyChanging("Id");
+                _id = value;
+                RaisePropertyChanged("Id");
             }
         }
 
@@ -38,12 +35,9 @@ namespace RatingVolsuAPI
             get { return _semestr; }
             set
             {
-                if (_semestr != value)
-                {
-                    NotifyPropertyChanging("Semestr");
-                    _semestr = value;
-                    RaisePropertyChanged("Semestr");
-                }
+                NotifyPropertyChanging("Semestr");
+                _semestr = value;
+                RaisePropertyChanged("Semestr");
             }
         }
 
@@ -188,10 +182,6 @@ namespace RatingVolsuAPI
         public string BallsToNextPlace { get; set;}
 
         public string BallsToFirstPlace { get; set;}
-    
-
-        [Column(IsVersion = true)]
-        private Binary _version;
 
         #region INotifyPropertyChanging Members
 
