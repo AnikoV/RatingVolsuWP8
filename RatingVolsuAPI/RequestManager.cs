@@ -253,6 +253,7 @@ namespace RatingVolsuAPI
             string content = await SendRequest(parametrs);
             try
             {
+                string con = content;
                 var studentRating = JsonConvert.DeserializeObject<StudentRat>(content);
                 return requestInfo.GetRatingFromServer(studentRating);
             }

@@ -8,7 +8,6 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
-using RatinVolsuAPI;
 using Rating = RatingVolsuAPI.Rating;
 
 namespace RatingVolsuWP8
@@ -50,6 +49,7 @@ namespace RatingVolsuWP8
                     {
                         await _viewModel.GetWebRatingOfStudent(reqManip);
                         App.ProgressIndicator.IsVisible = false;
+                        ApplicationBar.IsVisible = true;
                     }
                     else
                     {
@@ -65,7 +65,9 @@ namespace RatingVolsuWP8
                     if (await App.IsInternetAvailable())
                     {
                         await _viewModel.GetWebRatingOfGroup(reqManip);
-                        App.ProgressIndicator.IsVisible = false;
+                        App.ProgressIndicator.IsVisible = false; 
+                        ApplicationBar.IsVisible = true;
+                        
                     }
                     else
                     {
@@ -95,9 +97,29 @@ namespace RatingVolsuWP8
 
         private void ApplicationBarIconButton_OnClick(object sender, EventArgs e)
         {
+            ApplicationBar.Buttons.RemoveAt(0);
+            var addFavoritesByGroup =
+                new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/groupAppBar.png", UriKind.Relative));
+            addFavoritesByGroup.Text = "Группа";
+            addFavoritesByGroup.Click += ApplicationBarGroupButton_OnClick;
+            ApplicationBar.Buttons.Add(addFavoritesByGroup);
 
+            var addFavoritesByStudent =
+                new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/studentAppBar.png", UriKind.Relative));
+            addFavoritesByStudent.Text = "Студент";
+            addFavoritesByStudent.Click += ApplicationBarStudentButton_OnClick;
+            ApplicationBar.Buttons.Add(addFavoritesByStudent);
         }
 
-        
+
+        private void ApplicationBarGroupButton_OnClick(object sender, EventArgs e)
+        {
+            ApplicationBar.Buttons.Clear();
+        }
+
+        private void ApplicationBarStudentButton_OnClick(object sender, EventArgs e)
+        {
+            ApplicationBar.Buttons.Clear();
+        }
     }
 }
