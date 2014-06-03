@@ -95,4 +95,50 @@ namespace RatingVolsuWP8
             throw new NotImplementedException();
         }
     }
+
+    public class SubjectTypeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var typeNumber = value as string;
+            if (String.IsNullOrEmpty(typeNumber))
+                return String.Empty;
+            switch (typeNumber)
+            {
+                case "1":
+                    return "экзамен";
+                case "2":
+                    return "зачет";
+                case "3":
+                    return "экзамен с защитой";
+                default:
+                    return String.Empty;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TotalConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var total = value as string;
+            if (String.IsNullOrEmpty(total))
+                return String.Empty;
+            if (total.Contains("("))
+            {
+                return total.Substring(0, total.IndexOf('('));
+            }
+            return total;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

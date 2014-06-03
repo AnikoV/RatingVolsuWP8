@@ -85,11 +85,21 @@ namespace RatingVolsuWP8
             if (selectedIndex == -1) return;
             _viewModel.GetRatingBySubject(selectedIndex);
         }
-        private void GroupRatingListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void GroupRatingListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedItem = e.OriginalSource as Rating;//SubjectsListBox.SelectedItem as Rating;
-            if (selectedItem == null) return;
-            _viewModel.GetStatisticForRating(selectedItem);
+            var subjLb = sender as ListBox;
+            if (subjLb != null)
+            {
+                var selectedItem = subjLb.SelectedItem as Rating;
+                if (selectedItem == null) 
+                    return;
+                if (!_viewModel.SetStatisticForRating(selectedItem))
+                {
+                    //TODO не показывать статистику, показать короны)
+                }
+                
+                await _viewModel.GetWebRatingOfStudent(_viewModel.RequestManip);
+            }
         }
         #endregion
 

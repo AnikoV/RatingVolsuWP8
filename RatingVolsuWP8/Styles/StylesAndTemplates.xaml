@@ -218,7 +218,7 @@
 
                         <StackPanel Orientation="Vertical">
                             <TextBlock x:Name="SubjectName" Text="{Binding Name}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="25" TextWrapping="Wrap"/>
-                            <TextBlock x:Name="SubjectType" Text="{Binding Type}" Style="{StaticResource LbItem2NdLevel}"/>
+                            <TextBlock x:Name="SubjectType" Text="{Binding Type, Converter={StaticResource SubjectTypeConverter}}" Style="{StaticResource LbItem2NdLevel}"/>
                         </StackPanel>
                         
                     </StackPanel>
@@ -234,33 +234,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
-                    <StackPanel Orientation="Vertical">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="GroupStateGroup">
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="Selected">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames 
-                                            Storyboard.TargetName="SubjectName" 
-                                            Storyboard.TargetProperty="FontFamily"
-                                            Duration="0">
-                                            <DiscreteObjectKeyFrame 
-                                                Value="{StaticResource PhoneFontFamilySemiBold}"
-                                                KeyTime="0">
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Unselected"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock x:Name="SubjectName" Text="{Binding Name}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="25" TextWrapping="Wrap"/>
-                            <TextBlock x:Name="SubjectType" Text="{Binding Type}" Style="{StaticResource LbItem2NdLevel}"/>
-                        </StackPanel>
-
-                    </StackPanel>
+                    
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
