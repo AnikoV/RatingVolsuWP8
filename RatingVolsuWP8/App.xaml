@@ -19,6 +19,9 @@
             <rating:InstuteNameToFilialConverter x:Key="InstuteNameToFilialConverter"/>
             <rating:InstituteNameCutConverter x:Key="InstituteNameCutConverter"/>
             <rating:IncrementPlaceConverter x:Key="IncrementPlaceConverter"/>
+            <rating:SubjectTypeConverter x:Key="SubjectTypeConverter"/>
+            <rating:TotalConverter x:Key="TotalConverter"/>
+            
         </ResourceDictionary>
         
     </Application.Resources>

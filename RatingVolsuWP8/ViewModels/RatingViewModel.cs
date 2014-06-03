@@ -65,6 +65,7 @@ namespace RatingVolsuWP8
         {
             RequestManip = requestManip;
             RatingOfStudent = await _requestManager.GetRatingOfStudent(RequestManip);
+            RatingOfStudent = new ObservableCollection<Rating>(RatingOfStudent.OrderByDescending(x => x.Total));
         }
 
         public async Task GetWebRatingOfGroup(RequestManipulation requestManip)
@@ -104,23 +105,28 @@ namespace RatingVolsuWP8
 
         public void GetStatisticForRating(Rating curItem)
         {
-            int totalCur = Convert.ToInt32(curItem.Total.Substring(0, 2).Replace("(", ""));
+            int totalCur = Convert.ToInt32(
+                curItem.Total.Length == 1 ?
+                curItem.Total : curItem.Total.Substring(0, 2).Replace("(", ""));
+
             // Generate BallsToNextPlace
             var idx = RatingOfGroupForView.IndexOf(RatingOfGroup.First(x => x.Id == curItem.Id));
             if (idx == 0)
                 return;
             if (!String.IsNullOrEmpty(RatingOfGroupForView[idx - 1].Total))
             {
-                int totalPred = Convert.ToInt32(RatingOfGroupForView[idx - 1].Total.Substring(0, 2).Replace("(", ""));
-                curItem.BallsToNextPlace = (totalPred - totalCur).ToString();
+                int totalPred = Convert.ToInt32(
+                    RatingOfGroupForView[idx - 1].Total.Length == 1 ? 
+                    RatingOfGroupForView[idx - 1].Total : RatingOfGroupForView[idx - 1].Total.Substring(0, 2).Replace("(", ""));
+                curItem.BallsToNextPlace = String.Format("+{0}", totalPred - totalCur);
             }
             else
             {
                 curItem.BallsToNextPlace = String.Empty;
             }
             // Generate BallsToFirstPlace
-            int totalFirst = Convert.ToInt32(RatingOfGroupForView.First().Total.Substring(0, 2).Replace("(", ""));
-            curItem.BallsToFirstPlace = (totalFirst - totalCur).ToString();
+            int totalFirst = Convert.ToInt32(RatingOfGroupForView.First().Total.Length == 1 ? RatingOfGroupForView.First().Total : RatingOfGroupForView.First().Total.Substring(0, 2).Replace("(", ""));
+            curItem.BallsToFirstPlace = String.Format("+{0}", totalFirst - totalCur);
         }
     }
 }
