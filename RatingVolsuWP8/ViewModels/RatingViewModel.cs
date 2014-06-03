@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using RatingVolsuAPI;
 
@@ -40,6 +39,7 @@ namespace RatingVolsuWP8
         public InputDataMode CurrentInputMode;
         public RatingType CurrentRatingType;
         public RequestManipulation RequestManip;
+        public RequestManipulation RequestManipForStudent;
         private readonly RequestManager _requestManager;
         private readonly RatingDatabase _ratingDb;
         public FavoritesItem CurrentFavoritesItem;
@@ -103,7 +103,7 @@ namespace RatingVolsuWP8
             RatingOfGroupForView = new ObservableCollection<Rating>(RatingOfGroup.Where(x => x.SubjectId == Subjects[selectedIndex].Id).OrderByDescending(x => x.Total).ToList());
         }
 
-        public void GetStatisticForRating(Rating curItem)
+        public bool SetStatisticForRating(Rating curItem)
         {
             int totalCur = Convert.ToInt32(
                 curItem.Total.Length == 1 ?
@@ -112,7 +112,7 @@ namespace RatingVolsuWP8
             // Generate BallsToNextPlace
             var idx = RatingOfGroupForView.IndexOf(RatingOfGroup.First(x => x.Id == curItem.Id));
             if (idx == 0)
-                return;
+                return false;
             if (!String.IsNullOrEmpty(RatingOfGroupForView[idx - 1].Total))
             {
                 int totalPred = Convert.ToInt32(
@@ -127,6 +127,8 @@ namespace RatingVolsuWP8
             // Generate BallsToFirstPlace
             int totalFirst = Convert.ToInt32(RatingOfGroupForView.First().Total.Length == 1 ? RatingOfGroupForView.First().Total : RatingOfGroupForView.First().Total.Substring(0, 2).Replace("(", ""));
             curItem.BallsToFirstPlace = String.Format("+{0}", totalFirst - totalCur);
+
+            return true;
         }
     }
 }
