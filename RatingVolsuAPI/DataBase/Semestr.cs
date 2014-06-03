@@ -9,7 +9,7 @@ using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using RatingVolsuAPI;
 
-namespace RatinVolsuAPI.DataBase
+namespace RatingVolsuAPI.DataBase
 {
     [Table]
     public class Semestr : PropertyChangedBase, INotifyPropertyChanging

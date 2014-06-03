@@ -16,6 +16,7 @@ namespace ForTesting
         public static PhoneApplicationFrame RootFrame { get; private set; }
         public static string DbConnectionString = @"isostore:/RatingDataBase.sdf";
         private static InputDataViewModel _viewModel;
+        public static ProgressIndicator ProgressIndicator;
         public static int CurrentYear;
         public static InputDataViewModel ViewModel
         {
@@ -72,6 +73,7 @@ namespace ForTesting
         // Этот код не будет выполняться при повторной активации приложения
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            ProgressIndicator = new ProgressIndicator { IsIndeterminate = true, IsVisible = false };
         }
 
         // Код для выполнения при активации приложения (переводится в основной режим)
@@ -229,6 +231,13 @@ namespace ForTesting
 
                 throw;
             }
+        }
+
+        public static void InitProgressIndicator(bool isVisible, string text, DependencyObject obj)
+        {
+            ProgressIndicator.Text = text;
+            ProgressIndicator.IsVisible = isVisible;
+            SystemTray.SetProgressIndicator(obj, ProgressIndicator);
         }
     }
 }

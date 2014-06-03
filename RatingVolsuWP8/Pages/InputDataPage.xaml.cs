@@ -15,7 +15,6 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
-using RatinVolsuAPI;
 using NetworkInterface = System.Net.NetworkInformation.NetworkInterface;
 
 namespace RatingVolsuWP8

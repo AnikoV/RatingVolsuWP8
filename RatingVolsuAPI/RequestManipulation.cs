@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RatingVolsuAPI;
 
-namespace RatinVolsuAPI
+namespace RatingVolsuAPI
 {
     public abstract class RequestManipulation
     {

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RatingVolsuAPI;
-using RatinVolsuAPI;
 
 namespace RatingVolsuWP8
 {

@@ -6,8 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using RatinVolsuAPI;
-using RatinVolsuAPI.DataBase;
+using RatingVolsuAPI;
+using RatingVolsuAPI.DataBase;
 
 namespace RatingVolsuAPI
 {
