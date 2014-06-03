@@ -37,7 +37,8 @@
             <phone:PanoramaItem x:Name="GroupRatingPanoramaItem" Header="группы">
                 <ListBox x:Name="GroupRatingListBox"
                          ItemsSource="{Binding RatingOfGroupForView}"
-                         SelectionChanged="GroupRatingListBox_OnSelectionChanged">
+                         SelectionChanged="GroupRatingListBox_OnSelectionChanged"
+                         SelectionMode="Single">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -66,7 +67,7 @@
                                                             </ObjectAnimationUsingKeyFrames>
                                                         </Storyboard>
                                                     </VisualState>
-                                                    <VisualState x:Name="Unselected"/>
+                                                    
                                                 </VisualStateGroup>
                                             </VisualStateManager.VisualStateGroups>
 
@@ -92,7 +93,7 @@
                                                 <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
                                                     <Image Source="/Assets/Images/stat_icon1.png" />
                                                     <TextBlock x:Name="BallsToNextPlace" 
-                                                               Text="{Binding Source={Binding BallsToNextPlace}}"
+                                                               Text="{Binding BallsToNextPlace}"
                                                                FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
                                                                FontSize="35" 
                                                                TextWrapping="NoWrap"/>
@@ -100,7 +101,7 @@
                                                 <StackPanel Name="FirstStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
                                                     <Image Source="/Assets/Images/stat_icon2.png"/>
                                                     <TextBlock x:Name="BallsToFirstPlace" 
-                                                               Text="+1" 
+                                                               Text="{Binding BallsToFirstPlace}" 
                                                                FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
                                                                FontSize="35" 
                                                                TextWrapping="NoWrap"
@@ -118,11 +119,22 @@
             </phone:PanoramaItem>
 
             <phone:PanoramaItem x:Name="StudentPanoramaItem" Header="студента">
-                
+                <!--<ListBox x:Name="StudentRatingListBox"
+                         ItemsSource="{Binding Subjects}"
+                         ItemContainerStyle="{StaticResource SubjectItemStyle}"
+                         SelectionChanged="SubjectsListBox_OnSelectionChanged">
+                    
+                </ListBox>-->
             </phone:PanoramaItem>
             
             
         </phone:Panorama>
     </Grid>
 
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Assets/Images/AppBar/favs.addto.png" Text="в избранное" Click="ApplicationBarIconButton_OnClick"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+    
 </phone:PhoneApplicationPage>

@@ -8,6 +8,8 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
+using RatinVolsuAPI;
+using Rating = RatingVolsuAPI.Rating;
 
 namespace RatingVolsuWP8
 {
@@ -85,9 +87,16 @@ namespace RatingVolsuWP8
         }
         private void GroupRatingListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _viewModel.BallsToNextPlace = 20.ToString();
+            var selectedItem = e.OriginalSource as Rating;//SubjectsListBox.SelectedItem as Rating;
+            if (selectedItem == null) return;
+            _viewModel.GetStatisticForRating(selectedItem);
         }
         #endregion
+
+        private void ApplicationBarIconButton_OnClick(object sender, EventArgs e)
+        {
+
+        }
 
         
     }
