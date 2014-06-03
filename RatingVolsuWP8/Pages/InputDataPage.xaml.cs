@@ -125,11 +125,32 @@ namespace RatingVolsuWP8
 
                     for (int i = 0; i < semesterList.Count; i++)
                     {
-                        var semestr = new Semester
+                        Semester semestr;
+                        if (temp < 9)
                         {
-                            Number = semesterList[i] + " семестр",
-                            YearsPeriod = String.Format("20{0} - 20{1}", temp, temp + 1)
-                        };
+                            semestr = new Semester
+                            {
+                                Number = semesterList[i] + " семестр",
+                                YearsPeriod = String.Format("200{0} - 200{1}", temp, temp + 1)
+                            };
+                        }
+                        else if (temp == 9)
+                        {
+                            semestr = new Semester
+                            {
+                                Number = semesterList[i] + " семестр",
+                                YearsPeriod = String.Format("200{0} - 20{1}", temp, temp + 1)
+                            };
+                        }
+                        else
+                        {
+                            semestr = new Semester
+                            {
+                                Number = semesterList[i] + " семестр",
+                                YearsPeriod = String.Format("20{0} - 20{1}", temp, temp + 1)
+                            };
+                        }
+
 
                         if (i%2 != 0)
                             temp++;

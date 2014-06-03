@@ -103,7 +103,7 @@ namespace RatingVolsuWP8
             RatingOfGroupForView = new ObservableCollection<Rating>(RatingOfGroup.Where(x => x.SubjectId == Subjects[selectedIndex].Id).OrderByDescending(x => x.Total).ToList());
         }
 
-        public bool SetStatisticForRating(Rating curItem)
+        public void SetStatisticForRating(Rating curItem)
         {
             int totalCur = Convert.ToInt32(
                 curItem.Total.Length == 1 ?
@@ -112,7 +112,11 @@ namespace RatingVolsuWP8
             // Generate BallsToNextPlace
             var idx = RatingOfGroupForView.IndexOf(RatingOfGroup.First(x => x.Id == curItem.Id));
             if (idx == 0)
-                return false;
+            {
+                curItem.BallsToNextPlace = "0";
+                curItem.BallsToFirstPlace = "0";
+                return;
+            }
             if (!String.IsNullOrEmpty(RatingOfGroupForView[idx - 1].Total))
             {
                 int totalPred = Convert.ToInt32(
@@ -127,8 +131,6 @@ namespace RatingVolsuWP8
             // Generate BallsToFirstPlace
             int totalFirst = Convert.ToInt32(RatingOfGroupForView.First().Total.Length == 1 ? RatingOfGroupForView.First().Total : RatingOfGroupForView.First().Total.Substring(0, 2).Replace("(", ""));
             curItem.BallsToFirstPlace = String.Format("+{0}", totalFirst - totalCur);
-
-            return true;
         }
     }
 }

@@ -9,7 +9,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    SupportedOrientations="Portrait" Orientation="Portrait" OrientationChanged="RatingPage_OnOrientationChanged"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
@@ -19,144 +19,188 @@
     
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
     <Grid x:Name="LayoutRoot" Style="{StaticResource LayoutGrid}">
-        <phone:Panorama x:Name="RatingPanorama" Margin="0,6,0,0">
-            <phone:Panorama.TitleTemplate>
-                <DataTemplate>
-                    <TextBlock Style="{StaticResource h}" Text="Рейтинг ВолГУ" />
-                </DataTemplate>
-            </phone:Panorama.TitleTemplate>
-            
-            <phone:PanoramaItem x:Name="SubjectsPanoramaItem" Header="предметы">
-                <ListBox x:Name="SubjectsListBox"
+
+        <Grid x:Name="VerticalState">
+            <phone:Panorama x:Name="RatingPanorama" Margin="0,6,0,0">
+                <phone:Panorama.TitleTemplate>
+                    <DataTemplate>
+                        <TextBlock Style="{StaticResource h}" Text="Рейтинг" />
+                    </DataTemplate>
+                </phone:Panorama.TitleTemplate>
+
+                <phone:PanoramaItem x:Name="SubjectsPanoramaItem" Header="Предметы">
+                    <ListBox x:Name="SubjectsListBox"
                          ItemsSource="{Binding Subjects}"
                          ItemContainerStyle="{StaticResource SubjectItemStyle}"
                          SelectionChanged="SubjectsListBox_OnSelectionChanged">
-                </ListBox>
-            </phone:PanoramaItem>
+                    </ListBox>
+                </phone:PanoramaItem>
 
-            <phone:PanoramaItem x:Name="GroupRatingPanoramaItem" Header="группы">
-                <ListBox x:Name="GroupRatingListBox"
+                <phone:PanoramaItem x:Name="GroupRatingPanoramaItem" Header="Группы">
+                    <ListBox x:Name="GroupRatingListBox"
                          ItemsSource="{Binding RatingOfGroupForView}"
                          SelectionChanged="GroupRatingListBox_OnSelectionChanged"
                          SelectionMode="Single">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            <Setter Property="Margin" Value="0,0,0,0"/>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Margin" Value="0,0,0,0"/>
 
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListBoxItem">
-                                        <Grid>
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup x:Name="GroupStateGroup">
-                                                    <VisualState x:Name="Normal"/>
-                                                    <VisualState x:Name="Selected">
-                                                        <Storyboard>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Zachetka" Storyboard.TargetProperty="FontFamily" Duration="0">
-                                                                <DiscreteObjectKeyFrame Value="{StaticResource PhoneFontFamilySemiBold}" KeyTime="0"/>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="StudentPlace" Storyboard.TargetProperty="FontFamily" Duration="0">
-                                                                <DiscreteObjectKeyFrame Value="{StaticResource PhoneFontFamilySemiBold}" KeyTime="0"/>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FirstStat" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame Value="Visible" KeyTime="0"/>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredStat" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                <DiscreteObjectKeyFrame Value="Visible" KeyTime="0"/>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Grid>
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup x:Name="GroupStateGroup">
+                                                        <VisualState x:Name="Normal"/>
+                                                        <VisualState x:Name="Selected">
+                                                            <Storyboard>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Zachetka" Storyboard.TargetProperty="FontFamily" Duration="0">
+                                                                    <DiscreteObjectKeyFrame Value="{StaticResource PhoneFontFamilySemiBold}" KeyTime="0"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="StudentPlace" Storyboard.TargetProperty="FontFamily" Duration="0">
+                                                                    <DiscreteObjectKeyFrame Value="{StaticResource PhoneFontFamilySemiBold}" KeyTime="0"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FirstStat" Storyboard.TargetProperty="Visibility" Duration="0">
+                                                                    <DiscreteObjectKeyFrame Value="Visible" KeyTime="0"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredStat" Storyboard.TargetProperty="Visibility" Duration="0">
+                                                                    <DiscreteObjectKeyFrame Value="Visible" KeyTime="0"/>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </VisualState>
 
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                            </Grid.RowDefinitions>
-                                            
-                                            <TextBlock x:Name="StudentPlace"
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock x:Name="StudentPlace"
                                                        Margin="0,0,15,0"
                                                        Grid.Column="0"
                                                        Text="{Binding Converter={StaticResource IncrementPlaceConverter}, ConverterParameter={StaticResource SortedRatingList}}" 
                                                        FontSize="80" 
                                                        FontFamily="{StaticResource PhoneFontFamilyLight}"/>
-                                            <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
-                                                <StackPanel Orientation="Vertical" Margin="0,0,30,0">
-                                                    <TextBlock x:Name="Zachetka" Text="{Binding Path=Student.Number}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="35" TextWrapping="NoWrap"/>
-                                                    <TextBlock x:Name="Balls" Text="{Binding Path=Total}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="25" TextWrapping="NoWrap" Opacity="0.5"/>
-                                                </StackPanel>
-                                                <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
-                                                    <Image Source="/Assets/Images/stat_icon1.png" />
-                                                    <TextBlock x:Name="BallsToNextPlace" 
+                                                <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
+                                                    <StackPanel Orientation="Vertical" Margin="0,0,30,0">
+                                                        <TextBlock x:Name="Zachetka" Text="{Binding Path=Student.Number}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="35" TextWrapping="NoWrap"/>
+                                                        <TextBlock x:Name="Balls" Text="{Binding Path=Total}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="25" TextWrapping="NoWrap" Opacity="0.5"/>
+                                                    </StackPanel>
+                                                    <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
+                                                        <Image Source="/Assets/Images/stat_icon1.png" />
+                                                        <TextBlock x:Name="BallsToNextPlace" 
                                                                Text="{Binding BallsToNextPlace}"
                                                                FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
                                                                FontSize="35" 
                                                                TextWrapping="NoWrap"/>
-                                                    <Image x:Name="CoronaPred" Source="/Assets/Images/corona_icon.png" Visibility="Collapsed"/>
-                                                </StackPanel>
-                                                <StackPanel Name="FirstStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
-                                                    <Image Source="/Assets/Images/stat_icon2.png"/>
-                                                    <TextBlock x:Name="BallsToFirstPlace" 
+                                                        <Image x:Name="CoronaPred" Source="/Assets/Images/corona_icon.png" Visibility="Collapsed"/>
+                                                    </StackPanel>
+                                                    <StackPanel Name="FirstStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
+                                                        <Image Source="/Assets/Images/stat_icon2.png"/>
+                                                        <TextBlock x:Name="BallsToFirstPlace" 
                                                                Text="{Binding BallsToFirstPlace}" 
                                                                FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
                                                                FontSize="35" 
                                                                TextWrapping="NoWrap"
                                                                VerticalAlignment="Center"/>
-                                                    <Image x:Name="CoronaFirst" Source="/Assets/Images/corona_icon.png" Visibility="Collapsed"/>
+                                                        <Image x:Name="CoronaFirst" Source="/Assets/Images/corona_icon.png" Visibility="Collapsed"/>
+                                                    </StackPanel>
                                                 </StackPanel>
-                                            </StackPanel>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
-                
-            </phone:PanoramaItem>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
 
-            <phone:PanoramaItem x:Name="StudentPanoramaItem" Header="студента">
-                <ListBox x:Name="StudentRatingListBox"
+                </phone:PanoramaItem>
+
+                <phone:PanoramaItem x:Name="StudentPanoramaItem" Header="Студента">
+                    <ListBox x:Name="StudentRatingListBox"
                          ItemsSource="{Binding RatingOfStudent}"
                          ItemContainerStyle="{StaticResource ListBoxContainer}"
                          SelectionChanged="SubjectsListBox_OnSelectionChanged">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock x:Name="Balls" Text="{Binding Total, Converter={StaticResource TotalConverter}}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock x:Name="Balls" Text="{Binding Total, Converter={StaticResource TotalConverter}}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
                                            FontSize="60" TextWrapping="NoWrap" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" Padding="0,0,10,0"/>
-                                <TextBlock x:Name="SubjectTypeStd" TextWrapping="Wrap" Text="{Binding Path=Subject.Type, Converter={StaticResource SubjectTypeConverter}}"
+                                    <TextBlock x:Name="SubjectTypeStd" TextWrapping="Wrap" Text="{Binding Path=Subject.Type, Converter={StaticResource SubjectTypeConverter}}"
                                            Style="{StaticResource LbItem2NdLevel}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" Margin="0,-10,0,0"/>
-                                <TextBlock x:Name="SubjNameStd" Text="{Binding Path=Subject.Name}" FontFamily="{StaticResource PhoneFontFamilySemiLight}"
+                                    <TextBlock x:Name="SubjNameStd" Text="{Binding Path=Subject.Name}" FontFamily="{StaticResource PhoneFontFamilySemiLight}"
                                            FontSize="25" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
-                            </Grid>
-                        </DataTemplate>
-                        
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </phone:PanoramaItem>
-            
-            
-        </phone:Panorama>
-    </Grid>
+                                </Grid>
+                            </DataTemplate>
 
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </phone:PanoramaItem>
+
+
+            </phone:Panorama>
+        </Grid>
+
+
+        <Grid x:Name="HorizontalState" Visibility="Collapsed" >
+            <ListBox x:Name="DetailedStudentRatingListBox"
+                     ItemsSource="{Binding RatingOfStudent}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Border x:Name="SubjectBorder" BorderThickness="1" BorderBrush="White" Width="291" Height="Auto">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="SubjectName" Text="{Binding Path=Subject.Name}" VerticalAlignment="Center"  TextWrapping="Wrap" Style="{StaticResource LbItemTitle}"/>
+                                <TextBlock x:Name="SubjectType" Text="{Binding Path=Subject.Type, Converter={StaticResource SubjectTypeConverter}}" 
+                                            Style="{StaticResource LbItem2NdLevel}" HorizontalAlignment="Right" Margin="5"/>
+                            </StackPanel>
+                        </Border>
+                                <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                                    <TextBlock x:Name="Att1" Text="{Binding Att1}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                                <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                                    <TextBlock x:Name="Att2" Text="{Binding Att2}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                                <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                                    <TextBlock x:Name="Att3" Text="{Binding Att3}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                                <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                                    <TextBlock x:Name="Sum" Text="{Binding Sum}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                                <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                                    <TextBlock x:Name="Exam" Text="{Binding Exam}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                                <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                                    <TextBlock x:Name="Total" Text="{Binding Total, Converter={StaticResource TotalConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                            </StackPanel>
+                    
+                    
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+    
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+        <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Assets/Images/AppBar/favs.addto.png" Text="избранное" Click="ApplicationBarIconButton_OnClick"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
+    
     
 </phone:PhoneApplicationPage>

@@ -6,7 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 using Windows.Devices.Sensors;
 using Windows.Foundation.Metadata;
 using RatingVolsuAPI;
@@ -134,6 +137,41 @@ namespace RatingVolsuWP8
                 return total.Substring(0, total.IndexOf('('));
             }
             return total;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public  class  RatingTypeToImageConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var type = ((FavoritesItem)value).Type;
+
+            if (type == RatingType.RatingOfStudent)
+            {
+                var uri = new Uri("/RatingVolsuWP8;component/Assets/Images/student_mini", UriKind.Relative);
+                StreamResourceInfo resourceInfo = Application.GetResourceStream(uri);
+
+                var bmp = new BitmapImage();
+                bmp.SetSource(resourceInfo.Stream);
+                return bmp;
+            }
+            else
+            {
+                var uri = new Uri("/RatingVolsuWP8;component/Assets/Images/group_mini", UriKind.Relative);
+                StreamResourceInfo resourceInfo = Application.GetResourceStream(uri);
+
+                var bmp = new BitmapImage();
+                bmp.SetSource(resourceInfo.Stream);
+                return bmp;
+            }
+            return null;
+            
+
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
