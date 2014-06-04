@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -20,6 +22,12 @@ namespace RatingVolsuWP8
             InitializeComponent();
             _viewModel = new RatingViewModel();
             DataContext = _viewModel;
+        }
+
+        protected override void OnBackKeyPress(CancelEventArgs e)
+        {
+            base.OnBackKeyPress(e);
+            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -49,7 +57,6 @@ namespace RatingVolsuWP8
                     {
                         await _viewModel.GetWebRatingOfStudent(reqManip);
                         App.ProgressIndicator.IsVisible = false;
-                        ApplicationBar.IsVisible = true;
                     }
                     else
                     {
@@ -61,13 +68,12 @@ namespace RatingVolsuWP8
                 }
                 else
                 {
+                    StudentPanoramaItem.Visibility = Visibility.Collapsed;
                     App.InitProgressIndicator(true, "Загрузка рейтинга группы...", this);
                     if (await App.IsInternetAvailable())
                     {
                         await _viewModel.GetWebRatingOfGroup(reqManip);
-                        App.ProgressIndicator.IsVisible = false; 
-                        ApplicationBar.IsVisible = true;
-                        
+                        App.ProgressIndicator.IsVisible = false;
                     }
                     else
                     {
@@ -95,89 +101,77 @@ namespace RatingVolsuWP8
                 var selectedItem = subjLb.SelectedItem as Rating;
                 if (selectedItem == null) 
                     return;
-                if (!_viewModel.SetStatisticForRating(selectedItem))
+                _viewModel.SetStatisticForRating(selectedItem);
+                _viewModel.RequestManipForStudent = new RequestByStudent()
                 {
-                    //TODO не показывать статистику, показать короны)
+                    FacultId = _viewModel.RequestManip.FacultId,
+                    GroupId = _viewModel.RequestManip.GroupId,
+                    Semestr = _viewModel.RequestManip.Semestr,
+                    StudentId = selectedItem.Student.Id
+                };
+                if (StudentPanoramaItem.Visibility == Visibility.Collapsed)
+                    StudentPanoramaItem.Visibility = Visibility.Visible;
+                App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
+                if (await App.IsInternetAvailable())
+                {
+                    await _viewModel.GetWebRatingOfStudent(_viewModel.RequestManipForStudent);
+                    App.ProgressIndicator.IsVisible = false;
+                    SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
                 }
-                
-                await _viewModel.GetWebRatingOfStudent(_viewModel.RequestManip);
+                else
+                {
+                    App.ProgressIndicator.IsVisible = false;
+                    MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
+                    return;
+                }
+               
             }
         }
         #endregion
 
         private void ApplicationBarIconButton_OnClick(object sender, EventArgs e)
         {
+
+        }
+
+        private Rating Head;
+        private void RatingPage_OnOrientationChanged(object sender, OrientationChangedEventArgs e)
+        {
             if (_viewModel.RequestManipForStudent != null)
             {
-                ApplicationBar.Buttons.Clear();
-                var addFavoritesByGroup =
-                    new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/groupAppBar.png", UriKind.Relative));
-                addFavoritesByGroup.Text = "Группа";
-                addFavoritesByGroup.Click += ApplicationBarGroupButton_OnClick;
-                ApplicationBar.Buttons.Add(addFavoritesByGroup);
-
-                var addFavoritesByStudent =
-                    new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/studentAppBar.png", UriKind.Relative));
-                addFavoritesByStudent.Text = "Студент";
-                addFavoritesByStudent.Click += ApplicationBarStudentButton_OnClick;
-                ApplicationBar.Buttons.Add(addFavoritesByStudent);
-            }
-            else
-            {
-                if (!_viewModel.CheckFavorites(false))
-                    MessageBox.Show("Запись уже находится в избранном");
-                else
-                    ShowCustumMessageBox(false);
-            }
-        }
-
-        private void ShowCustumMessageBox(bool p)
-        {
-            var textBox = new TextBox()
-            {
-                Width = 300
-            };
-            var cmBox = new CustomMessageBox()
-            {
-                Message = "Введите имя",
-                Content = textBox,
-                LeftButtonContent = "ok",
-                RightButtonContent = "закрыть"
-
-            };
-            cmBox.Dismissed += (s1, e1) =>
-            {
-                switch (e1.Result)
+                if (e.Orientation == PageOrientation.LandscapeRight || e.Orientation == PageOrientation.LandscapeLeft)
                 {
-                    case CustomMessageBoxResult.LeftButton:
-                        _viewModel.SaveFavorites(p, textBox.Text);
-                        NavigationService.Navigate(new Uri("/MainPage.xaml?tofavorites=true", UriKind.Relative));
-                        break;
-                    default: break;
+                    VerticalState.Visibility = Visibility.Collapsed;
+                    HorizontalState.Visibility = Visibility.Visible;
+                    SystemTray.IsVisible = false;
+                    if (Head == null)
+                    {
+                        Head = new Rating
+                        {
+                            Subject = new Subject()
+                            {
+                                Name = "ПРЕДМЕТЫ"
+                            },
+                            Att1 = "1 модуль",
+                            Att2 = "2 модуль",
+                            Att3 = "3 модуль",
+                            Sum = "сумма",
+                            Exam = "экзамен",
+                            Total = "итог"
+                        };
+                        _viewModel.RatingOfStudent.Insert(0,Head);
+                    }
+                    
                 }
-            };
-
-            cmBox.Show();
-        }
-
-
-        private void ApplicationBarGroupButton_OnClick(object sender, EventArgs e)
-        {
-            ApplicationBar.Buttons.Clear();
-            if (!_viewModel.CheckFavorites(false))
-                MessageBox.Show("Запись уже находится в избранном");
-            else
-                ShowCustumMessageBox(false);
-        }
-
-        private void ApplicationBarStudentButton_OnClick(object sender, EventArgs e)
-        {
-            ApplicationBar.Buttons.Clear();
-            if (!_viewModel.CheckFavorites(true))
-                MessageBox.Show("Запись уже находится в избранном");
-            else
-                ShowCustumMessageBox(true);
-
+                else
+                {
+                    if (_viewModel.RatingOfStudent.Contains(Head))
+                        _viewModel.RatingOfStudent.Remove(Head);
+                    VerticalState.Visibility = Visibility.Visible;
+                    HorizontalState.Visibility = Visibility.Collapsed;
+                    SystemTray.IsVisible = true;
+                }
+            }
         }
     }
 }
