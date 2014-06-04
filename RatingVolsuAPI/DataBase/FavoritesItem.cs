@@ -123,15 +123,17 @@ namespace RatingVolsuAPI
 
         #endregion
 
+        public string _name;
+        [Column]
         public string Name
         {
-            get
+            get { return _name; }
+            set
             {
-                if (Type == RatingType.RatingOfGroup)
-                    return "Группа " + Group.Name;
-                return "Студент " + Student.Number;
+                NotifyPropertyChanging("Name");
+                _name = value;
+                RaisePropertyChanged("Name");
             }
-            private set { }
         }
 
         public string SubName
@@ -139,8 +141,8 @@ namespace RatingVolsuAPI
             get
             {
                 if (Type == RatingType.RatingOfGroup)
-                    return "Семестр " + Semestr;
-                return "Группа " + Student.Group.Name + " Семестр " + Semestr;
+                    return Group.Name+" Семестр " + Semestr;
+                return Student.Group.Name + " Семестр " + Semestr + " " + Student.Number;
             }
             private set { }
         }

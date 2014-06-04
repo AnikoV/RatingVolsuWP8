@@ -33,7 +33,7 @@ namespace RatingVolsuWP8
         {
             base.OnNavigatedTo(e);
             // Парсим мод
-            string mode;
+            string mode, templateId;
             if (NavigationContext.QueryString.TryGetValue("mode", out mode))
             {
                 _viewModel.CurrentInputMode = (InputDataMode) Enum.Parse(typeof (InputDataMode), mode);
@@ -41,16 +41,18 @@ namespace RatingVolsuWP8
             //Парсим тип рейтинга инициализируем тип запроса
             string type;
             if(NavigationContext.QueryString.TryGetValue("type", out type))
-            {
                 _viewModel.CurrentRatingType = (RatingType)Enum.Parse(typeof(RatingType), type);
-                if (_viewModel.CurrentRatingType == RatingType.RatingOfStudent)
-                {
-                    _viewModel.RequestManip = new RequestByStudent();
-                }
-                else
-                {
-                    _viewModel.RequestManip = new RequestByGroup();
-                }
+            else
+                if (NavigationContext.QueryString.TryGetValue("templateId", out templateId))
+                    _viewModel.GetFavoriteItem(templateId);
+                    
+            if (_viewModel.CurrentRatingType == RatingType.RatingOfStudent)
+            {
+                _viewModel.RequestManip = new RequestByStudent();
+            }
+            else
+            {
+                _viewModel.RequestManip = new RequestByGroup();
             }
             App.InitProgressIndicator(true,"Загрузка институтов...",this);
             if (await App.IsInternetAvailable())
@@ -211,18 +213,43 @@ namespace RatingVolsuWP8
                     NavigationService.Navigate(new Uri(String.Format("/Pages/RatingPage.xaml?type={0}",_viewModel.CurrentRatingType), UriKind.Relative), _viewModel.RequestManip);
                     break;
                 case InputDataMode.AddTemplate:
-                    //Todo добавить шаблон и вернуться на список шаблонов
-                    using (var ratingDb = new RatingDatabase(App.DbConnectionString))
-                    {
-                        ratingDb.SaveFavorites(_viewModel.RequestManip);
-                        NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
-                    }
+                    ShowCustumMessageBox();
                     break;
                 case InputDataMode.EditTemplate:
-                    //Todo изменить шаблон и вернуться на список шаблонов
+                    _viewModel.EditFavorites();
+                    NavigationService.Navigate(new Uri("/MainPage.xaml?tofavorites=true", UriKind.Relative));
                     break;
             }
             //Todo запрос на рейтинг и переход на страницу рейтинга
+        }
+
+        private void ShowCustumMessageBox()
+        {
+            var textBox = new TextBox()
+            {
+                Width = 300
+            };
+            var cmBox = new CustomMessageBox()
+            {
+                Message = "Введите имя",
+                Content = textBox,
+                LeftButtonContent = "ok",
+                RightButtonContent = "закрыть"
+
+            };
+            cmBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        _viewModel.SaveFavorites(textBox.Text);
+                        NavigationService.Navigate(new Uri("/MainPage.xaml?tofavorites=true", UriKind.Relative));
+                        break;
+                    default: break;
+                }
+            };
+
+            cmBox.Show();
         }
 
         #endregion

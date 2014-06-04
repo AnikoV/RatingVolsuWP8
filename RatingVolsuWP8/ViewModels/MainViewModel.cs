@@ -11,6 +11,7 @@ namespace RatingVolsuWP8
     public class MainViewModel : PropertyChangedBase
     {
         public string VolsuReview { get; set; }
+        private RatingDatabase ratingDb = new RatingDatabase(App.DbConnectionString);
         public ObservableCollection<FavoritesItem> FavoritesList { get; set; }
         public MainViewModel()
         {
@@ -19,10 +20,16 @@ namespace RatingVolsuWP8
         }
         public void GetFavoritesFromDb()
         {
-            using (var ratingDb = new  RatingDatabase(App.DbConnectionString))
+            FavoritesList = new ObservableCollection<FavoritesItem>(from FavoritesItem item in ratingDb.Favorites select item);
+        }
+
+        internal void DeleteFavoriteItems(System.Collections.IList selectedCollection)
+        {
+            foreach (var favoritesItem in selectedCollection)
             {
-                FavoritesList = new ObservableCollection<FavoritesItem>(from FavoritesItem item in ratingDb.Favorites select item);
+                ratingDb.DeleteFavorites((FavoritesItem)favoritesItem);
             }
+            FavoritesList = new ObservableCollection<FavoritesItem>(from FavoritesItem item in ratingDb.Favorites select item);
         }
     }
 }

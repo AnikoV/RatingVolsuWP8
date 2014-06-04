@@ -107,29 +107,77 @@ namespace RatingVolsuWP8
 
         private void ApplicationBarIconButton_OnClick(object sender, EventArgs e)
         {
-            ApplicationBar.Buttons.RemoveAt(0);
-            var addFavoritesByGroup =
-                new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/groupAppBar.png", UriKind.Relative));
-            addFavoritesByGroup.Text = "Группа";
-            addFavoritesByGroup.Click += ApplicationBarGroupButton_OnClick;
-            ApplicationBar.Buttons.Add(addFavoritesByGroup);
+            if (_viewModel.RequestManipForStudent != null)
+            {
+                ApplicationBar.Buttons.Clear();
+                var addFavoritesByGroup =
+                    new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/groupAppBar.png", UriKind.Relative));
+                addFavoritesByGroup.Text = "Группа";
+                addFavoritesByGroup.Click += ApplicationBarGroupButton_OnClick;
+                ApplicationBar.Buttons.Add(addFavoritesByGroup);
 
-            var addFavoritesByStudent =
-                new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/studentAppBar.png", UriKind.Relative));
-            addFavoritesByStudent.Text = "Студент";
-            addFavoritesByStudent.Click += ApplicationBarStudentButton_OnClick;
-            ApplicationBar.Buttons.Add(addFavoritesByStudent);
+                var addFavoritesByStudent =
+                    new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/studentAppBar.png", UriKind.Relative));
+                addFavoritesByStudent.Text = "Студент";
+                addFavoritesByStudent.Click += ApplicationBarStudentButton_OnClick;
+                ApplicationBar.Buttons.Add(addFavoritesByStudent);
+            }
+            else
+            {
+                if (!_viewModel.CheckFavorites(false))
+                    MessageBox.Show("Запись уже находится в избранном");
+                else
+                    ShowCustumMessageBox(false);
+            }
+        }
+
+        private void ShowCustumMessageBox(bool p)
+        {
+            var textBox = new TextBox()
+            {
+                Width = 300
+            };
+            var cmBox = new CustomMessageBox()
+            {
+                Message = "Введите имя",
+                Content = textBox,
+                LeftButtonContent = "ok",
+                RightButtonContent = "закрыть"
+
+            };
+            cmBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        _viewModel.SaveFavorites(p, textBox.Text);
+                        NavigationService.Navigate(new Uri("/MainPage.xaml?tofavorites=true", UriKind.Relative));
+                        break;
+                    default: break;
+                }
+            };
+
+            cmBox.Show();
         }
 
 
         private void ApplicationBarGroupButton_OnClick(object sender, EventArgs e)
         {
             ApplicationBar.Buttons.Clear();
+            if (!_viewModel.CheckFavorites(false))
+                MessageBox.Show("Запись уже находится в избранном");
+            else
+                ShowCustumMessageBox(false);
         }
 
         private void ApplicationBarStudentButton_OnClick(object sender, EventArgs e)
         {
             ApplicationBar.Buttons.Clear();
+            if (!_viewModel.CheckFavorites(true))
+                MessageBox.Show("Запись уже находится в избранном");
+            else
+                ShowCustumMessageBox(true);
+
         }
     }
 }

@@ -16,7 +16,8 @@ namespace RatingVolsuWP8
         public RatingType CurrentRatingType;
         public RequestManipulation RequestManip;
         private readonly RequestManager _requestManager;
-
+        public FavoritesItem CurrentFavoritesItem;
+        private RatingDatabase ratingDb;
         //Collections
         public ObservableCollection<Facult> Facults { get; set; }
         public ObservableCollection<Group> Groups { get; set; }
@@ -30,6 +31,7 @@ namespace RatingVolsuWP8
             Students = new ObservableCollection<Student>();
             Semesters = new ObservableCollection<Semester>();
             _requestManager = new RequestManager();
+            ratingDb = new RatingDatabase(App.DbConnectionString);
         }
 
         #region Requests
@@ -71,6 +73,27 @@ namespace RatingVolsuWP8
                 Debug.WriteLine(item);
             }
             return list;
+        }
+
+        internal void GetFavoriteItem(string itemId)
+        {
+            CurrentFavoritesItem = ratingDb.GetFavoritesItem(Convert.ToInt32(itemId));
+            CurrentRatingType = CurrentFavoritesItem.Type;
+        }
+
+        internal void EditFavorites()
+        {
+            FavoritesItem favoritesItem = (from FavoritesItem item in ratingDb.Favorites where item == CurrentFavoritesItem select item).FirstOrDefault();
+            if (favoritesItem != null)
+            {
+                favoritesItem.Semestr = RequestManip.Semestr;
+                ratingDb.SubmitChanges();
+            }
+        }
+
+        internal void SaveFavorites(string name)
+        {
+            ratingDb.SaveFavorites(RequestManip, name);
         }
     }
 }

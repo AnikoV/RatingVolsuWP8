@@ -31,6 +31,12 @@ namespace RatingVolsuWP8
             RatingTypePivot.Focus();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            string goToFavorites;
+            if (NavigationContext.QueryString.TryGetValue("tofavorites", out goToFavorites))
+                MainPivot.SelectedItem = MainPivot.Items[1];
+        }
         #region AppBar
 
         #region MainAppBar
@@ -137,12 +143,12 @@ namespace RatingVolsuWP8
         {
             if (FavotitesMultiselectList.SelectedItems.Count == 1)
             {
-                var collection = FavotitesMultiselectList.SelectedItems as List<FavoritesItem>;
+                var collection = FavotitesMultiselectList.SelectedItems;
                 if (collection != null)
                 {
-                    var item = collection.First();
+                    var item = (FavoritesItem)collection[0];
                     NavigationService.Navigate(
-                    new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}templateId={1}", InputDataMode.EditTemplate, item.Id), UriKind.Relative));
+                    new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}&templateId={1}", InputDataMode.EditTemplate, item.Id), UriKind.Relative));
                 }
             }
         }
@@ -151,14 +157,41 @@ namespace RatingVolsuWP8
         {
             if (FavotitesMultiselectList.SelectedItems.Count > 0)
             {
-                var selectedCollection = FavotitesMultiselectList.SelectedItems as List<FavoritesItem>;
+                var selectedCollection = FavotitesMultiselectList.SelectedItems;
                 if (selectedCollection != null)
                 {
-                    //Todo удалить из _viewModel.FavoritesItems выделенные элементы
-                    //Todo удалить из базы данных
+                    ShowDeliteMessageBox(selectedCollection);
+                    
                 }
             }
             
+        }
+
+        private void ShowDeliteMessageBox(System.Collections.IList selectedCollection)
+        {
+            var textBox = new TextBox()
+            {
+                Width = 300
+            };
+            var cmBox = new CustomMessageBox()
+            {
+                Message = "Удалить выделенные элементы?",
+                LeftButtonContent = "Да",
+                RightButtonContent = "Отмена"
+
+            };
+            cmBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        _viewModel.DeleteFavoriteItems(selectedCollection);
+                        break;
+                    default: break;
+                }
+            };
+
+            cmBox.Show();
         }
 
         #endregion
@@ -171,7 +204,7 @@ namespace RatingVolsuWP8
 
         private void FavotitesMultiselectList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            UpdateSelectionAppBar();
+           UpdateSelectionAppBar();
         }
 
         private void FavotitesMultiselectList_OnIsSelectionEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -256,7 +289,7 @@ namespace RatingVolsuWP8
             var item = ((FrameworkElement)sender).DataContext as FavoritesItem;
             if (item != null)
                 NavigationService.Navigate(
-                    new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}templateId={1}", InputDataMode.UseTemplate, item.Id), UriKind.Relative));
+                    new Uri(String.Format("/Pages/RatingPage.xaml?favoriteItemId={0}", item.Id), UriKind.Relative));
         }
 
         /// <summary>
@@ -320,5 +353,7 @@ namespace RatingVolsuWP8
                 ApplicationBar.IsVisible = true;
             }
         }
+
+        
     }
 }

@@ -130,5 +130,15 @@ namespace RatingVolsuWP8
 
             return true;
         }
+
+        internal void SaveFavorites(bool p, string name)
+        {
+            _ratingDb.SaveFavorites(p ? RequestManipForStudent : RequestManip, name);
+        }
+
+        public bool CheckFavorites(bool p)
+        {
+            return _ratingDb.CheckFavorites(p ? RequestManipForStudent : RequestManip);
+        }
     }
 }

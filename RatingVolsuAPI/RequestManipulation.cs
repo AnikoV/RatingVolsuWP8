@@ -21,7 +21,7 @@ namespace RatingVolsuAPI
 
         public abstract ObservableCollection<Rating> LoadRatingFromDb();
 
-        public abstract FavoritesItem GetFavorites();
+        public abstract FavoritesItem GetFavorites(string name);
     }
 
     public class RequestByGroup : RequestManipulation
@@ -98,10 +98,11 @@ namespace RatingVolsuAPI
             return s;
         }
 
-        public override FavoritesItem GetFavorites()
+        public override FavoritesItem GetFavorites(string name)
         {
             return new FavoritesItem()
             {
+                Name = name,
                 GroupId = GroupId,
                 Semestr = Semestr,
                 Type = RatingType.RatingOfGroup
@@ -143,10 +144,11 @@ namespace RatingVolsuAPI
             return s;
         }
 
-        public override FavoritesItem GetFavorites()
+        public override FavoritesItem GetFavorites(string name)
         {
             return new FavoritesItem()
             {
+                Name = name,
                 GroupId = GroupId,
                 Semestr = Semestr,
                 Type = RatingType.RatingOfStudent,

@@ -88,23 +88,29 @@ namespace RatingVolsuAPI
             return ratingCollection;
         }
 
-        public bool SaveFavorites(RequestManipulation request)
+        public bool CheckFavorites(RequestManipulation request)
         {
-            var favorites = request.GetFavorites();
             FavoritesItem favoritesItem;
-            if (favorites.Type == RatingType.RatingOfGroup)
-                 favoritesItem = (from FavoritesItem item in Favorites
-                                 select item).FirstOrDefault(x => x.GroupId == favorites.GroupId &&
-                                                                  x.Semestr == favorites.Semestr);
-            else
+            if (request.GetType() == typeof(RequestByGroup))
                 favoritesItem = (from FavoritesItem item in Favorites
-                                 select item).FirstOrDefault(x => x.StudentId == favorites.StudentId &&
-                                                                      x.Semestr == favorites.Semestr);
+                    select item).FirstOrDefault(x => x.GroupId == request.GroupId &&
+                                                     x.Semestr == request.Semestr);
+            else
+            {
+                var req = (RequestByStudent) request;
+                favoritesItem = (from FavoritesItem item in Favorites
+                    select item).FirstOrDefault(x => x.StudentId == req.StudentId &&
+                                                     x.Semestr == req.Semestr);
+            }
             if (favoritesItem != null)
                 return false;
+            return true;
+        }
+        public void SaveFavorites(RequestManipulation request, string name)
+        {
+            var favorites = request.GetFavorites(name);
             Favorites.InsertOnSubmit(favorites);
             SubmitChanges();
-            return true;
         }
 
         public void DeleteFavorites(FavoritesItem favoritesItem)
