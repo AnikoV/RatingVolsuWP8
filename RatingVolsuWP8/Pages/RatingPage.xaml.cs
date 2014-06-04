@@ -204,6 +204,7 @@ namespace RatingVolsuWP8
                 MessageBox.Show("Запись уже находится в избранном");
             else
                 ShowCustumMessageBox(true);
+        }
 
         private Rating Head;
         private void RatingPage_OnOrientationChanged(object sender, OrientationChangedEventArgs e)
