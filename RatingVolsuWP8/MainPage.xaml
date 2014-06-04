@@ -50,7 +50,7 @@
                 </Grid.RowDefinitions>
 
                 <toolkit:ContextMenuService.ContextMenu>
-                    <toolkit:ContextMenu IsZoomEnabled="false">
+                    <toolkit:ContextMenu IsZoomEnabled="true">
                         <toolkit:MenuItem Header="Удалить" Click="DeleteFavorite"/>
                         <toolkit:MenuItem Header="Выделить" Click="SelectFavorite"/>
                         <toolkit:MenuItem Header="Редактировать" Click="EditFavorite"/>

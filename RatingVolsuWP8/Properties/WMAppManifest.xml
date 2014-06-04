@@ -5,7 +5,7 @@
     <Language code="ru" />
     <Language code="ru-RU" />
   </Languages>
-  <App xmlns="" ProductID="{bc438189-9c94-461a-b6c1-6161d05eb16a}" Title="RatingVolsuWP8" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Анищенко Владимир и Васюра Анастасия" Description="Sample description" Publisher="Анищенко Владимир и Васюра Анастасия" PublisherID="{ece78c3e-50ce-4ddc-81e0-d5c25a239ff5}">
+  <App xmlns="" ProductID="{bc438189-9c94-461a-b6c1-6161d05eb16a}" Title="Рейтинг ВолГУ" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Анищенко Владимир и Васюра Анастасия" Description="Приложения для просмотра успеваемости студентов Волгоградского Государственного Университета" Publisher="Анищенко Владимир и Васюра Анастасия" PublisherID="{ece78c3e-50ce-4ddc-81e0-d5c25a239ff5}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -23,17 +23,21 @@
           <SmallImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileSmall.png</SmallImageURI>
           <Count>0</Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileMedium.png</BackgroundImageURI>
-          <Title>RatingVolsuWP8</Title>
+          <Title>Рейтинг ВолГУ</Title>
           <BackContent>
           </BackContent>
           <BackBackgroundImageURI>
           </BackBackgroundImageURI>
           <BackTitle>
           </BackTitle>
+          <LargeBackgroundImageURI IsRelative="true" IsResource="false">
+          </LargeBackgroundImageURI>
+          <LargeBackContent />
+          <LargeBackBackgroundImageURI IsRelative="true" IsResource="false">
+          </LargeBackBackgroundImageURI>
           <DeviceLockImageURI>
           </DeviceLockImageURI>
-          <HasLarge>
-          </HasLarge>
+          <HasLarge>True</HasLarge>
         </TemplateFlip>
       </PrimaryToken>
     </Tokens>

@@ -227,19 +227,6 @@
         </Setter>
     </Style>
 
-    <Style TargetType="ListBoxItem" x:Key="StudentRatingItemStyle">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="Margin" Value="0,0,0,12"/>
-
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ListBoxItem">
-                    
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style TargetType="TextBlock" x:Key="h">
         <Setter Property="FontSize" Value="90"/>
         <Setter Property="Foreground" Value="White"/>

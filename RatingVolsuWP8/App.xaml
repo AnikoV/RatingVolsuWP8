@@ -21,6 +21,7 @@
             <rating:IncrementPlaceConverter x:Key="IncrementPlaceConverter"/>
             <rating:SubjectTypeConverter x:Key="SubjectTypeConverter"/>
             <rating:TotalConverter x:Key="TotalConverter"/>
+            <rating:RatingTypeToImageConverter x:Key="RatingTypeToImageConverter"/>
             
         </ResourceDictionary>
         
