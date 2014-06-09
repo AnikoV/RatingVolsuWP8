@@ -117,10 +117,9 @@ namespace RatingVolsuWP8
                     _viewModel.Semesters.Clear(); _viewModel.Students.Clear();
                     #region Generate Semesters
 
-                    var selectedGroupName = _viewModel.Groups[selectedIndex].Name;
                     _viewModel.RequestManip.GroupId = _viewModel.Groups[selectedIndex].Id;
 
-                    int introYear = Convert.ToInt32(selectedGroupName.Substring(selectedGroupName.Length - 3, 2));
+                    int introYear = Convert.ToInt32(_viewModel.Groups[selectedIndex].Year);
                     var semesterList = await _viewModel.GetSemestrList(_viewModel.RequestManip.GroupId);
                     int temp = introYear;
                     _viewModel.Semesters.Clear();
@@ -128,36 +127,16 @@ namespace RatingVolsuWP8
                     for (int i = 0; i < semesterList.Count; i++)
                     {
                         Semester semestr;
-                        if (temp < 9)
+                        semestr = new Semester
                         {
-                            semestr = new Semester
-                            {
-                                Number = semesterList[i] + " семестр",
-                                YearsPeriod = String.Format("200{0} - 200{1}", temp, temp + 1)
-                            };
-                        }
-                        else if (temp == 9)
-                        {
-                            semestr = new Semester
-                            {
-                                Number = semesterList[i] + " семестр",
-                                YearsPeriod = String.Format("200{0} - 20{1}", temp, temp + 1)
-                            };
-                        }
-                        else
-                        {
-                            semestr = new Semester
-                            {
-                                Number = semesterList[i] + " семестр",
-                                YearsPeriod = String.Format("20{0} - 20{1}", temp, temp + 1)
-                            };
-                        }
-
-
+                            Number = semesterList[i],
+                            YearsPeriod = String.Format("{0} - {1}", temp, temp + 1)
+                        };
+                        
                         if (i%2 != 0)
                             temp++;
 
-                        Debug.WriteLine(String.Format("Semestr: " + semestr.Number + " | " + semestr.YearsPeriod));
+                        Debug.WriteLine(String.Format("Semestr: " + semestr.NumberText + " | " + semestr.YearsPeriod));
                         _viewModel.Semesters.Add(semestr);
                     }
 
@@ -183,7 +162,7 @@ namespace RatingVolsuWP8
             var SelectedIndex = SemestrListBox.SelectedIndex;
             if (SelectedIndex == -1) 
                 return;
-            _viewModel.RequestManip.Semestr = (SelectedIndex + 1).ToString();
+            _viewModel.RequestManip.Semestr = _viewModel.Semesters[SelectedIndex].Number;
             if (_viewModel.RequestManip.GetType() == typeof(RequestByStudent))
             {
                 ApplicationBar.IsVisible = false;
@@ -230,11 +209,13 @@ namespace RatingVolsuWP8
             switch (_viewModel.CurrentInputMode)
             {
                 case InputDataMode.Standart:
-                    //Todo уходим на рейтинг
                     NavigationService.Navigate(new Uri(String.Format("/Pages/RatingPage.xaml?type={0}",_viewModel.CurrentRatingType), UriKind.Relative), _viewModel.RequestManip);
                     break;
                 case InputDataMode.AddTemplate:
-                    ShowCustumMessageBox();
+                    if (!_viewModel.CheckFavorites())
+                        MessageBox.Show("Запись уже находится в избранном");
+                    else
+                        ShowCustumMessageBox();
                     break;
                 case InputDataMode.EditTemplate:
                     _viewModel.EditFavorites();
@@ -248,14 +229,15 @@ namespace RatingVolsuWP8
         {
             var textBox = new TextBox()
             {
-                Width = 300
+                Width = 300,
+                HorizontalAlignment = HorizontalAlignment.Left
             };
             var cmBox = new CustomMessageBox()
             {
-                Message = "Введите имя",
+                Message = "Введите название",
                 Content = textBox,
-                LeftButtonContent = "ok",
-                RightButtonContent = "закрыть"
+                LeftButtonContent = "Оk",
+                RightButtonContent = "Закрыть"
 
             };
             cmBox.Dismissed += (s1, e1) =>
@@ -264,7 +246,19 @@ namespace RatingVolsuWP8
                 {
                     case CustomMessageBoxResult.LeftButton:
                         _viewModel.SaveFavorites(textBox.Text);
-                        NavigationService.Navigate(new Uri("/MainPage.xaml?tofavorites=true", UriKind.Relative));
+                        Info.ToFavoritesPivot = true;
+                        var page = App.RootFrame.Content as Page;
+                        if (page != null)
+                        {
+                            var service = page.NavigationService;
+                            int count = service.BackStack.Count() - 1;
+                            for (int i = 0; i < count; i++)
+                            {
+                                service.RemoveBackEntry();
+                            }
+                            if (service.CanGoBack)
+                                service.GoBack();
+                        }
                         break;
                     default: break;
                 }

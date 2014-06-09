@@ -29,7 +29,7 @@ namespace RatingVolsuWP8
             {
                 ratingDb.DeleteFavorites((FavoritesItem)favoritesItem);
             }
-            FavoritesList = new ObservableCollection<FavoritesItem>(from FavoritesItem item in ratingDb.Favorites select item);
+            GetFavoritesFromDb();
         }
     }
 }

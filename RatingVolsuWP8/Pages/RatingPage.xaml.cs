@@ -33,7 +33,7 @@ namespace RatingVolsuWP8
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            string type;
+            string type, tmp;
             string FavItemId;
             RequestManipulation reqManip;
             if (NavigationContext.QueryString.TryGetValue("favoriteItemId", out FavItemId))
@@ -46,46 +46,46 @@ namespace RatingVolsuWP8
                 reqManip = NavigationService.GetNavigationData() as RequestManipulation;
             }
             _viewModel.GetRatingFromDb(reqManip);
-            if(NavigationContext.QueryString.TryGetValue("type", out type))
+            type = NavigationContext.QueryString.TryGetValue("type", out tmp) ? tmp : _viewModel.CurrentFavoritesItem.Type.ToString();
+
+            if (type == RatingType.RatingOfStudent.ToString())
             {
-                if (type == RatingType.RatingOfStudent.ToString())
+                SubjectsPanoramaItem.Visibility = Visibility.Collapsed;
+                GroupRatingPanoramaItem.Visibility = Visibility.Collapsed;
+                App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
+                if (await App.IsInternetAvailable())
                 {
-                    SubjectsPanoramaItem.Visibility = Visibility.Collapsed;
-                    GroupRatingPanoramaItem.Visibility = Visibility.Collapsed;
-                    App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
-                    if (await App.IsInternetAvailable())
-                    {
-                        await _viewModel.GetWebRatingOfStudent(reqManip);
-                        App.ProgressIndicator.IsVisible = false;
-                        ApplicationBar.IsVisible = true;
-                    }
-                    else
-                    {
-                        App.ProgressIndicator.IsVisible = false;
-                        MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
-                        return;
-                    }
-                    
+                    await _viewModel.GetWebRatingOfStudent(reqManip);
+                    App.ProgressIndicator.IsVisible = false;
+                    ApplicationBar.IsVisible = true;
                 }
                 else
                 {
-                    StudentPanoramaItem.Visibility = Visibility.Collapsed;
-                    App.InitProgressIndicator(true, "Загрузка рейтинга группы...", this);
-                    if (await App.IsInternetAvailable())
-                    {
-                        await _viewModel.GetWebRatingOfGroup(reqManip);
-                        App.ProgressIndicator.IsVisible = false; 
-                        ApplicationBar.IsVisible = true;
+                    App.ProgressIndicator.IsVisible = false;
+                    MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
+                    return;
+                }
+                    
+            }
+            else
+            {
+                StudentPanoramaItem.Visibility = Visibility.Collapsed;
+                App.InitProgressIndicator(true, "Загрузка рейтинга группы...", this);
+                if (await App.IsInternetAvailable())
+                {
+                    await _viewModel.GetWebRatingOfGroup(reqManip);
+                    App.ProgressIndicator.IsVisible = false; 
+                    ApplicationBar.IsVisible = true;
                         
-                    }
-                    else
-                    {
-                        App.ProgressIndicator.IsVisible = false;
-                        MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
-                        return;
-                    }
+                }
+                else
+                {
+                    App.ProgressIndicator.IsVisible = false;
+                    MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
+                    return;
                 }
             }
+            
 
         }
         #region SelectionChanges
@@ -162,14 +162,15 @@ namespace RatingVolsuWP8
         {
             var textBox = new TextBox()
             {
-                Width = 300
+                Width = 300,
+                HorizontalAlignment = HorizontalAlignment.Left
             };
             var cmBox = new CustomMessageBox()
             {
-                Message = "Введите имя",
+                Message = "Введите название",
                 Content = textBox,
-                LeftButtonContent = "ok",
-                RightButtonContent = "закрыть"
+                LeftButtonContent = "Оk",
+                RightButtonContent = "Закрыть"
 
             };
             cmBox.Dismissed += (s1, e1) =>
@@ -178,9 +179,21 @@ namespace RatingVolsuWP8
                 {
                     case CustomMessageBoxResult.LeftButton:
                         _viewModel.SaveFavorites(p, textBox.Text);
-                        NavigationService.Navigate(new Uri("/MainPage.xaml?tofavorites=true", UriKind.Relative));
+                        Info.ToFavoritesPivot = true;
+                        var page = App.RootFrame.Content as Page;
+                        if (page != null)
+                        {
+                            var service = page.NavigationService;
+                            int count = service.BackStack.Count() - 1;
+                            for (int i = 0; i < count; i++)
+                            {
+                                service.RemoveBackEntry();
+                            }
+                            if (service.CanGoBack)
+                                service.GoBack();
+                        }
                         break;
-                    default: break;
+                        default: break;
                 }
             };
 

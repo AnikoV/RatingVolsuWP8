@@ -140,7 +140,7 @@
                         </VisualStateManager.VisualStateGroups>
 
                         <TextBlock x:Name="SemesterNumberTb" 
-                                           Text="{Binding Number}" 
+                                           Text="{Binding NumberText}"
                                            Style="{StaticResource LbItemTitle}" FontSize="35"/>
                         <TextBlock x:Name="SemesterPeriod" 
                                            Text="{Binding YearsPeriod}" 

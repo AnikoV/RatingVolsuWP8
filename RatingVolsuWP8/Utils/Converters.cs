@@ -179,4 +179,21 @@ namespace RatingVolsuWP8
             throw new NotImplementedException();
         }
     }
+
+    public class RatingTypeToImgSourceConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var type = (RatingType)value;
+            if (type == RatingType.RatingOfStudent)
+                return "/Assets/Images/student_mini.png";
+            return "/Assets/Images/group_mini.png";
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -39,6 +39,7 @@ namespace RatingVolsuAPI
     public static class Info
     {
         public static string DbConnectionString = @"isostore:/RatingDataBase.sdf";
+        public static bool ToFavoritesPivot;
     }
 
     public class StudentRat
@@ -68,6 +69,11 @@ namespace RatingVolsuAPI
     public class Semester : PropertyChangedBase
     {
         public string Number { get; set; }
+        public string NumberText 
+        {
+            get { return Number + " семестр"; }
+            private set { } 
+        }
         public string YearsPeriod { get; set; }
     }
 }

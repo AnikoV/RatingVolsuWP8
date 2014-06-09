@@ -95,5 +95,10 @@ namespace RatingVolsuWP8
         {
             ratingDb.SaveFavorites(RequestManip, name);
         }
+
+        public bool CheckFavorites()
+        {
+            return ratingDb.CheckFavorites(RequestManip);
+        }
     }
 }

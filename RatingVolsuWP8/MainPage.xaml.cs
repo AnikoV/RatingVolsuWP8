@@ -33,9 +33,13 @@ namespace RatingVolsuWP8
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            string goToFavorites;
-            if (NavigationContext.QueryString.TryGetValue("tofavorites", out goToFavorites))
+            if (Info.ToFavoritesPivot)
+            {
                 MainPivot.SelectedItem = MainPivot.Items[1];
+                ApplicationBar.IsVisible = true;
+                Info.ToFavoritesPivot = false;
+            }
+            _viewModel.GetFavoritesFromDb();
         }
         #region AppBar
 
@@ -47,8 +51,9 @@ namespace RatingVolsuWP8
         private ApplicationBarIconButton _appBarButtonAddGroup;
         private void InitializeMainAppBar()
         {
-            ApplicationBar = new ApplicationBar {IsVisible = true, IsMenuEnabled = true};
-
+            if (ApplicationBar == null)
+                ApplicationBar = new ApplicationBar {IsVisible = true, IsMenuEnabled = true};
+            ApplicationBar.Buttons.Clear();
             _appBarButtonAddFavorite = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/add.png", UriKind.Relative));
             _appBarButtonAddFavorite.Text = "Добавить";
             _appBarButtonAddFavorite.Click += appBarButtonAddFavorite_Click;
@@ -74,18 +79,26 @@ namespace RatingVolsuWP8
 
             _appBarButtonAddStudent = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/studentAppBar.png", UriKind.Relative));
             _appBarButtonAddStudent.Text = "Студент";
-            _appBarButtonAddStudent.Click += (o, args) => NavigationService.Navigate(
-                new Uri(
-                    String.Format("/Pages/InputDataPage.xaml?type={0}&mode={1}", RatingType.RatingOfStudent,
-                        InputDataMode.AddTemplate), UriKind.Relative));
+            _appBarButtonAddStudent.Click += (o, args) =>
+            {
+                NavigationService.Navigate(
+                    new Uri(
+                        String.Format("/Pages/InputDataPage.xaml?type={0}&mode={1}", RatingType.RatingOfStudent,
+                            InputDataMode.AddTemplate), UriKind.Relative));
+                InitializeMainAppBar();
+            };
             ApplicationBar.Buttons.Add(_appBarButtonAddStudent);
 
             _appBarButtonAddGroup = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/groupAppBar.png", UriKind.Relative));
             _appBarButtonAddGroup.Text = "Группа";
-            _appBarButtonAddGroup.Click += (o, args) => NavigationService.Navigate(
-                new Uri(
-                    String.Format("/Pages/InputDataPage.xaml?type={0}&mode={1}", RatingType.RatingOfGroup,
-                        InputDataMode.AddTemplate), UriKind.Relative));
+            _appBarButtonAddGroup.Click += (o, args) =>
+            {
+                NavigationService.Navigate(
+                    new Uri(
+                        String.Format("/Pages/InputDataPage.xaml?type={0}&mode={1}", RatingType.RatingOfGroup,
+                            InputDataMode.AddTemplate), UriKind.Relative));
+                InitializeMainAppBar();
+            };
             ApplicationBar.Buttons.Add(_appBarButtonAddGroup);
         }
 
@@ -151,6 +164,7 @@ namespace RatingVolsuWP8
                     new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}&templateId={1}", InputDataMode.EditTemplate, item.Id), UriKind.Relative));
                 }
             }
+            InitializeMainAppBar();
         }
 
         private void appBarButtonDeleteFavorite_Click(object sender, EventArgs e)
@@ -164,15 +178,10 @@ namespace RatingVolsuWP8
                     
                 }
             }
-            
         }
 
         private void ShowDeliteMessageBox(System.Collections.IList selectedCollection)
         {
-            var textBox = new TextBox()
-            {
-                Width = 300
-            };
             var cmBox = new CustomMessageBox()
             {
                 Message = "Удалить выделенные элементы?",
@@ -186,6 +195,7 @@ namespace RatingVolsuWP8
                 {
                     case CustomMessageBoxResult.LeftButton:
                         _viewModel.DeleteFavoriteItems(selectedCollection);
+                        InitializeMainAppBar();
                         break;
                     default: break;
                 }

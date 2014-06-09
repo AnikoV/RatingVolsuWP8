@@ -64,16 +64,25 @@ namespace RatingVolsuWP8
         public async Task GetWebRatingOfStudent(RequestManipulation requestManip)
         {
             RequestManip = requestManip;
-            RatingOfStudent = await _requestManager.GetRatingOfStudent(RequestManip);
-            RatingOfStudent = new ObservableCollection<Rating>(RatingOfStudent.OrderByDescending(x => x.Total));
+            var temp  = await _requestManager.GetRatingOfStudent(RequestManip);
+            if (temp != null)
+            {
+                RatingOfStudent = temp;
+                RatingOfStudent = new ObservableCollection<Rating>(RatingOfStudent.OrderByDescending(x => x.Total));
+            }
         }
 
         public async Task GetWebRatingOfGroup(RequestManipulation requestManip)
         {
             RequestManip = requestManip;
-            RatingOfGroup = await _requestManager.GetRatingOfGroup(RequestManip);
-            RatingOfGroupForView = new ObservableCollection<Rating>(RatingOfGroup.Distinct(new ItemsComparer()).OrderByDescending(x => x.Total));
-            Subjects = new ObservableCollection<Subject>(RatingOfGroup.Select(x => x.Subject).Distinct(new SubjectsComparer()));
+            var temp = await _requestManager.GetRatingOfGroup(RequestManip);
+            if (temp != null)
+            {
+                RatingOfGroup = temp;
+                RatingOfGroupForView = new ObservableCollection<Rating>(RatingOfGroup.Distinct(new ItemsComparer()).OrderByDescending(x => x.Total));
+                Subjects = new ObservableCollection<Subject>(RatingOfGroup.Select(x => x.Subject).Distinct(new SubjectsComparer()));
+            }
+            
         }
         #endregion
 

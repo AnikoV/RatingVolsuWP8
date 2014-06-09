@@ -22,6 +22,7 @@
             <rating:SubjectTypeConverter x:Key="SubjectTypeConverter"/>
             <rating:TotalConverter x:Key="TotalConverter"/>
             <rating:RatingTypeToImageConverter x:Key="RatingTypeToImageConverter"/>
+            <rating:RatingTypeToImgSourceConverter x:Key="RatingTypeToImgSourceConverter"/>
             
         </ResourceDictionary>
         
