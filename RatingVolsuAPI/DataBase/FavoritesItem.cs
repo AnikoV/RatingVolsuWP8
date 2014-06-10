@@ -140,9 +140,17 @@ namespace RatingVolsuAPI
         {
             get
             {
-                if (Type == RatingType.RatingOfGroup)
-                    return Group.Name+" Семестр " + Semestr;
-                return Student.Group.Name + " Семестр " + Semestr + " " + Student.Number;
+                try
+                {
+                    if (Type == RatingType.RatingOfGroup)
+                        return Group.Name + " Семестр " + Semestr;
+                    return Student.Group.Name + " Семестр " + Semestr + " " + Student.Number;
+                }
+                catch (Exception)
+                {
+                    return "";
+                }
+                
             }
             private set { }
         }

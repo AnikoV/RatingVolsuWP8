@@ -198,7 +198,7 @@
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Assets/Images/AppBar/favs.addto.png" Text="избранное" Click="ApplicationBarIconButton_OnClick"/>
+            
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     

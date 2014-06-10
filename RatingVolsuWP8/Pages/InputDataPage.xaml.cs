@@ -219,7 +219,6 @@ namespace RatingVolsuWP8
                     break;
                 case InputDataMode.EditTemplate:
                     _viewModel.EditFavorites();
-                    NavigationService.Navigate(new Uri("/MainPage.xaml?tofavorites=true", UriKind.Relative));
                     break;
             }
             //Todo запрос на рейтинг и переход на страницу рейтинга
@@ -230,8 +229,10 @@ namespace RatingVolsuWP8
             var textBox = new TextBox()
             {
                 Width = 300,
+                Text = "Без названия",
                 HorizontalAlignment = HorizontalAlignment.Left
             };
+            textBox.GotFocus += (sender, args) => ((TextBox)sender).SelectAll();
             var cmBox = new CustomMessageBox()
             {
                 Message = "Введите название",

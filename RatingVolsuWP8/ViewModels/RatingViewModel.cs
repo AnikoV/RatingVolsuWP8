@@ -63,8 +63,7 @@ namespace RatingVolsuWP8
 
         public async Task GetWebRatingOfStudent(RequestManipulation requestManip)
         {
-            RequestManip = requestManip;
-            var temp  = await _requestManager.GetRatingOfStudent(RequestManip);
+            var temp  = await _requestManager.GetRatingOfStudent(requestManip);
             if (temp != null)
             {
                 RatingOfStudent = temp;
@@ -74,8 +73,7 @@ namespace RatingVolsuWP8
 
         public async Task GetWebRatingOfGroup(RequestManipulation requestManip)
         {
-            RequestManip = requestManip;
-            var temp = await _requestManager.GetRatingOfGroup(RequestManip);
+            var temp = await _requestManager.GetRatingOfGroup(requestManip);
             if (temp != null)
             {
                 RatingOfGroup = temp;
@@ -95,8 +93,7 @@ namespace RatingVolsuWP8
 
         public void GetRatingFromDb(RequestManipulation reqManip)
         {
-            RequestManip = reqManip;
-            var listRatings = RequestManip.LoadRatingFromDb();
+            var listRatings = reqManip.LoadRatingFromDb();
             if (RequestManip.GetType() == typeof(RequestByStudent))
                 RatingOfStudent = listRatings;
             else
@@ -150,6 +147,11 @@ namespace RatingVolsuWP8
         public bool CheckFavorites(bool p)
         {
             return _ratingDb.CheckFavorites(p ? RequestManipForStudent : RequestManip);
+        }
+
+        internal void SetCurrentRequest(RequestManipulation reqManip)
+        {
+            RequestManip = reqManip;
         }
     }
 }

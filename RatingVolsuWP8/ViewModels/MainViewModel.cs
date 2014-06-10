@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Linq;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace RatingVolsuWP8
     public class MainViewModel : PropertyChangedBase
     {
         public string VolsuReview { get; set; }
-        private RatingDatabase ratingDb = new RatingDatabase(App.DbConnectionString);
+        private RatingDatabase _ratingDb = new RatingDatabase(App.DbConnectionString);
         public ObservableCollection<FavoritesItem> FavoritesList { get; set; }
         public MainViewModel()
         {
@@ -20,15 +21,17 @@ namespace RatingVolsuWP8
         }
         public void GetFavoritesFromDb()
         {
-            FavoritesList = new ObservableCollection<FavoritesItem>(from FavoritesItem item in ratingDb.Favorites select item);
+            FavoritesList = new ObservableCollection<FavoritesItem>(from FavoritesItem item in _ratingDb.Favorites 
+                                                                        select item);
         }
 
         internal void DeleteFavoriteItems(System.Collections.IList selectedCollection)
         {
             foreach (var favoritesItem in selectedCollection)
             {
-                ratingDb.DeleteFavorites((FavoritesItem)favoritesItem);
+                _ratingDb.DeleteFavorites((FavoritesItem)favoritesItem);
             }
+            _ratingDb = new RatingDatabase(App.DbConnectionString);
             GetFavoritesFromDb();
         }
     }

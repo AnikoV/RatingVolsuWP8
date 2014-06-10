@@ -20,8 +20,21 @@ namespace RatingVolsuWP8
         public RatingPage()
         {
             InitializeComponent();
+            InitAppBar();
             _viewModel = new RatingViewModel();
             DataContext = _viewModel;
+        }
+
+        private void InitAppBar()
+        {
+            ApplicationBar.Buttons.Clear();
+            var addFavoritesButton = new ApplicationBarIconButton()
+            {
+                IconUri = new Uri("/Assets/Images/AppBar/favs.addto.png", UriKind.Relative),
+                Text = "избранное"
+            };
+            addFavoritesButton.Click += ApplicationBarIconButton_OnClick;
+            ApplicationBar.Buttons.Add(addFavoritesButton);
         }
 
         protected override void OnBackKeyPress(CancelEventArgs e)
@@ -34,21 +47,13 @@ namespace RatingVolsuWP8
         {
             base.OnNavigatedTo(e);
             string type, tmp;
-            string FavItemId;
-            RequestManipulation reqManip;
-            if (NavigationContext.QueryString.TryGetValue("favoriteItemId", out FavItemId))
-            {
-                _viewModel.GetFavoriteItem(FavItemId);
-                reqManip = _viewModel.CurrentFavoritesItem.GetRequest();
-            }
-            else
-            {
-                reqManip = NavigationService.GetNavigationData() as RequestManipulation;
-            }
-            _viewModel.GetRatingFromDb(reqManip);
-            type = NavigationContext.QueryString.TryGetValue("type", out tmp) ? tmp : _viewModel.CurrentFavoritesItem.Type.ToString();
 
-            if (type == RatingType.RatingOfStudent.ToString())
+            var reqManip = NavigationService.GetNavigationData() as RequestManipulation;
+            if (reqManip == null) return;
+            _viewModel.SetCurrentRequest(reqManip);
+            _viewModel.GetRatingFromDb(reqManip);
+
+            if (reqManip.GetType() == typeof(RequestByStudent))
             {
                 SubjectsPanoramaItem.Visibility = Visibility.Collapsed;
                 GroupRatingPanoramaItem.Visibility = Visibility.Collapsed;
@@ -156,6 +161,7 @@ namespace RatingVolsuWP8
                 else
                     ShowCustumMessageBox(false);
             }
+            
         }
 
         private void ShowCustumMessageBox(bool p)
@@ -163,8 +169,10 @@ namespace RatingVolsuWP8
             var textBox = new TextBox()
             {
                 Width = 300,
+                Text = "Без названия",
                 HorizontalAlignment = HorizontalAlignment.Left
             };
+            textBox.GotFocus += (sender, args) => ((TextBox)sender).SelectAll();            
             var cmBox = new CustomMessageBox()
             {
                 Message = "Введите название",
@@ -193,8 +201,10 @@ namespace RatingVolsuWP8
                                 service.GoBack();
                         }
                         break;
+
                         default: break;
                 }
+                InitAppBar();
             };
 
             cmBox.Show();
@@ -205,7 +215,10 @@ namespace RatingVolsuWP8
         {
             ApplicationBar.Buttons.Clear();
             if (!_viewModel.CheckFavorites(false))
+            {
                 MessageBox.Show("Запись уже находится в избранном");
+                InitAppBar();
+            }
             else
                 ShowCustumMessageBox(false);
         }
@@ -214,7 +227,10 @@ namespace RatingVolsuWP8
         {
             ApplicationBar.Buttons.Clear();
             if (!_viewModel.CheckFavorites(true))
+            {
                 MessageBox.Show("Запись уже находится в избранном");
+                InitAppBar();
+            }
             else
                 ShowCustumMessageBox(true);
         }

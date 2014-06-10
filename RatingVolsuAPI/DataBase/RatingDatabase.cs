@@ -94,13 +94,15 @@ namespace RatingVolsuAPI
             if (request.GetType() == typeof(RequestByGroup))
                 favoritesItem = (from FavoritesItem item in Favorites
                     select item).FirstOrDefault(x => x.GroupId == request.GroupId &&
-                                                     x.Semestr == request.Semestr);
+                                                     x.Semestr == request.Semestr &&
+                                                     x.Type == RatingType.RatingOfGroup);
             else
             {
                 var req = (RequestByStudent) request;
                 favoritesItem = (from FavoritesItem item in Favorites
                     select item).FirstOrDefault(x => x.StudentId == req.StudentId &&
-                                                     x.Semestr == req.Semestr);
+                                                     x.Semestr == req.Semestr &&
+                                                     x.Type == RatingType.RatingOfStudent);
             }
             if (favoritesItem != null)
                 return false;

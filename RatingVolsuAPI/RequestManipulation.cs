@@ -149,7 +149,6 @@ namespace RatingVolsuAPI
             return new FavoritesItem()
             {
                 Name = name,
-                GroupId = GroupId,
                 Semestr = Semestr,
                 Type = RatingType.RatingOfStudent,
                 StudentId = StudentId

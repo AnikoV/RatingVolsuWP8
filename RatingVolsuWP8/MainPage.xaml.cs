@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -39,6 +40,7 @@ namespace RatingVolsuWP8
                 ApplicationBar.IsVisible = true;
                 Info.ToFavoritesPivot = false;
             }
+            
             _viewModel.GetFavoritesFromDb();
         }
         #region AppBar
@@ -175,7 +177,6 @@ namespace RatingVolsuWP8
                 if (selectedCollection != null)
                 {
                     ShowDeliteMessageBox(selectedCollection);
-                    
                 }
             }
         }
@@ -219,13 +220,18 @@ namespace RatingVolsuWP8
 
         private void FavotitesMultiselectList_OnIsSelectionEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            InitializeSelectionAppBar();
+            if (FavotitesMultiselectList.IsSelectionEnabled)
+                InitializeSelectionAppBar();
+            else
+                InitializeMainAppBar();
         }
 
         private void FavotitesMultiselectList_OnHold(object sender, GestureEventArgs e)
         {
-            ContextMenuService.GetContextMenu(sender as DependencyObject).IsOpen = true;
+            if (ContextMenuService.GetContextMenu(sender as DependencyObject) != null) 
+                ContextMenuService.GetContextMenu(sender as DependencyObject).IsOpen = true;
         }
+
         #endregion
 
         #region ContexMenuHandlers
@@ -237,14 +243,10 @@ namespace RatingVolsuWP8
         /// <param name="e"></param>
         private void DeleteFavorite(object sender, RoutedEventArgs e)
         {
-            var contextMenu = sender as DependencyObject;
-            if (contextMenu != null)
+            var selectedCollection = ((FrameworkElement)sender).DataContext as FavoritesItem;
+            if (selectedCollection != null)
             {
-                var favItem = ContextMenuService.GetContextMenu(contextMenu).Owner as LongListMultiSelectorItem;
-                if (favItem != null)
-                {
-                    //Todo получить выбранный объект и удалить его
-                }
+                ShowDeliteMessageBox(new List<FavoritesItem>(){selectedCollection});
             }
         }
 
@@ -276,14 +278,12 @@ namespace RatingVolsuWP8
         /// <param name="e"></param>
         private void EditFavorite(object sender, RoutedEventArgs e)
         {
-            var contextMenu = sender as DependencyObject;
-            if (contextMenu != null)
+            var item = ((FrameworkElement)sender).DataContext as FavoritesItem;
+            if (item != null)
             {
-                var favItem = ContextMenuService.GetContextMenu(contextMenu).Owner as LongListMultiSelectorItem;
-                if (favItem != null)
-                {
-                    //Todo получить выбранный объект и редактировать его
-                }
+                NavigationService.Navigate(
+                new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}&templateId={1}", InputDataMode.EditTemplate, item.Id), UriKind.Relative));
+
             }
         }
 
@@ -299,7 +299,7 @@ namespace RatingVolsuWP8
             var item = ((FrameworkElement)sender).DataContext as FavoritesItem;
             if (item != null)
                 NavigationService.Navigate(
-                    new Uri(String.Format("/Pages/RatingPage.xaml?favoriteItemId={0}", item.Id), UriKind.Relative));
+                    new Uri("/Pages/RatingPage.xaml", UriKind.Relative), item.GetRequest());
         }
 
         /// <summary>
