@@ -77,7 +77,7 @@ namespace RatingVolsuWP8
 
         internal void GetFavoriteItem(string itemId)
         {
-            CurrentFavoritesItem = ratingDb.GetFavoritesItem(Convert.ToInt32(itemId));
+            CurrentFavoritesItem = ratingDb.GetFavoritesItem(itemId);
             CurrentRatingType = CurrentFavoritesItem.Type;
         }
 

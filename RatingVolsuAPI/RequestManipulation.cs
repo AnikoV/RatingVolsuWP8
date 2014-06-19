@@ -37,50 +37,14 @@ namespace RatingVolsuAPI
         public override ObservableCollection<Rating> GetRatingFromServer(Object RatingObject)
         {
             var groupRating = (GroupRat)RatingObject;
-            foreach (var subject in groupRating.Predmet)
-            {
-                if (rating.Subjects.FirstOrDefault(x => x.Id == subject.Key) == null)
-                {
-                    rating.Subjects.InsertOnSubmit(new Subject()
-                    {
-                        Id = subject.Key,
-                        Name = subject.Value.Name,
-                        Type = subject.Value.Type
-                    });
-                }
-            }
+            var t = rating.Subjects.FirstOrDefault(x => x.Id == "rrger");
+            rating.Subjects.InsertEntity(groupRating.Predmet.ToSubjectCollection());
+
+            rating.Students.InsertEntity(groupRating.Table.ToStudentCollection(GroupId));
           
             foreach (var tableItem in groupRating.Table)
-            {
-                var stId = tableItem.Key;
-                if (rating.Students.FirstOrDefault(x => x.Id == tableItem.Key) == null)
-                    rating.Students.InsertOnSubmit(
-                        new Student()
-                        {
-                            Id = tableItem.Key,
-                            GroupId = GroupId,
-                            Number = tableItem.Value.Name
-                        });
-                foreach (var predmetItem in tableItem.Value.Predmet)
-                {
-                    var ratingitemFromDb =
-                        (from Rating itemFromDb in rating.Rating
-                            where itemFromDb.StudentId == tableItem.Key &&
-                                    itemFromDb.SubjectId == predmetItem.Key &&
-                                    itemFromDb.Semestr == Semestr
-                            select itemFromDb).FirstOrDefault();
-                    if (ratingitemFromDb == null)
-                        rating.Rating.InsertOnSubmit(new Rating()
-                        {
-                            StudentId = stId,
-                            SubjectId = predmetItem.Key,
-                            Total = predmetItem.Value,
-                            Semestr = Semestr,
-                        });
-                    else
-                        ratingitemFromDb.Total = predmetItem.Value;
-                }
-            }
+                rating.Rating.InsertEntity(tableItem.Value.Predmet.ToRatingCollection(tableItem.Key, Semestr));
+
             rating.SubmitChanges();
             return rating.GetRatingOfGroup(this);
         }
@@ -102,6 +66,7 @@ namespace RatingVolsuAPI
         {
             return new FavoritesItem()
             {
+                Id = GroupId + Semestr,
                 Name = name,
                 GroupId = GroupId,
                 Semestr = Semestr,
@@ -148,6 +113,7 @@ namespace RatingVolsuAPI
         {
             return new FavoritesItem()
             {
+                Id = StudentId + Semestr,
                 Name = name,
                 Semestr = Semestr,
                 Type = RatingType.RatingOfStudent,
@@ -183,6 +149,7 @@ namespace RatingVolsuAPI
                 if (ratingitemFromDb == null)
                     rating.Rating.InsertOnSubmit(new Rating()
                     {
+                        Id = StudentId + ratingItem.Key + Semestr,
                         StudentId = StudentId,
                         SubjectId = ratingItem.Key,
                         Semestr = Semestr,

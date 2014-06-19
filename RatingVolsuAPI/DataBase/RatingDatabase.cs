@@ -11,7 +11,7 @@ using RatingVolsuAPI.DataBase;
 
 namespace RatingVolsuAPI
 {
-    public class RatingDatabase:DataContext
+    public class RatingDatabase : DataContext
     {
         public RatingDatabase(string connectionString)
             : base(connectionString)
@@ -39,7 +39,7 @@ namespace RatingVolsuAPI
             return favorites;
         }
 
-        public FavoritesItem GetFavoritesItem(int itemId)
+        public FavoritesItem GetFavoritesItem(string itemId)
         {
             var favoritesItem = (from FavoritesItem item in Favorites
                                 select item).FirstOrDefault(x => x.Id == itemId);
@@ -108,6 +108,7 @@ namespace RatingVolsuAPI
                 return false;
             return true;
         }
+
         public void SaveFavorites(RequestManipulation request, string name)
         {
             var favorites = request.GetFavorites(name);
@@ -120,5 +121,8 @@ namespace RatingVolsuAPI
             Favorites.DeleteOnSubmit(favoritesItem);
             SubmitChanges();
         }
+
+        
+
     }
 }

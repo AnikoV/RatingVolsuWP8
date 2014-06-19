@@ -10,23 +10,22 @@ using System.Data.Linq.Mapping;
 namespace RatingVolsuAPI
 {
     [Table]
-    public class FavoritesItem : PropertyChangedBase, INotifyPropertyChanging
+    public class FavoritesItem : PropertyChangedBase, IRepository, INotifyPropertyChanging
     {
-        private int _id;
+        private string _id;
 
-        [Column(IsPrimaryKey = true, DbType = "INT NOT NULL IDENTITY", IsDbGenerated = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public int Id
+        [Column(IsPrimaryKey = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public string Id
         {
             get { return _id; }
             set
             {
-                NotifyPropertyChanging("Id");
                 _id = value;
                 RaisePropertyChanged("Id");
             }
         }
 
-        public string _semestr;
+        private string _semestr;
         [Column]
         public string Semestr
         {
@@ -51,6 +50,10 @@ namespace RatingVolsuAPI
                 _type = value;
                 RaisePropertyChanged("Type");
             }
+        }
+        public void Update(IRepository item)
+        {
+
         }
 
         #region relation student-FavoriteItem

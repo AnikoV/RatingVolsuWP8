@@ -3,21 +3,22 @@ using System;
 using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using RatingVolsuAPI.DataBase;
 
 namespace RatingVolsuAPI
 {
     [Table]
-    public class Student : PropertyChangedBase, INotifyPropertyChanging
+    public class Student : PropertyChangedBase, IRepository, INotifyPropertyChanging
     {
-        private string _studentId;
+        private string _id;
 
         [Column(IsPrimaryKey = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public string Id
         {
-            get { return _studentId; }
+            get { return _id; }
             set
             {
-                _studentId = value;
+                _id = value;
                 RaisePropertyChanged("Id");
             }
         }
@@ -94,6 +95,11 @@ namespace RatingVolsuAPI
         //    stud.Student = null;
         //}
         //#endregion
+
+        public void Update(IRepository item)
+        {
+
+        }
 
         #region INotifyPropertyChanging Members
 

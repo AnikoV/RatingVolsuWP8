@@ -159,6 +159,7 @@ namespace RatingVolsuAPI
                 {
                     var sem = new Semestr()
                     {
+                        Id = groupId + item,
                         Number = item,
                         GroupId = groupId
                     };
@@ -232,7 +233,7 @@ namespace RatingVolsuAPI
                 var groupRating = JsonConvert.DeserializeObject<GroupRat>(content);
                 return requestInfo.GetRatingFromServer(groupRating);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }

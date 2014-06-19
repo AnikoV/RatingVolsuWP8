@@ -7,23 +7,22 @@ using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RatingVolsuAPI.DataBase;
 
 namespace RatingVolsuAPI
 {
     [Table]
-    public class Subject : PropertyChangedBase, INotifyPropertyChanging
+    public class Subject : PropertyChangedBase, IRepository, INotifyPropertyChanging
     {
-
-        private string _subjectId;
+        private string _id;
 
         [Column(IsPrimaryKey = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public string Id
         {
-            get { return _subjectId; }
+            get { return _id; }
             set
             {
-                NotifyPropertyChanging("Id");
-                _subjectId = value;
+                _id = value;
                 RaisePropertyChanged("Id");
             }
         }
@@ -54,6 +53,10 @@ namespace RatingVolsuAPI
             }
         }
 
+        public void Update(IRepository item)
+        {
+            
+        }
         #region INotifyPropertyChanging Members
 
         public event PropertyChangingEventHandler PropertyChanging;

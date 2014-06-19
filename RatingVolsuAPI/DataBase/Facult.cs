@@ -3,27 +3,27 @@ using System;
 using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using RatingVolsuAPI.DataBase;
 
 
 namespace RatingVolsuAPI
 {
     [Table]
-    public class Facult : PropertyChangedBase, INotifyPropertyChanging
+    public class Facult : PropertyChangedBase, IRepository, INotifyPropertyChanging
     {
+        private string _id;
 
-        private string _facultId;
-
-        [Column(IsPrimaryKey = true,  CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        [Column(IsPrimaryKey = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public string Id
         {
-            get { return _facultId; }
+            get { return _id; }
             set
             {
-                _facultId = value;
+                _id = value;
                 RaisePropertyChanged("Id");
             }
         }
-        
+
         private string _facultName;
         
         [Column]
@@ -34,6 +34,11 @@ namespace RatingVolsuAPI
                 _facultName = value;
                 RaisePropertyChanged("Name");
             }
+        }
+
+        public void Update(IRepository item)
+        {
+            
         }
 
         #region relation facult-group

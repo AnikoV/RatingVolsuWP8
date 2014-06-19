@@ -6,22 +6,22 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using RatingVolsuAPI.DataBase;
 
 namespace RatingVolsuAPI
 {
     [Table]
-    public class Group : PropertyChangedBase, INotifyPropertyChanging
+    public class Group : PropertyChangedBase, IRepository, INotifyPropertyChanging
     {
-
-        private string _groupId;
+        private string _id;
 
         [Column(IsPrimaryKey = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public string Id
         {
-            get { return _groupId; }
+            get { return _id; }
             set
             {
-                _groupId = value;
+                _id = value;
                 RaisePropertyChanged("Id");
             }
         }
@@ -65,22 +65,14 @@ namespace RatingVolsuAPI
             }
         }
 
-        //private List<string> _semestrList;
-
-        //[Column]
-        //public List<string> SemestrList
-        //{
-        //    get { return _semestrList; }
-        //    set
-        //    {
-        //        _semestrList = value;
-        //        RaisePropertyChanged("SemestrList");
-        //    }
-        //}
-
         public List<string> SemList
         {
             get { return Semestr.ToList().Select(x => x.Number).ToList(); }
+        }
+
+        public void Update(IRepository item)
+        {
+
         }
 
         #region relation facult-group
@@ -155,5 +147,6 @@ namespace RatingVolsuAPI
         }
 
         #endregion
+
     }
 }

@@ -7,21 +7,21 @@ using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RatingVolsuAPI.DataBase;
 
 namespace RatingVolsuAPI
 {
     [Table]
-    public class Rating : PropertyChangedBase, INotifyPropertyChanging
+    public class Rating : PropertyChangedBase, IRepository, INotifyPropertyChanging
     {
-        private int _id;
+        private string _id;
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL IDENTITY", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public int Id
+        [Column(IsPrimaryKey = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public string Id
         {
             get { return _id; }
             set
             {
-                NotifyPropertyChanging("Id");
                 _id = value;
                 RaisePropertyChanged("Id");
             }
@@ -182,6 +182,17 @@ namespace RatingVolsuAPI
         public string BallsToNextPlace { get; set;}
 
         public string BallsToFirstPlace { get; set;}
+
+        public void Update(IRepository item)
+        {
+            var ratingItem = (Rating) item;
+            if (!String.IsNullOrEmpty(ratingItem.Att1)) Att1 = ratingItem.Att1;
+            if (!String.IsNullOrEmpty(ratingItem.Att2)) Att2 = ratingItem.Att2;
+            if (!String.IsNullOrEmpty(ratingItem.Att3)) Att3 = ratingItem.Att3;
+            if (!String.IsNullOrEmpty(ratingItem.Sum)) Sum = ratingItem.Sum;
+            if (!String.IsNullOrEmpty(ratingItem.Exam)) Exam = ratingItem.Exam;
+            if (!String.IsNullOrEmpty(ratingItem.Total)) Total = ratingItem.Total;
+        }
 
         #region INotifyPropertyChanging Members
 

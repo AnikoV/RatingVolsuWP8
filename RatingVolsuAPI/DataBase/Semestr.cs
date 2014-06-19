@@ -8,21 +8,21 @@ using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using RatingVolsuAPI;
+using RatingVolsuAPI.DataBase;
 
 namespace RatingVolsuAPI.DataBase
 {
     [Table]
-    public class Semestr : PropertyChangedBase, INotifyPropertyChanging
+    public class Semestr : PropertyChangedBase, IRepository, INotifyPropertyChanging
     {
-        private int _id;
+        private string _id;
 
-        [Column(IsPrimaryKey = true, DbType = "INT NOT NULL IDENTITY", IsDbGenerated = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public int Id
+        [Column(IsPrimaryKey = true, CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public string Id
         {
             get { return _id; }
             set
             {
-                NotifyPropertyChanging("Id");
                 _id = value;
                 RaisePropertyChanged("Id");
             }
@@ -52,7 +52,11 @@ namespace RatingVolsuAPI.DataBase
         }
 
         public Group GroupItem { get; set; }
-        
+
+        public void Update(IRepository item)
+        {
+
+        }
 
         #region INotifyPropertyChanging Members
 

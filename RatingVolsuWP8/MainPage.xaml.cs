@@ -56,15 +56,19 @@ namespace RatingVolsuWP8
             if (ApplicationBar == null)
                 ApplicationBar = new ApplicationBar {IsVisible = true, IsMenuEnabled = true};
             ApplicationBar.Buttons.Clear();
-            _appBarButtonAddFavorite = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/add.png", UriKind.Relative));
-            _appBarButtonAddFavorite.Text = "Добавить";
+            _appBarButtonAddFavorite = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/add.png", UriKind.Relative))
+            {
+                Text = "Добавить"
+            };
             _appBarButtonAddFavorite.Click += appBarButtonAddFavorite_Click;
             ApplicationBar.Buttons.Add(_appBarButtonAddFavorite);
 
             if (_viewModel.FavoritesList != null && _viewModel.FavoritesList.Count > 0)
             {
-                _appBarButtonSelectItems = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/check.png", UriKind.Relative));
-                _appBarButtonSelectItems.Text = "Выделить";
+                _appBarButtonSelectItems = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/check.png", UriKind.Relative))
+                {
+                    Text = "Выделить"
+                };
                 _appBarButtonSelectItems.Click += appBarButtonSelectItems_Click;
                 ApplicationBar.Buttons.Add(_appBarButtonSelectItems);
             }
