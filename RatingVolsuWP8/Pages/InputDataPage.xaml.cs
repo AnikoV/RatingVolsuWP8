@@ -215,16 +215,15 @@ namespace RatingVolsuWP8
                     if (!_viewModel.CheckFavorites())
                         MessageBox.Show("Запись уже находится в избранном");
                     else
-                        ShowCustumMessageBox();
+                        ShowCustomMessageBox();
                     break;
                 case InputDataMode.EditTemplate:
                     _viewModel.EditFavorites();
                     break;
-            }
-            //Todo запрос на рейтинг и переход на страницу рейтинга
+            } 
         }
 
-        private void ShowCustumMessageBox()
+        private void ShowCustomMessageBox()
         {
             var textBox = new TextBox()
             {
@@ -246,19 +245,27 @@ namespace RatingVolsuWP8
                 switch (e1.Result)
                 {
                     case CustomMessageBoxResult.LeftButton:
-                        _viewModel.SaveFavorites(textBox.Text);
-                        Info.ToFavoritesPivot = true;
-                        var page = App.RootFrame.Content as Page;
-                        if (page != null)
+                        if (textBox.Text.Length <= 12)
                         {
-                            var service = page.NavigationService;
-                            int count = service.BackStack.Count() - 1;
-                            for (int i = 0; i < count; i++)
+                            _viewModel.SaveFavorites(textBox.Text);
+                            Info.ToFavoritesPivot = true;
+                            var page = App.RootFrame.Content as Page;
+                            if (page != null)
                             {
-                                service.RemoveBackEntry();
+                                var service = page.NavigationService;
+                                int count = service.BackStack.Count() - 1;
+                                for (int i = 0; i < count; i++)
+                                {
+                                    service.RemoveBackEntry();
+                                }
+                                if (service.CanGoBack)
+                                    service.GoBack();
                             }
-                            if (service.CanGoBack)
-                                service.GoBack();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Название слишком длинное");
+                            ShowCustomMessageBox();
                         }
                         break;
                     default: break;

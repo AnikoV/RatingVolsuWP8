@@ -113,7 +113,7 @@ namespace RatingVolsuWP8
                 case "2":
                     return "зачет";
                 case "3":
-                    return "экзамен с защитой";
+                    return "экзамен\n с защитой";
                 default:
                     return String.Empty;
             }
@@ -169,9 +169,6 @@ namespace RatingVolsuWP8
                 bmp.SetSource(resourceInfo.Stream);
                 return bmp;
             }
-            return null;
-            
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

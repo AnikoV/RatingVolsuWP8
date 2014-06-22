@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using RatingVolsuAPI;
 
 namespace RatingVolsuWP8
@@ -68,6 +69,10 @@ namespace RatingVolsuWP8
             {
                 RatingOfStudent = temp;
                 RatingOfStudent = new ObservableCollection<Rating>(RatingOfStudent.OrderByDescending(x => x.Total));
+                if (RatingOfStudent.Any(x => x.Subject.Type == "3"))
+                {
+                    MessageBox.Show(RatingOfStudent.First(x => x.Subject.Type == "3").Subject.Name);
+                }
             }
         }
 
@@ -82,6 +87,7 @@ namespace RatingVolsuWP8
             }
             
         }
+
         #endregion
 
         #region DataBase

@@ -131,7 +131,7 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="110"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
@@ -141,7 +141,7 @@
                                     <TextBlock x:Name="Balls" Text="{Binding Total, Converter={StaticResource TotalConverter}}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
                                            FontSize="60" TextWrapping="NoWrap" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" Padding="0,0,10,0"/>
                                     <TextBlock x:Name="SubjectTypeStd" TextWrapping="Wrap" Text="{Binding Path=Subject.Type, Converter={StaticResource SubjectTypeConverter}}"
-                                           Style="{StaticResource LbItem2NdLevel}" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" Margin="0,-10,0,0"/>
+                                           Style="{StaticResource LbItem2NdLevel}" HorizontalAlignment="Center" TextAlignment="Center" Grid.Column="0" Grid.Row="1" Margin="0,-10,0,0"/>
                                     <TextBlock x:Name="SubjNameStd" Text="{Binding Path=Subject.Name}" FontFamily="{StaticResource PhoneFontFamilySemiLight}"
                                            FontSize="25" TextWrapping="Wrap" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"/>
                                 </Grid>
