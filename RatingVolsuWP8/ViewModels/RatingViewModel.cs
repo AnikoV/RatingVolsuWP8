@@ -69,10 +69,6 @@ namespace RatingVolsuWP8
             {
                 RatingOfStudent = temp;
                 RatingOfStudent = new ObservableCollection<Rating>(RatingOfStudent.OrderByDescending(x => x.Total));
-                if (RatingOfStudent.Any(x => x.Subject.Type == "3"))
-                {
-                    MessageBox.Show(RatingOfStudent.First(x => x.Subject.Type == "3").Subject.Name);
-                }
             }
         }
 
