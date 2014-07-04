@@ -84,6 +84,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Base\PropertyChangedBase.cs" />
+    <Compile Include="CollectionExtension.cs" />
+    <Compile Include="Comparers.cs" />
     <Compile Include="DataBaseExtension.cs" />
     <Compile Include="DataBase\EntityBase.cs" />
     <Compile Include="DataBase\Facult.cs" />

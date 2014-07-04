@@ -8,31 +8,6 @@ using RatingVolsuAPI;
 
 namespace RatingVolsuWP8
 {
-    public class ItemsComparer : IEqualityComparer<Rating>
-    {
-        public bool Equals(Rating x, Rating y)
-        {
-            return x.StudentId == y.StudentId;
-        }
-
-        public int GetHashCode(Rating obj)
-        {
-            return obj.StudentId.GetHashCode();
-        }
-    }
-
-    public class SubjectsComparer : IEqualityComparer<Subject>
-    {
-        public bool Equals(Subject x, Subject y)
-        {
-            return x.Id == y.Id;
-        }
-
-        public int GetHashCode(Subject obj)
-        {
-            return obj.Id.GetHashCode();
-        }
-    }
 
     public class RatingViewModel : PropertyChangedBase
     {
@@ -57,6 +32,7 @@ namespace RatingVolsuWP8
             _ratingDb = new RatingDatabase(App.DbConnectionString);
             _requestManager = new RequestManager();
             RatingOfStudent = new ObservableCollection<Rating>();
+            RatingOfGroupForView = new ObservableCollection<Rating>();
             Subjects = new ObservableCollection<Subject>();
         }
 
@@ -77,11 +53,15 @@ namespace RatingVolsuWP8
             var temp = await _requestManager.GetRatingOfGroup(requestManip);
             if (temp != null)
             {
-                RatingOfGroup = temp;
-                RatingOfGroupForView = new ObservableCollection<Rating>(RatingOfGroup.Distinct(new ItemsComparer()).OrderByDescending(x => x.Total));
-                Subjects = new ObservableCollection<Subject>(RatingOfGroup.Select(x => x.Subject).Distinct(new SubjectsComparer()));
+                Subjects = new ObservableCollection<Subject>(temp.Select(x => x.Subject).Distinct(new SubjectsComparer()));
+                RatingOfGroup = temp.AllSubjects();
+                RatingOfGroupForView = new ObservableCollection<Rating>(RatingOfGroup.Where(x => x.SubjectId == "000").OrderByDescending(x => x.Total).ToList());
+                Subjects.Insert(0, new Subject()
+                {
+                    Id = "000",
+                    Name = "Все предметы"
+                });
             }
-            
         }
 
         #endregion
@@ -100,8 +80,15 @@ namespace RatingVolsuWP8
                 RatingOfStudent = listRatings;
             else
             {
-                RatingOfGroup = new ObservableCollection<Rating>(listRatings);
-                Subjects = new ObservableCollection<Subject>(RatingOfGroup.Select(x => x.Subject).Distinct(new SubjectsComparer()));
+                Subjects = new ObservableCollection<Subject>(listRatings.Select(x => x.Subject).Distinct(new SubjectsComparer()));
+                RatingOfGroup = listRatings.AllSubjects();
+                RatingOfGroupForView = new ObservableCollection<Rating>(RatingOfGroup.Where(x => x.SubjectId == "000").OrderByDescending(x => x.Total).ToList());
+                if (Subjects.Count !=0) 
+                    Subjects.Insert(0, new Subject()
+                    {
+                        Id = "000",
+                        Name = "Все предметы"
+                    });
             }
         }
         #endregion
@@ -113,9 +100,9 @@ namespace RatingVolsuWP8
 
         public void SetStatisticForRating(Rating curItem)
         {
-            int totalCur = Convert.ToInt32(
-                curItem.Total.Length == 1 ?
-                curItem.Total : curItem.Total.Substring(0, 2).Replace("(", ""));
+            int totalCur = Convert.ToInt32(curItem.Total);
+                //curItem.Total.Length == 1 ?
+                //curItem.Total : curItem.Total.Substring(0, 2).Replace("(", ""));
 
             // Generate BallsToNextPlace
             var idx = RatingOfGroupForView.IndexOf(RatingOfGroup.First(x => x.Id == curItem.Id));
@@ -127,9 +114,9 @@ namespace RatingVolsuWP8
             }
             if (!String.IsNullOrEmpty(RatingOfGroupForView[idx - 1].Total))
             {
-                int totalPred = Convert.ToInt32(
-                    RatingOfGroupForView[idx - 1].Total.Length == 1 ? 
-                    RatingOfGroupForView[idx - 1].Total : RatingOfGroupForView[idx - 1].Total.Substring(0, 2).Replace("(", ""));
+                int totalPred = Convert.ToInt32(RatingOfGroupForView[idx - 1].Total);
+                    //RatingOfGroupForView[idx - 1].Total.Length == 1 ? 
+                    //RatingOfGroupForView[idx - 1].Total : RatingOfGroupForView[idx - 1].Total.Substring(0, 2).Replace("(", ""));
                 curItem.BallsToNextPlace = String.Format("+{0}", totalPred - totalCur);
             }
             else
@@ -137,7 +124,7 @@ namespace RatingVolsuWP8
                 curItem.BallsToNextPlace = String.Empty;
             }
             // Generate BallsToFirstPlace
-            int totalFirst = Convert.ToInt32(RatingOfGroupForView.First().Total.Length == 1 ? RatingOfGroupForView.First().Total : RatingOfGroupForView.First().Total.Substring(0, 2).Replace("(", ""));
+            int totalFirst = Convert.ToInt32(RatingOfGroupForView.First().Total);//RatingOfGroupForView.First().Total.Length == 1 ? RatingOfGroupForView.First().Total : RatingOfGroupForView.First().Total.Substring(0, 2).Replace("(", ""));
             curItem.BallsToFirstPlace = String.Format("+{0}", totalFirst - totalCur);
         }
 

@@ -52,12 +52,14 @@ namespace RatingVolsuAPI
             var collection = new ObservableCollection<Rating>();
             foreach (var student in dictionary)
             {
+                string total;
+                total = student.Value.IndexOf('(') != -1 ? student.Value.Remove(student.Value.IndexOf('(')) : student.Value;
                 collection.Add(new Rating()
                 {
                     Id = studentId + student.Key + semestr,
                     StudentId = studentId,
                     SubjectId = student.Key,
-                    Total = student.Value,
+                    Total = total,
                     Semestr = semestr
                 });
 

@@ -99,6 +99,7 @@ namespace RatingVolsuWP8
         {
             var selectedIndex = SubjectsListBox.SelectedIndex;
             if (selectedIndex == -1) return;
+
             _viewModel.GetRatingBySubject(selectedIndex);
         }
         private async void GroupRatingListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -136,7 +137,6 @@ namespace RatingVolsuWP8
             }
         }
         #endregion
-
         private void ApplicationBarIconButton_OnClick(object sender, EventArgs e)
         {
             if (_viewModel.RequestManipForStudent != null)
@@ -209,7 +209,6 @@ namespace RatingVolsuWP8
 
             cmBox.Show();
         }
-
 
         private void ApplicationBarGroupButton_OnClick(object sender, EventArgs e)
         {
