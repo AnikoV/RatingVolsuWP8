@@ -82,7 +82,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <TextBlock x:Name="StudentPlace"
-                                                       Margin="0,0,15,0"
+                                                       MinWidth="80"
                                                        Grid.Column="0"
                                                        Text="{Binding Converter={StaticResource IncrementPlaceConverter}, ConverterParameter={StaticResource SortedRatingList}}" 
                                                        FontSize="80" 

@@ -257,7 +257,6 @@ namespace RatingVolsuWP8
                 }
                 return _head;
             }
-            set { _head = value; }
         }
         private void RatingPage_OnOrientationChanged(object sender, OrientationChangedEventArgs e)
         {
