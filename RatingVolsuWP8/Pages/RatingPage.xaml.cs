@@ -234,7 +234,31 @@ namespace RatingVolsuWP8
                 ShowCustumMessageBox(true);
         }
 
-        private Rating Head;
+        private Rating _head;
+        private Rating Head
+        {
+            get
+            {
+                if (_head == null)
+                {
+                    _head = new Rating
+                    {
+                        Subject = new Subject()
+                        {
+                            Name = "ПРЕДМЕТЫ"
+                        },
+                        Att1 = "1 модуль",
+                        Att2 = "2 модуль",
+                        Att3 = "3 модуль",
+                        Sum = "сумма",
+                        Exam = "экзамен",
+                        Total = "итог"
+                    };
+                }
+                return _head;
+            }
+            set { _head = value; }
+        }
         private void RatingPage_OnOrientationChanged(object sender, OrientationChangedEventArgs e)
         {
             if (_viewModel.RequestManipForStudent != null)
@@ -244,24 +268,7 @@ namespace RatingVolsuWP8
                     VerticalState.Visibility = Visibility.Collapsed;
                     HorizontalState.Visibility = Visibility.Visible;
                     SystemTray.IsVisible = false;
-                    if (Head == null)
-                    {
-                        Head = new Rating
-                        {
-                            Subject = new Subject()
-                            {
-                                Name = "ПРЕДМЕТЫ"
-                            },
-                            Att1 = "1 модуль",
-                            Att2 = "2 модуль",
-                            Att3 = "3 модуль",
-                            Sum = "сумма",
-                            Exam = "экзамен",
-                            Total = "итог"
-                        };
-                        _viewModel.RatingOfStudent.Insert(0,Head);
-                    }
-                    
+                    _viewModel.RatingOfStudent.Insert(0,Head);
                 }
                 else
                 {
