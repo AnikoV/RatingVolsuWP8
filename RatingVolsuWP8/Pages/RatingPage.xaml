@@ -22,6 +22,9 @@
 
         <Grid x:Name="VerticalState">
             <phone:Panorama x:Name="RatingPanorama" Margin="0,6,0,0">
+                <phone:Panorama.Background>
+                    <ImageBrush ImageSource="/Assets/Images/ScreenBackground.png" Stretch="Uniform"/>
+                </phone:Panorama.Background>
                 <phone:Panorama.TitleTemplate>
                     <DataTemplate>
                         <TextBlock Style="{StaticResource h}" Text="Рейтинг" />

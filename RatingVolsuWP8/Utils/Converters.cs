@@ -86,11 +86,7 @@ namespace RatingVolsuWP8
                 }
                 return string.Empty;
             }
-            else
-            {
-                return String.Empty;
-            }
-            
+            return String.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

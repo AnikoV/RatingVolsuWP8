@@ -158,6 +158,7 @@
     <Content Include="Assets\Images\corona_icon.png" />
     <Content Include="Assets\Images\group_icon.png" />
     <Content Include="Assets\Images\group_mini.png" />
+    <Content Include="Assets\Images\ScreenBackground.png" />
     <Content Include="Assets\Images\stat_icon2.png" />
     <Content Include="Assets\Images\stat_icon1.png" />
     <Content Include="Assets\Images\student_icon.png" />
