@@ -59,8 +59,33 @@ namespace RatingVolsuAPI
                     Id = studentId + student.Key + semestr,
                     StudentId = studentId,
                     SubjectId = student.Key,
-                    Total = total,
+                    Total = Convert.ToInt32(total),
                     Semestr = semestr
+                });
+
+            }
+            return collection;
+        }
+
+        public static ObservableCollection<Rating> ToRatingCollection(this Dictionary<string, List<string>> dictionary, string studentId, string semestr)
+        {
+            var collection = new ObservableCollection<Rating>();
+            foreach (var predmet in dictionary)
+            {
+                string total;
+                total = predmet.Value[5].IndexOf('(') != -1 ? predmet.Value[5].Remove(predmet.Value[5].IndexOf('(')) : predmet.Value[5];
+                collection.Add(new Rating()
+                {
+                    Id = studentId + predmet.Key + semestr,
+                    StudentId = studentId,
+                    SubjectId = predmet.Key,
+                    Semestr = semestr,
+                    Att1 = Convert.ToInt32(predmet.Value[0]),
+                    Att2 = Convert.ToInt32(predmet.Value[1]),
+                    Att3 = Convert.ToInt32(predmet.Value[2]),
+                    Sum = Convert.ToInt32(predmet.Value[3]),
+                    Exam = Convert.ToInt32(predmet.Value[4]),
+                    Total = Convert.ToInt32(total)
                 });
 
             }
@@ -82,5 +107,6 @@ namespace RatingVolsuAPI
                 }
             }
         }
+
     }
 }

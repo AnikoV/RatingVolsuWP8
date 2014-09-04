@@ -172,42 +172,73 @@
 
 
         <Grid x:Name="HorizontalState" Visibility="Collapsed" >
-            <ListBox x:Name="DetailedStudentRatingListBox"
-                     ItemsSource="{Binding RatingOfStudent}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Border x:Name="SubjectBorder" BorderThickness="1" BorderBrush="White" Width="291" Height="Auto">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock x:Name="SubjectName" Text="{Binding Path=Subject.Name}" VerticalAlignment="Center"  TextWrapping="Wrap" Style="{StaticResource LbItemTitle}"/>
-                                <TextBlock x:Name="SubjectType" Text="{Binding Path=Subject.Type, Converter={StaticResource SubjectTypeConverter}}" 
+          
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Border x:Name="SubjectBorder" BorderThickness="1" BorderBrush="White" Width="291" Height="50">
+                        <TextBlock x:Name="SubjectName" Text="Предмет" VerticalAlignment="Center"  TextWrapping="Wrap" Style="{StaticResource LbItemTitle}"/>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                        <TextBlock x:Name="Att1" Text="1 модуль" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                        <TextBlock x:Name="Att2" Text="2 модуль" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                        <TextBlock x:Name="Att3" Text="3 модуль" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                        <TextBlock x:Name="Sum" Text="Сумма" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                        <TextBlock x:Name="Exam" Text="Экзамен" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                        <TextBlock x:Name="Total" Text="Всего" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+                <ListBox x:Name="DetailedStudentRatingListBox"
+                     ItemsSource="{Binding RatingOfStudent}" Grid.Row="1" VerticalAlignment="Top" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Border x:Name="SubjectBorder" BorderThickness="1" BorderBrush="White" Width="291" Height="Auto">
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock x:Name="SubjectName" Text="{Binding Path=Subject.Name}" VerticalAlignment="Center"  TextWrapping="Wrap" Style="{StaticResource LbItemTitle}"/>
+                                        <TextBlock x:Name="SubjectType" Text="{Binding Path=Subject.Type, Converter={StaticResource SubjectTypeConverter}}" 
                                             Style="{StaticResource LbItem2NdLevel}" HorizontalAlignment="Right" Margin="5"/>
-                            </StackPanel>
-                        </Border>
+                                    </StackPanel>
+                                </Border>
                                 <Border BorderThickness="1" BorderBrush="White" Width="85" >
                                     <TextBlock x:Name="Att1" Text="{Binding Att1}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
+                                </Border>
                                 <Border BorderThickness="1" BorderBrush="White" Width="85" >
                                     <TextBlock x:Name="Att2" Text="{Binding Att2}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
+                                </Border>
                                 <Border BorderThickness="1" BorderBrush="White" Width="85" >
                                     <TextBlock x:Name="Att3" Text="{Binding Att3}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
+                                </Border>
                                 <Border BorderThickness="1" BorderBrush="White" Width="85" >
                                     <TextBlock x:Name="Sum" Text="{Binding Sum}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
+                                </Border>
                                 <Border BorderThickness="1" BorderBrush="White" Width="85" >
                                     <TextBlock x:Name="Exam" Text="{Binding Exam}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
+                                </Border>
                                 <Border BorderThickness="1" BorderBrush="White" Width="85" >
                                     <TextBlock x:Name="Total" Text="{Binding Total, Converter={StaticResource TotalConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
+                                </Border>
                             </StackPanel>
-                    
-                    
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            </ListBox>
+
+
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+            </Grid>
         </Grid>
     </Grid>
     

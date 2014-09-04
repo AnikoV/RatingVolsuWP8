@@ -37,7 +37,6 @@ namespace RatingVolsuAPI
         public override ObservableCollection<Rating> GetRatingFromServer(Object RatingObject)
         {
             var groupRating = (GroupRat)RatingObject;
-            var t = rating.Subjects.FirstOrDefault(x => x.Id == "rrger");
             rating.Subjects.InsertEntity(groupRating.Predmet.ToSubjectCollection());
 
             rating.Students.InsertEntity(groupRating.Table.ToStudentCollection(GroupId));
@@ -125,52 +124,12 @@ namespace RatingVolsuAPI
         {
             var studentRating = (StudentRat) ratingObject;
 
-            foreach (var subject in studentRating.Predmet)
-            {
-                if (rating.Subjects.FirstOrDefault(x => x.Id == subject.Key) == null)
-                {
-                    rating.Subjects.InsertOnSubmit(new Subject()
-                    {
-                        Id = subject.Key,
-                        Name = subject.Value.Name,
-                        Type = subject.Value.Type    
-                    });
-                }
-            }
+            var subjects = studentRating.Predmet.ToSubjectCollection();
+            rating.Subjects.InsertEntity(subjects);
 
-            foreach (var ratingItem in studentRating.Table)
-            {
-                var ratingitemFromDb =
-                    (from Rating itemFromDb in rating.Rating
-                     where itemFromDb.StudentId == StudentId &&
-                             itemFromDb.SubjectId == ratingItem.Key &&
-                             itemFromDb.Semestr == Semestr
-                     select itemFromDb).FirstOrDefault();
-                if (ratingitemFromDb == null)
-                    rating.Rating.InsertOnSubmit(new Rating()
-                    {
-                        Id = StudentId + ratingItem.Key + Semestr,
-                        StudentId = StudentId,
-                        SubjectId = ratingItem.Key,
-                        Semestr = Semestr,
-                        Att1 = ratingItem.Value[0],
-                        Att2 = ratingItem.Value[1],
-                        Att3 = ratingItem.Value[2],
-                        Sum = ratingItem.Value[3],
-                        Exam = ratingItem.Value[4],
-                        Total = ratingItem.Value[5]
-                    });
-                else
-                {
-                    if (!String.IsNullOrEmpty(ratingItem.Value[0])) ratingitemFromDb.Att1 = ratingItem.Value[0];
-                    if (!String.IsNullOrEmpty(ratingItem.Value[1])) ratingitemFromDb.Att2 = ratingItem.Value[1];
-                    if (!String.IsNullOrEmpty(ratingItem.Value[2])) ratingitemFromDb.Att3 = ratingItem.Value[2];
-                    if (!String.IsNullOrEmpty(ratingItem.Value[3])) ratingitemFromDb.Sum = ratingItem.Value[3];
-                    if (!String.IsNullOrEmpty(ratingItem.Value[4])) ratingitemFromDb.Exam = ratingItem.Value[4];
-                    if (!String.IsNullOrEmpty(ratingItem.Value[5])) ratingitemFromDb.Total = ratingItem.Value[5];
-                }
+            var ratings = studentRating.Table.ToRatingCollection(StudentId, Semestr);
+            rating.Rating.InsertEntity(ratings);
 
-            }
             rating.SubmitChanges();
             return rating.GetRatingOfStudent(this);
         }

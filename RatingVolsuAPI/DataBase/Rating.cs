@@ -100,11 +100,11 @@ namespace RatingVolsuAPI
             }
         }
 
-        private string _att1;
+        private int? _att1;
         
 
         [Column]
-        public string Att1
+        public int? Att1
         {
             get { return _att1; }
             set
@@ -114,10 +114,10 @@ namespace RatingVolsuAPI
             }
         }
 
-        private string _att2;
+        private int? _att2;
 
         [Column]
-        public string Att2
+        public int? Att2
         {
             get { return _att2; }
             set
@@ -127,10 +127,10 @@ namespace RatingVolsuAPI
             }
         }
 
-        private string _att3;
+        private int? _att3;
 
         [Column]
-        public string Att3
+        public int? Att3
         {
             get { return _att3; }
             set
@@ -140,10 +140,10 @@ namespace RatingVolsuAPI
             }
         }
 
-        private string _sum;
+        private int? _sum;
 
         [Column]
-        public string Sum
+        public int? Sum
         {
             get { return _sum; }
             set
@@ -153,10 +153,10 @@ namespace RatingVolsuAPI
             }
         }
 
-        private string _exam;
+        private int? _exam;
 
         [Column]
-        public string Exam
+        public int? Exam
         {
             get { return _exam; }
             set
@@ -166,10 +166,10 @@ namespace RatingVolsuAPI
             }
         }
 
-        private string _total;
+        private int? _total;
 
         [Column]
-        public string Total
+        public int? Total
         {
             get { return _total; }
             set
@@ -186,12 +186,13 @@ namespace RatingVolsuAPI
         public void Update(IRepository item)
         {
             var ratingItem = (Rating) item;
-            if (!String.IsNullOrEmpty(ratingItem.Att1)) Att1 = ratingItem.Att1;
-            if (!String.IsNullOrEmpty(ratingItem.Att2)) Att2 = ratingItem.Att2;
-            if (!String.IsNullOrEmpty(ratingItem.Att3)) Att3 = ratingItem.Att3;
-            if (!String.IsNullOrEmpty(ratingItem.Sum)) Sum = ratingItem.Sum;
-            if (!String.IsNullOrEmpty(ratingItem.Exam)) Exam = ratingItem.Exam;
-            if (!String.IsNullOrEmpty(ratingItem.Total)) Total = ratingItem.Total;
+            if (ratingItem.Att1 != null) Att1 = ratingItem.Att1;
+            if (ratingItem.Att2 != null) Att2 = ratingItem.Att2;
+            if (ratingItem.Att3 != null) Att3 = ratingItem.Att3;
+            if (ratingItem.Sum != null) Sum = ratingItem.Sum;
+            if (ratingItem.Exam != null) Exam = ratingItem.Exam;
+            if (ratingItem.Total != null) Total = ratingItem.Total;
+
         }
 
         #region INotifyPropertyChanging Members

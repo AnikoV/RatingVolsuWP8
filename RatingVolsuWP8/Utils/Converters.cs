@@ -125,14 +125,14 @@ namespace RatingVolsuWP8
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var total = value as string;
-            if (String.IsNullOrEmpty(total))
-                return String.Empty;
-            if (total.Contains("("))
-            {
-                return total.Substring(0, total.IndexOf('('));
-            }
-            return total;
+            //var total = value as string;
+            //if (String.IsNullOrEmpty(total))
+            //    return String.Empty;
+            //if (total.Contains("("))
+            //{
+            //    return total.Substring(0, total.IndexOf('('));
+            //}
+            return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
