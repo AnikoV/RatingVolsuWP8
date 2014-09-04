@@ -81,7 +81,7 @@ namespace RatingVolsuAPI
         public ObservableCollection<Rating> GetRatingOfStudent(RequestByStudent req)
         {
             var rating = from Rating rat in Rating
-                where rat.StudentId == req.StudentId && rat.Semestr == req.Semestr
+                where rat.StudentId == req.StudentId && rat.Semestr == req.Semestr && rat.Total != null
                          orderby rat.Total descending
                 select rat;
             

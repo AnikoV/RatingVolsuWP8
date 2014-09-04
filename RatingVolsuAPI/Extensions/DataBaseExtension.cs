@@ -74,18 +74,20 @@ namespace RatingVolsuAPI
             {
                 string total;
                 total = predmet.Value[5].IndexOf('(') != -1 ? predmet.Value[5].Remove(predmet.Value[5].IndexOf('(')) : predmet.Value[5];
+                Rating newRating = new Rating();
+                int parsedValue;
                 collection.Add(new Rating()
                 {
                     Id = studentId + predmet.Key + semestr,
                     StudentId = studentId,
                     SubjectId = predmet.Key,
                     Semestr = semestr,
-                    Att1 = Convert.ToInt32(predmet.Value[0]),
-                    Att2 = Convert.ToInt32(predmet.Value[1]),
-                    Att3 = Convert.ToInt32(predmet.Value[2]),
-                    Sum = Convert.ToInt32(predmet.Value[3]),
-                    Exam = Convert.ToInt32(predmet.Value[4]),
-                    Total = Convert.ToInt32(total)
+                    Att1 = Int32.TryParse(predmet.Value[0], out parsedValue) ? parsedValue : (int?) null,
+                    Att2 = Int32.TryParse(predmet.Value[1], out parsedValue) ? parsedValue : (int?)null,
+                    Att3 = Int32.TryParse(predmet.Value[2], out parsedValue) ? parsedValue : (int?)null,
+                    Sum = Int32.TryParse(predmet.Value[3], out parsedValue) ? parsedValue : (int?)null,
+                    Exam = Int32.TryParse(predmet.Value[4], out parsedValue) ? parsedValue : (int?)null,
+                    Total = Int32.TryParse(total, out parsedValue) ? parsedValue : (int?)null
                 });
 
             }
