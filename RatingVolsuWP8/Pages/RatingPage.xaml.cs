@@ -59,7 +59,7 @@ namespace RatingVolsuWP8
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            string type, tmp;
+            //string type, tmp;
 
             var reqManip = NavigationService.GetNavigationData() as RequestManipulation;
             if (reqManip == null) return;
@@ -83,7 +83,6 @@ namespace RatingVolsuWP8
                     MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
                     return;
                 }
-                    
             }
             else
             {
@@ -94,7 +93,7 @@ namespace RatingVolsuWP8
                     await _viewModel.GetWebRatingOfGroup(reqManip);
                     App.ProgressIndicator.IsVisible = false; 
                     ApplicationBar.IsVisible = true;
-                        
+                    GroupRatingPanoramaItem.Header = _viewModel.RatingOfGroupForView[0].Student.Group.Name;
                 }
                 else
                 {
@@ -141,6 +140,7 @@ namespace RatingVolsuWP8
                     await _viewModel.GetWebRatingOfStudent(_viewModel.RequestManipForStudent);
                     App.ProgressIndicator.IsVisible = false;
                     SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
+                    StudentPanoramaItem.Header = selectedItem.Student.Number;
                 }
                 else
                 {

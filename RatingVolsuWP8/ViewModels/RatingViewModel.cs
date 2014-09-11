@@ -59,7 +59,7 @@ namespace RatingVolsuWP8
                 Subjects.Insert(0, new Subject()
                 {
                     Id = "000",
-                    Name = "Все предметы"
+                    Name = "Общий рейтинг"
                 });
             }
         }
@@ -87,7 +87,7 @@ namespace RatingVolsuWP8
                     Subjects.Insert(0, new Subject()
                     {
                         Id = "000",
-                        Name = "Все предметы"
+                        Name = "Общий рейтинг"
                     });
             }
         }

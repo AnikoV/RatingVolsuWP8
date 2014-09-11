@@ -39,7 +39,7 @@
                     </ListBox>
                 </phone:PanoramaItem>
 
-                <phone:PanoramaItem x:Name="GroupRatingPanoramaItem" Header="Группы">
+                <phone:PanoramaItem x:Name="GroupRatingPanoramaItem">
                     <ListBox x:Name="GroupRatingListBox"
                          ItemsSource="{Binding RatingOfGroupForView}"
                          SelectionChanged="GroupRatingListBox_OnSelectionChanged"
