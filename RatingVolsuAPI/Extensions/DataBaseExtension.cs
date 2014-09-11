@@ -59,8 +59,35 @@ namespace RatingVolsuAPI
                     Id = studentId + student.Key + semestr,
                     StudentId = studentId,
                     SubjectId = student.Key,
-                    Total = total,
+                    Total = Convert.ToInt32(total),
                     Semestr = semestr
+                });
+
+            }
+            return collection;
+        }
+
+        public static ObservableCollection<Rating> ToRatingCollection(this Dictionary<string, List<string>> dictionary, string studentId, string semestr)
+        {
+            var collection = new ObservableCollection<Rating>();
+            foreach (var predmet in dictionary)
+            {
+                string total;
+                total = predmet.Value[5].IndexOf('(') != -1 ? predmet.Value[5].Remove(predmet.Value[5].IndexOf('(')) : predmet.Value[5];
+                Rating newRating = new Rating();
+                int parsedValue;
+                collection.Add(new Rating()
+                {
+                    Id = studentId + predmet.Key + semestr,
+                    StudentId = studentId,
+                    SubjectId = predmet.Key,
+                    Semestr = semestr,
+                    Att1 = Int32.TryParse(predmet.Value[0], out parsedValue) ? parsedValue : (int?) null,
+                    Att2 = Int32.TryParse(predmet.Value[1], out parsedValue) ? parsedValue : (int?)null,
+                    Att3 = Int32.TryParse(predmet.Value[2], out parsedValue) ? parsedValue : (int?)null,
+                    Sum = Int32.TryParse(predmet.Value[3], out parsedValue) ? parsedValue : (int?)null,
+                    Exam = Int32.TryParse(predmet.Value[4], out parsedValue) ? parsedValue : (int?)null,
+                    Total = Int32.TryParse(total, out parsedValue) ? parsedValue : (int?)null
                 });
 
             }
@@ -82,5 +109,6 @@ namespace RatingVolsuAPI
                 }
             }
         }
+
     }
 }

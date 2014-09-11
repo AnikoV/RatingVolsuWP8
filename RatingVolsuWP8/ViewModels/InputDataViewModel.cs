@@ -68,10 +68,6 @@ namespace RatingVolsuWP8
         public async Task<List<string>> GetSemestrList(string groupId)
         {
             var list = await _requestManager.GetSemestrList(groupId);
-            foreach (var item in list)
-            {
-                Debug.WriteLine(item);
-            }
             return list;
         }
 

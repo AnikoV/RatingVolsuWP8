@@ -160,6 +160,7 @@ namespace RatingVolsuWP8
         private async void SemestrListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var SelectedIndex = SemestrListBox.SelectedIndex;
+            Debug.WriteLine("Changing semester with index" + SelectedIndex);
             if (SelectedIndex == -1) 
                 return;
             _viewModel.RequestManip.Semestr = _viewModel.Semesters[SelectedIndex].Number;

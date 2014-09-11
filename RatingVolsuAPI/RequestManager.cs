@@ -48,6 +48,7 @@ namespace RatingVolsuAPI
                 using (var reader = new StreamReader(responseStream))
                 {
                     content = reader.ReadToEnd();
+                    Debug.WriteLine("response:\n {0}" + content);
                 }
                 responseStream.Close();
                 return content;
@@ -59,7 +60,7 @@ namespace RatingVolsuAPI
                 {
                     var resp = we.Response as HttpWebResponse;
                     var code = resp.StatusCode;
-                    MessageBox.Show("RespCallback Exception raised! Message:{0}" + we.Message);
+                    Debug.WriteLine("RespCallback Exception raised! Message:{0}" + we.Message);
                     Debug.WriteLine("Status:{0}", we.Status);
                 }
                 else
@@ -78,19 +79,23 @@ namespace RatingVolsuAPI
             {
                 {"get_lists", "0"}
             };
-            string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+            var parameters = string.Join("&", _data.Select(v => v.Key + "=" + v.Value));
+            Debug.WriteLine("Sending request - get facults\n With params " + parameters);
+            string content = await SendRequest(parameters);
             try
             {
-                var str = content;
                 if (!String.IsNullOrEmpty(content))
                 {
                     var facults = new ObservableCollection<Facult>(JsonConvert.DeserializeObject<ObservableCollection<Facult>>(content));
+                    Debug.WriteLine("Parsed object:\n" + facults);
+                    Debug.WriteLine("Saving in database..\n");
                     foreach (var facult in facults)
                     {
                         if (rating.Facults.FirstOrDefault(x => x.Id == facult.Id) == null)
                             rating.Facults.InsertOnSubmit(facult);
                     }
                     rating.SubmitChanges();
+                    Debug.WriteLine("Done\n");
                     return facults;
                 }
             }
@@ -113,11 +118,16 @@ namespace RatingVolsuAPI
             {
                 {"fak_id", FacultId}
             };
-            string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+
+            string parameters = string.Join("&", _data.Select(v => v.Key + "=" + v.Value));
+            Debug.WriteLine("Sending request - get groups\n With params " + parameters);
+            string content = await SendRequest(parameters);
             try
             {
                 var groups =
                     new ObservableCollection<Group>(JsonConvert.DeserializeObject<ObservableCollection<Group>>(content));
+                Debug.WriteLine("Parsed object:\n" + groups);
+                Debug.WriteLine("Saving in database..\n");
                 foreach (var group in groups)
                 {
                     group.FacultId = FacultId;
@@ -128,6 +138,7 @@ namespace RatingVolsuAPI
 
                 }
                 rating.SubmitChanges();
+                Debug.WriteLine("Done\n");
                 groups = rating.LoadGroups(FacultId);
                 return groups;
             }
@@ -149,12 +160,15 @@ namespace RatingVolsuAPI
             {
                 {"gr_id", groupId}
             };
-            string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+            string parameters = string.Join("&", _data.Select(v => v.Key + "=" + v.Value));
+            Debug.WriteLine("Sending request - get semestrs\n With params " + parameters);
+            string content = await SendRequest(parameters);
             try
             {
-                var str = content;
                 var semNumbers =
                     new List<string>(JsonConvert.DeserializeObject<List<string>>(content));
+                Debug.WriteLine("Parsed object:\n" + semNumbers);
+                Debug.WriteLine("Saving in database..\n");
                 foreach (var item in semNumbers)
                 {
                     var sem = new Semestr()
@@ -170,6 +184,7 @@ namespace RatingVolsuAPI
 
                 }
                 rating.SubmitChanges();
+                Debug.WriteLine("Done\n");
                 var group = rating.Groups.FirstOrDefault(x => x.Id == groupId);
                 
                 return group.SemList;
@@ -193,13 +208,15 @@ namespace RatingVolsuAPI
             {
                 {"group_id", GroupId}
             };
-            string content = await SendRequest(string.Join("&", _data.Select(v => v.Key + "=" + v.Value)));
+            string parameters = string.Join("&", _data.Select(v => v.Key + "=" + v.Value));
+            Debug.WriteLine("Sending request - get students\n With params " + parameters);
+            string content = await SendRequest(parameters);
             Debug.WriteLine(content);
             try
             {
-                var str = content;
                 var students = new ObservableCollection<Student>(JsonConvert.DeserializeObject<ObservableCollection<Student>>(content));
-
+                Debug.WriteLine("Parsed object: " + students);
+                Debug.WriteLine("Saving in database..\n");
                 foreach (var student in students)
                 {
                     student.GroupId = GroupId;
@@ -207,6 +224,7 @@ namespace RatingVolsuAPI
                         rating.Students.InsertOnSubmit(student);
                 }
                 rating.SubmitChanges();
+                Debug.WriteLine("Done\n");
                 students = rating.LoadStudents(GroupId);
                 return students;
             }
@@ -226,12 +244,16 @@ namespace RatingVolsuAPI
         {
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/group_rat.php";
             var parameters = requestInfo.GetParams();
+            Debug.WriteLine("Sending request - rating of group\n With params " + parameters);
             string content = await SendRequest(parameters);
             try
             {
-                var str = content;
                 var groupRating = JsonConvert.DeserializeObject<GroupRat>(content);
-                return requestInfo.GetRatingFromServer(groupRating);
+                Debug.WriteLine("{0}", groupRating);
+                Debug.WriteLine("Begin database saving..\n");
+                var result = requestInfo.GetRatingFromServer(groupRating);
+                Debug.WriteLine("Done\n");
+                return result;
             }
             catch (Exception ex)
             {
@@ -251,12 +273,17 @@ namespace RatingVolsuAPI
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/stud_rat.php";
 
             var parametrs = req.GetParams();
+            Debug.WriteLine("Sending request - rating of student\n With params " + parametrs);
             string content = await SendRequest(parametrs);
             try
             {
-                string con = content;
                 var studentRating = JsonConvert.DeserializeObject<StudentRat>(content);
-                return requestInfo.GetRatingFromServer(studentRating);
+                Debug.WriteLine("{0}", JsonConvert.SerializeObject(studentRating));
+                Debug.WriteLine("Begin database saving..\n");
+                var result = requestInfo.GetRatingFromServer(studentRating);
+                Debug.WriteLine("Done\n");
+                return result;
+
             }
             catch (Exception)
             {

@@ -40,11 +40,11 @@ namespace RatingVolsuWP8
 
         public async Task GetWebRatingOfStudent(RequestManipulation requestManip)
         {
+            GetRatingFromDb(requestManip);
             var temp  = await _requestManager.GetRatingOfStudent(requestManip);
             if (temp != null)
             {
                 RatingOfStudent = temp;
-                RatingOfStudent = new ObservableCollection<Rating>(RatingOfStudent.OrderByDescending(x => x.Total));
             }
         }
 
@@ -76,7 +76,7 @@ namespace RatingVolsuWP8
         public void GetRatingFromDb(RequestManipulation reqManip)
         {
             var listRatings = reqManip.LoadRatingFromDb();
-            if (RequestManip.GetType() == typeof(RequestByStudent))
+            if (reqManip.GetType() == typeof(RequestByStudent))
                 RatingOfStudent = listRatings;
             else
             {
@@ -100,7 +100,7 @@ namespace RatingVolsuWP8
 
         public void SetStatisticForRating(Rating curItem)
         {
-            int totalCur = Convert.ToInt32(curItem.Total);
+            var totalCur = curItem.Total;
                 //curItem.Total.Length == 1 ?
                 //curItem.Total : curItem.Total.Substring(0, 2).Replace("(", ""));
 
@@ -112,11 +112,9 @@ namespace RatingVolsuWP8
                 curItem.BallsToFirstPlace = "0";
                 return;
             }
-            if (!String.IsNullOrEmpty(RatingOfGroupForView[idx - 1].Total))
+            if (RatingOfGroupForView[idx - 1].Total != null)
             {
-                int totalPred = Convert.ToInt32(RatingOfGroupForView[idx - 1].Total);
-                    //RatingOfGroupForView[idx - 1].Total.Length == 1 ? 
-                    //RatingOfGroupForView[idx - 1].Total : RatingOfGroupForView[idx - 1].Total.Substring(0, 2).Replace("(", ""));
+                var totalPred = RatingOfGroupForView[idx - 1].Total;
                 curItem.BallsToNextPlace = String.Format("+{0}", totalPred - totalCur);
             }
             else
@@ -124,7 +122,7 @@ namespace RatingVolsuWP8
                 curItem.BallsToNextPlace = String.Empty;
             }
             // Generate BallsToFirstPlace
-            int totalFirst = Convert.ToInt32(RatingOfGroupForView.First().Total);//RatingOfGroupForView.First().Total.Length == 1 ? RatingOfGroupForView.First().Total : RatingOfGroupForView.First().Total.Substring(0, 2).Replace("(", ""));
+            var totalFirst = RatingOfGroupForView.First().Total;
             curItem.BallsToFirstPlace = String.Format("+{0}", totalFirst - totalCur);
         }
 

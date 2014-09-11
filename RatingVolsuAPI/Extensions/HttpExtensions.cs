@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace WinPhoneExtensions
                 }
                 catch (WebException)
                 {
+                    Debug.WriteLine("exception in GetRequestStreamAsync");
                     taskComplete.TrySetResult(null);
                 }
             }, request);
@@ -50,6 +52,7 @@ namespace WinPhoneExtensions
                 }
                 catch (WebException webExc)
                 {
+                    Debug.WriteLine("exception in GetResponseAsync");
                     HttpWebResponse failedResponse = (HttpWebResponse)webExc.Response;
                     taskComplete.TrySetResult(failedResponse);
                 }

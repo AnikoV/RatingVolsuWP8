@@ -19,8 +19,7 @@ namespace RatingVolsuAPI
                 {
                     StudentId = rating.StudentId,
                     Student = rating.Student,
-                    Total =
-                        collection.Where(x => x.StudentId == rating.StudentId).Sum(x => Int32.Parse(x.Total)).ToString(),
+                    Total = collection.Where(x => x.StudentId == rating.StudentId).Sum(x => x.Total),
                     SubjectId = "000",
                     Id = rating.StudentId + "000"
                 });

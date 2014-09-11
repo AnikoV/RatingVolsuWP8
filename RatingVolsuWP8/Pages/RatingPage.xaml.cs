@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -40,7 +41,19 @@ namespace RatingVolsuWP8
         protected override void OnBackKeyPress(CancelEventArgs e)
         {
             base.OnBackKeyPress(e);
-            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+            var page = App.RootFrame.Content as Page;
+            if (page != null)
+            {
+                var service = page.NavigationService;
+                var count = service.BackStack.Count() - 1;
+                for (var i = 0; i < count; i++)
+                {
+                    service.RemoveBackEntry();
+                }
+                if (service.CanGoBack)
+                    service.GoBack();
+            }
+           // NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -93,6 +106,7 @@ namespace RatingVolsuWP8
             
 
         }
+
         #region SelectionChanges
 
         private void SubjectsListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -102,6 +116,7 @@ namespace RatingVolsuWP8
 
             _viewModel.GetRatingBySubject(selectedIndex);
         }
+
         private async void GroupRatingListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var subjLb = sender as ListBox;
@@ -136,7 +151,9 @@ namespace RatingVolsuWP8
                
             }
         }
+
         #endregion
+
         private void ApplicationBarIconButton_OnClick(object sender, EventArgs e)
         {
             if (_viewModel.RequestManipForStudent != null)
@@ -159,12 +176,12 @@ namespace RatingVolsuWP8
                 if (!_viewModel.CheckFavorites(false))
                     MessageBox.Show("Запись уже находится в избранном");
                 else
-                    ShowCustumMessageBox(false);
+                    ShowCustomMessageBox(false);
             }
             
         }
 
-        private void ShowCustumMessageBox(bool p)
+        private void ShowCustomMessageBox(bool p)
         {
             var textBox = new TextBox()
             {
@@ -206,7 +223,6 @@ namespace RatingVolsuWP8
                 }
                 InitAppBar();
             };
-
             cmBox.Show();
         }
 
@@ -219,7 +235,7 @@ namespace RatingVolsuWP8
                 InitAppBar();
             }
             else
-                ShowCustumMessageBox(false);
+                ShowCustomMessageBox(false);
         }
 
         private void ApplicationBarStudentButton_OnClick(object sender, EventArgs e)
@@ -231,35 +247,12 @@ namespace RatingVolsuWP8
                 InitAppBar();
             }
             else
-                ShowCustumMessageBox(true);
+                ShowCustomMessageBox(true);
         }
 
-        private Rating _head;
-        private Rating Head
-        {
-            get
-            {
-                if (_head == null)
-                {
-                    _head = new Rating
-                    {
-                        Subject = new Subject()
-                        {
-                            Name = "ПРЕДМЕТЫ"
-                        },
-                        Att1 = "1 модуль",
-                        Att2 = "2 модуль",
-                        Att3 = "3 модуль",
-                        Sum = "сумма",
-                        Exam = "экзамен",
-                        Total = "итог"
-                    };
-                }
-                return _head;
-            }
-        }
         private void RatingPage_OnOrientationChanged(object sender, OrientationChangedEventArgs e)
         {
+            Debug.WriteLine("Orientation has been changed");
             if (_viewModel.RequestManipForStudent != null)
             {
                 if (e.Orientation == PageOrientation.LandscapeRight || e.Orientation == PageOrientation.LandscapeLeft)
@@ -267,12 +260,9 @@ namespace RatingVolsuWP8
                     VerticalState.Visibility = Visibility.Collapsed;
                     HorizontalState.Visibility = Visibility.Visible;
                     SystemTray.IsVisible = false;
-                    _viewModel.RatingOfStudent.Insert(0,Head);
                 }
                 else
                 {
-                    if (_viewModel.RatingOfStudent.Contains(Head))
-                        _viewModel.RatingOfStudent.Remove(Head);
                     VerticalState.Visibility = Visibility.Visible;
                     HorizontalState.Visibility = Visibility.Collapsed;
                     SystemTray.IsVisible = true;
