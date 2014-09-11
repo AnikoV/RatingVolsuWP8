@@ -16,8 +16,6 @@ using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace RatingVolsuWP8
 {
-    //Todo Доделать Контекстное меню
-    //Todo Проверить работу с коллекцией избранного
     public partial class MainPage
     {
         readonly MainViewModel _viewModel;
