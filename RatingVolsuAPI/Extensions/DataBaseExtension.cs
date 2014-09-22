@@ -110,5 +110,17 @@ namespace RatingVolsuAPI
             }
         }
 
+        public static string GroupName(this RequestManipulation request)
+        {
+            var db = new RatingDatabase();
+            var firstOrDefault = db.Groups.FirstOrDefault(x => x.Id == request.GroupId);
+            return firstOrDefault != null ? firstOrDefault.Name : null;
+        }
+        public static string StudentNumber(this RequestByStudent request)
+        {
+            var db = new RatingDatabase();
+            var firstOrDefault = db.Students.FirstOrDefault(x => x.Id == request.StudentId);
+            return firstOrDefault != null ? firstOrDefault.Number : null;
+        }
     }
 }

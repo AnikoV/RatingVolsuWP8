@@ -70,6 +70,9 @@ namespace RatingVolsuWP8
             {
                 SubjectsPanoramaItem.Visibility = Visibility.Collapsed;
                 GroupRatingPanoramaItem.Visibility = Visibility.Collapsed;
+                SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
+                var studentRequest = reqManip as RequestByStudent;
+                _viewModel.StudentNumber = studentRequest.StudentNumber();
                 App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
                 if (await App.IsInternetAvailable())
                 {
@@ -86,20 +89,19 @@ namespace RatingVolsuWP8
             }
             else
             {
+                RatingPanorama.DefaultItem = GroupRatingPanoramaItem;
                 StudentPanoramaItem.Visibility = Visibility.Collapsed;
                 App.InitProgressIndicator(true, "Загрузка рейтинга группы...", this);
                 if (await App.IsInternetAvailable())
                 {
                     await _viewModel.GetWebRatingOfGroup(reqManip);
-                    App.ProgressIndicator.IsVisible = false; 
+                    App.ProgressIndicator.IsVisible = false;
                     ApplicationBar.IsVisible = true;
-                    GroupRatingPanoramaItem.Header = _viewModel.RatingOfGroupForView[0].Student.Group.Name;
                 }
                 else
                 {
                     App.ProgressIndicator.IsVisible = false;
                     MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
-                    return;
                 }
             }
             
@@ -132,15 +134,19 @@ namespace RatingVolsuWP8
                     Semestr = _viewModel.RequestManip.Semestr,
                     StudentId = selectedItem.Student.Id
                 };
+                var studentRequest = _viewModel.RequestManipForStudent as RequestByStudent;
+                _viewModel.StudentNumber = studentRequest.StudentNumber();
                 if (StudentPanoramaItem.Visibility == Visibility.Collapsed)
                     StudentPanoramaItem.Visibility = Visibility.Visible;
+                
                 App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
+                
                 if (await App.IsInternetAvailable())
                 {
                     await _viewModel.GetWebRatingOfStudent(_viewModel.RequestManipForStudent);
                     App.ProgressIndicator.IsVisible = false;
                     SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
-                    StudentPanoramaItem.Header = selectedItem.Student.Number;
+                    
                 }
                 else
                 {
@@ -253,7 +259,7 @@ namespace RatingVolsuWP8
         private void RatingPage_OnOrientationChanged(object sender, OrientationChangedEventArgs e)
         {
             Debug.WriteLine("Orientation has been changed");
-            if (_viewModel.RequestManipForStudent != null)
+            if (RatingPanorama.SelectedItem == StudentPanoramaItem)
             {
                 if (e.Orientation == PageOrientation.LandscapeRight || e.Orientation == PageOrientation.LandscapeLeft)
                 {

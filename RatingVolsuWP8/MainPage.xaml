@@ -139,47 +139,17 @@
                                TextAlignment="Center"
                                FontSize="70"/>
                 </phone:PivotItem.Header>
-                <!--<ListBox x:Name="FavoritesListBox" ItemContainerStyle="{StaticResource ListBoxContainer}" Hold="FavoritesListBox_OnHold">
-                    <ListBoxItem x:Name="Item1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock x:Name="ItemNameTb" Text="Шаблон1" FontSize="55"  Grid.Row="0" Grid.Column="0" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" TextWrapping="Wrap" TextAlignment="Left" HorizontalAlignment="Left"/>
-                            <TextBlock x:Name="ItemInfoTb" Text="ИМИТ ист-101 2 семестр 10101" FontSize="20" FontWeight="SemiBold" Grid.Row="1" Grid.Column="0" Opacity="0.5" toolkit:SlideInEffect.LineIndex="1"/>
-                            <Image Source="/Assets/Images/student_mini.png" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"/>
-                        </Grid>
-                    </ListBoxItem>
-                    <ListBoxItem x:Name="Item2">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock x:Name="ItemNameTb2" Text="Шаблон1" FontSize="55"  Grid.Row="0" Grid.Column="0" FontFamily="{StaticResource PhoneFontFamilyLight}" FontWeight="Light" TextWrapping="Wrap" TextAlignment="Left" HorizontalAlignment="Left"/>
-                            <TextBlock x:Name="ItemInfoTb2" Text="ИМИТ ист-101 2 семестр" FontSize="20" FontWeight="SemiBold" Grid.Row="1" Grid.Column="0" Opacity="0.5" toolkit:SlideInEffect.LineIndex="1" />
-                            <Image Source="/Assets/Images/group_mini.png" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"  HorizontalAlignment="Left" />
-                        </Grid>
-                    </ListBoxItem>
-                </ListBox>-->
-                <toolkit:LongListMultiSelector x:Name="FavotitesMultiselectList" 
+                <Grid>
+                    <toolkit:LongListMultiSelector x:Name="FavotitesMultiselectList" 
                                                LayoutMode="List" 
                                                SelectionChanged="FavotitesMultiselectList_OnSelectionChanged" 
                                                IsSelectionEnabledChanged="FavotitesMultiselectList_OnIsSelectionEnabledChanged"
                                                Hold="FavotitesMultiselectList_OnHold"
                                                ItemsSource="{Binding FavoritesList}"
                                                ItemTemplate="{StaticResource FavoritesItemTemplate}"/>
+
+                    <TextBlock x:Name="ClearListText" HorizontalAlignment="Center"  Text="Список пуст" FontSize="48" Opacity="0.3" Visibility="{Binding Path = FavoritesList.Count, Converter = {StaticResource ListCountToVisabilityConverter}}"/>
+                </Grid>
                 
             </phone:PivotItem>
         </phone:Pivot>

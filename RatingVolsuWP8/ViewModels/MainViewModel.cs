@@ -5,6 +5,7 @@ using System.Data.Linq;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using RatingVolsuAPI;
 
 namespace RatingVolsuWP8
@@ -12,7 +13,8 @@ namespace RatingVolsuWP8
     public class MainViewModel : PropertyChangedBase
     {
         public string VolsuReview { get; set; }
-        private RatingDatabase _ratingDb = new RatingDatabase(App.DbConnectionString);
+
+        private RatingDatabase _ratingDb = new RatingDatabase();
         public ObservableCollection<FavoritesItem> FavoritesList { get; set; }
         public MainViewModel()
         {
@@ -31,7 +33,7 @@ namespace RatingVolsuWP8
             {
                 _ratingDb.DeleteFavorites((FavoritesItem)favoritesItem);
             }
-            _ratingDb = new RatingDatabase(App.DbConnectionString);
+            _ratingDb = new RatingDatabase();
             GetFavoritesFromDb();
         }
     }

@@ -25,9 +25,15 @@ namespace RatingVolsuWP8
             _viewModel = new MainViewModel();
             DataContext = _viewModel;
             
-            ReviewTextIn.Begin();   // Start Animation		
+            ReviewTextIn.Begin();   // Start Animation
             InitializeMainAppBar();
-            RatingTypePivot.Focus();
+            if (_viewModel.FavoritesList.Count != 0)
+            {
+                MainPivot.SelectedItem = MainPivot.Items[1];
+                ApplicationBar.IsVisible = true;
+            }
+            else
+                RatingTypePivot.Focus();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

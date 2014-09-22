@@ -19,21 +19,24 @@ namespace RatingVolsuWP8
         private readonly RequestManager _requestManager;
         private readonly RatingDatabase _ratingDb;
         public FavoritesItem CurrentFavoritesItem;
-        
+    
         //Properties
         public int[] Place { get; set; }
         public ObservableCollection<Rating> RatingOfStudent { get; set; }
         public ObservableCollection<Rating> RatingOfGroup { get; set; }
         public ObservableCollection<Rating> RatingOfGroupForView { get; set; }
         public ObservableCollection<Subject> Subjects { get; set; }
+        public string GroupName { get; set; }
+        public string StudentNumber { get; set; }
 
         public RatingViewModel()
         {
-            _ratingDb = new RatingDatabase(App.DbConnectionString);
+            _ratingDb = new RatingDatabase();
             _requestManager = new RequestManager();
             RatingOfStudent = new ObservableCollection<Rating>();
             RatingOfGroupForView = new ObservableCollection<Rating>();
             Subjects = new ObservableCollection<Subject>();
+
         }
 
         #region WEB
@@ -42,7 +45,7 @@ namespace RatingVolsuWP8
         {
             GetRatingFromDb(requestManip);
             var temp  = await _requestManager.GetRatingOfStudent(requestManip);
-            if (temp != null)
+            if (temp != null || temp.Count == 0)
             {
                 RatingOfStudent = temp;
             }
@@ -139,6 +142,7 @@ namespace RatingVolsuWP8
         internal void SetCurrentRequest(RequestManipulation reqManip)
         {
             RequestManip = reqManip;
+            GroupName = RequestManip.GroupName();
         }
     }
 }

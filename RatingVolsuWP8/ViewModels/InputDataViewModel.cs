@@ -31,7 +31,7 @@ namespace RatingVolsuWP8
             Students = new ObservableCollection<Student>();
             Semesters = new ObservableCollection<Semester>();
             _requestManager = new RequestManager();
-            ratingDb = new RatingDatabase(App.DbConnectionString);
+            ratingDb = new RatingDatabase();
         }
 
         #region Requests

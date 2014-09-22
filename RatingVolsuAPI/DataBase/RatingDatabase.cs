@@ -13,8 +13,10 @@ namespace RatingVolsuAPI
 {
     public class RatingDatabase : DataContext
     {
-        public RatingDatabase(string connectionString)
-            : base(connectionString)
+        private const string ConnectionString = @"isostore:/RatingDataBase.sdf";
+
+        public RatingDatabase()
+            : base(ConnectionString)
         { }
 
         public Table<Facult> Facults;
@@ -81,10 +83,10 @@ namespace RatingVolsuAPI
         public ObservableCollection<Rating> GetRatingOfStudent(RequestByStudent req)
         {
             var rating = from Rating rat in Rating
-                where rat.StudentId == req.StudentId && rat.Semestr == req.Semestr && rat.Total != null
+                         where rat.StudentId == req.StudentId && rat.Semestr == req.Semestr && rat.Total != null
                          orderby rat.Total descending
-                select rat;
-            
+                         select rat;
+
             var ratingCollection = new ObservableCollection<Rating>(rating);
             return ratingCollection;
         }
@@ -122,8 +124,5 @@ namespace RatingVolsuAPI
             Favorites.DeleteOnSubmit(favoritesItem);
             SubmitChanges();
         }
-
-        
-
     }
 }

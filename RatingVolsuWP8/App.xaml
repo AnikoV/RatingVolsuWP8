@@ -15,7 +15,8 @@
             </ResourceDictionary.MergedDictionaries>
             
             <local:LocalizedStrings xmlns:local="clr-namespace:RatingVolsuWP8" x:Key="LocalizedStrings"/>
-            
+
+            <rating:ListCountToVisabilityConverter x:Key="ListCountToVisabilityConverter"/>
             <rating:InstuteNameToFilialConverter x:Key="InstuteNameToFilialConverter"/>
             <rating:InstituteNameCutConverter x:Key="InstituteNameCutConverter"/>
             <rating:IncrementPlaceConverter x:Key="IncrementPlaceConverter"/>

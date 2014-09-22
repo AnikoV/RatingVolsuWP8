@@ -28,7 +28,7 @@ namespace RatingVolsuAPI
 
         public RequestManager()
         {
-            rating = new RatingDatabase(Info.DbConnectionString);
+            rating = new RatingDatabase();
         }
 
         private async Task<string> SendRequest(string DataRequest)
@@ -101,7 +101,7 @@ namespace RatingVolsuAPI
             }
             catch (Exception)
             {
-                return null;
+                new ObservableCollection<Facult>();
             }
             return null;
         }
@@ -144,7 +144,7 @@ namespace RatingVolsuAPI
             }
             catch (Exception)
             {
-                return null;
+                return new ObservableCollection<Group>();
             }
         }
 
@@ -191,7 +191,7 @@ namespace RatingVolsuAPI
             }
             catch (Exception)
             {
-                return null;
+                return new List<string>();
             }
 
         }
@@ -230,7 +230,7 @@ namespace RatingVolsuAPI
             }
             catch (Exception)
             {
-                return null;
+                return new ObservableCollection<Student>(); ;
             }
             
         }

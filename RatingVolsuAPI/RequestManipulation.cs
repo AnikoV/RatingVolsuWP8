@@ -13,7 +13,7 @@ namespace RatingVolsuAPI
         public string FacultId;
         public string GroupId;
         public string Semestr;
-        public RatingDatabase rating = new RatingDatabase(Info.DbConnectionString);
+        public RatingDatabase rating = new RatingDatabase();
 
         public abstract ObservableCollection<Rating> GetRatingFromServer(Object Rating);
 
@@ -37,15 +37,22 @@ namespace RatingVolsuAPI
         public override ObservableCollection<Rating> GetRatingFromServer(Object RatingObject)
         {
             var groupRating = (GroupRat)RatingObject;
-            rating.Subjects.InsertEntity(groupRating.Predmet.ToSubjectCollection());
+            if (groupRating.Predmet != null)
+            {
+                rating.Subjects.InsertEntity(groupRating.Predmet.ToSubjectCollection());
+                rating.SubmitChanges();
+            }
+            if (groupRating.Table != null)
+            {
+                rating.Students.InsertEntity(groupRating.Table.ToStudentCollection(GroupId));
 
-            rating.Students.InsertEntity(groupRating.Table.ToStudentCollection(GroupId));
-          
-            foreach (var tableItem in groupRating.Table)
-                rating.Rating.InsertEntity(tableItem.Value.Predmet.ToRatingCollection(tableItem.Key, Semestr));
+                foreach (var tableItem in groupRating.Table)
+                    rating.Rating.InsertEntity(tableItem.Value.Predmet.ToRatingCollection(tableItem.Key, Semestr));
+                rating.SubmitChanges();
+            }
 
-            rating.SubmitChanges();
-            return rating.GetRatingOfGroup(this);
+            var result = rating.GetRatingOfGroup(this);
+            return (result.Count == 0) ? null : result;
         }
 
         public override ObservableCollection<Rating> LoadRatingFromDb()
@@ -124,13 +131,19 @@ namespace RatingVolsuAPI
         {
             var studentRating = (StudentRat) ratingObject;
 
-            var subjects = studentRating.Predmet.ToSubjectCollection();
-            rating.Subjects.InsertEntity(subjects);
-
-            var ratings = studentRating.Table.ToRatingCollection(StudentId, Semestr);
-            rating.Rating.InsertEntity(ratings);
-
-            rating.SubmitChanges();
+            if (studentRating.Predmet != null)
+            {
+                var subjects = studentRating.Predmet.ToSubjectCollection();
+                rating.Subjects.InsertEntity(subjects);
+                rating.SubmitChanges();
+            }
+            if (studentRating.Table != null)
+            {
+                var ratings = studentRating.Table.ToRatingCollection(StudentId, Semestr);
+                rating.Rating.InsertEntity(ratings);
+                rating.SubmitChanges();
+            }
+           
             return rating.GetRatingOfStudent(this);
         }
 
