@@ -15,7 +15,7 @@
 
     <phone:PhoneApplicationPage.Resources>
         <CollectionViewSource x:Key="SortedRatingList" Source="{Binding Path=RatingOfGroupForView}" />
-     
+        
     </phone:PhoneApplicationPage.Resources>
     
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
@@ -52,7 +52,7 @@
                     </phone:PanoramaItem.HeaderTemplate>
                     <Grid>
                         <ListBox x:Name="GroupRatingListBox"
-                             ItemsSource="{Binding RatingOfGroupForView}"
+                             ItemsSource="{Binding Path = RatingOfGroupForView, Converter={StaticResource ArrayWrapperConverter}}"
                              SelectionChanged="GroupRatingListBox_OnSelectionChanged"
                              SelectionMode="Single" Margin="0,0,-29,0">
                             <ListBox.ItemContainerStyle>
@@ -98,13 +98,13 @@
                                                     <TextBlock x:Name="StudentPlace"
                                                            MinWidth="80"
                                                            Grid.Column="0"
-                                                           Text="{Binding Converter={StaticResource IncrementPlaceConverter}, ConverterParameter={StaticResource SortedRatingList}}" 
+                                                           Text="{Binding Index}" 
                                                            FontSize="80" 
                                                            FontFamily="{StaticResource PhoneFontFamilyLight}"/>
                                                     <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
                                                         <StackPanel Orientation="Vertical" Margin="0,0,30,0">
-                                                            <TextBlock x:Name="Zachetka" Text="{Binding Path=Student.Number}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="35" TextWrapping="NoWrap"/>
-                                                            <TextBlock x:Name="Balls" Text="{Binding Path=Total}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="25" TextWrapping="NoWrap" Opacity="0.5"/>
+                                                            <TextBlock x:Name="Zachetka" Text="{Binding Path=Value.Student.Number}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="35" TextWrapping="NoWrap"/>
+                                                            <TextBlock x:Name="Balls" Text="{Binding Path=Value.Total}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="25" TextWrapping="NoWrap" Opacity="0.5"/>
                                                         </StackPanel>
                                                         <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
                                                             <Image Source="/Assets/Images/stat_icon1.png" />

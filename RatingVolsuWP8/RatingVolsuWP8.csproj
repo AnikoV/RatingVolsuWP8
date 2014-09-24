@@ -106,6 +106,7 @@
       <DependentUpon>RatingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Converters.cs" />
+    <Compile Include="Utils\IndexCounter.cs" />
     <Compile Include="ViewModels\InputDataViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">

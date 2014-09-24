@@ -58,7 +58,7 @@ namespace ForTesting
                 // и потреблять энергию батареи, когда телефон не будет использоваться.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-            using (RatingDatabase db = new RatingDatabase(DbConnectionString))
+            using (RatingDatabase db = new RatingDatabase())
             {
                 if (db.DatabaseExists() == false)
                     db.CreateDatabase();

@@ -28,7 +28,7 @@ namespace ForTesting
         public MainViewModel()
         {
             VolsuReview = "ВолГУ – университет, известный в стране и за рубежом качеством образования, высоким научным потенциалом, инновационными проектами, активной социальной позицией.";
-            rating = new RatingDatabase(App.DbConnectionString);
+            rating = new RatingDatabase();
             favoritesCollection = rating.GetFavorites();
         }
 

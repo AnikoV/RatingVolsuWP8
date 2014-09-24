@@ -24,7 +24,7 @@
             <rating:TotalConverter x:Key="TotalConverter"/>
             <rating:RatingTypeToImageConverter x:Key="RatingTypeToImageConverter"/>
             <rating:RatingTypeToImgSourceConverter x:Key="RatingTypeToImgSourceConverter"/>
-            
+            <rating:ArrayWrapperConverter x:Key="ArrayWrapperConverter"/>
         </ResourceDictionary>
         
     </Application.Resources>

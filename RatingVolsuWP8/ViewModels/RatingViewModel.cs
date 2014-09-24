@@ -34,7 +34,7 @@ namespace RatingVolsuWP8
             _ratingDb = new RatingDatabase();
             _requestManager = new RequestManager();
             RatingOfStudent = new ObservableCollection<Rating>();
-            RatingOfGroupForView = new ObservableCollection<Rating>();
+            //RatingOfGroupForView = new ObservableCollection<Rating>();
             Subjects = new ObservableCollection<Subject>();
 
         }

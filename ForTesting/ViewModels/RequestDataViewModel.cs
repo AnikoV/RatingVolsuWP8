@@ -104,7 +104,7 @@ namespace ForTesting
 
         public RequestDataViewModel()
         {
-            _rating = new RatingDatabase(App.DbConnectionString);
+            _rating = new RatingDatabase();
             _request = new RequestManager();
             ratingOfGroupCollection = new ObservableCollection<Rating>();
             ratingOfStudentCollection = new ObservableCollection<Rating>();
@@ -160,7 +160,7 @@ namespace ForTesting
         internal void GetFavoriteItem(string itemId)
         {
             int id = Convert.ToInt32(itemId);
-            CurrentFavoritesItem = _rating.GetFavoritesItem(id);
+            CurrentFavoritesItem = _rating.GetFavoritesItem(itemId);
         }
 
         public void CreateRequest(string facultId, string groupId, string semestr, string studentId)
@@ -190,7 +190,8 @@ namespace ForTesting
 
         internal bool SaveFavorites()
         {
-            return _rating.SaveFavorites(ReqInfo);
+            _rating.SaveFavorites(ReqInfo, "sgfe");
+            return true;
         }
     }
 }
