@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -51,7 +52,9 @@ namespace RatingVolsuWP8
 
         public IEnumerator GetEnumerator()
         {
-            return _array.Select((item, index) => new ArrayItemWrapper(_array, index)).GetEnumerator();
+            var result = _array.Select((item, index) => new ArrayItemWrapper(_array, index)).GetEnumerator();
+            Debug.WriteLine("converter return value");
+            return result;
         }
     }
 

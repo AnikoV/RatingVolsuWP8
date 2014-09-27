@@ -123,10 +123,12 @@ namespace RatingVolsuWP8
             var subjLb = sender as ListBox;
             if (subjLb != null)
             {
-                var selectedItem = subjLb.SelectedItem as Rating;
+                var selectedItem = (subjLb.SelectedItem as ArrayItemWrapper).Value;
                 if (selectedItem == null) 
                     return;
+                Debug.WriteLine("Begin set statistic for {0}", selectedItem.Student.Number );
                 _viewModel.SetStatisticForRating(selectedItem);
+                Debug.WriteLine("End set statistic for {0}", selectedItem.Student.Number);
                 _viewModel.RequestManipForStudent = new RequestByStudent()
                 {
                     FacultId = _viewModel.RequestManip.FacultId,
@@ -138,13 +140,16 @@ namespace RatingVolsuWP8
                 _viewModel.StudentNumber = studentRequest.StudentNumber();
                 if (StudentPanoramaItem.Visibility == Visibility.Collapsed)
                     StudentPanoramaItem.Visibility = Visibility.Visible;
-                
+                Debug.WriteLine("init progress indicator for {0}", selectedItem.Student.Number);
                 App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
-                
+                Debug.WriteLine("Check internet access for {0}", selectedItem.Student.Number);
                 if (await App.IsInternetAvailable())
                 {
+                    Debug.WriteLine("Begin get rating for {0}", selectedItem.Student.Number);
                     await _viewModel.GetWebRatingOfStudent(_viewModel.RequestManipForStudent);
+                    Debug.WriteLine("end get rating for {0}", selectedItem.Student.Number);
                     App.ProgressIndicator.IsVisible = false;
+                    Debug.WriteLine("unvisible progress indicator for {0}", selectedItem.Student.Number);
                     SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
                     
                 }

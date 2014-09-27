@@ -109,7 +109,7 @@
                                                         <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
                                                             <Image Source="/Assets/Images/stat_icon1.png" />
                                                             <TextBlock x:Name="BallsToNextPlace" 
-                                                                   Text="{Binding BallsToNextPlace}"
+                                                                   Text="{Binding Path = Value.BallsToNextPlace}"
                                                                    FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
                                                                    FontSize="35" 
                                                                    TextWrapping="NoWrap"/>
@@ -118,7 +118,7 @@
                                                         <StackPanel Name="FirstStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
                                                             <Image Source="/Assets/Images/stat_icon2.png"/>
                                                             <TextBlock x:Name="BallsToFirstPlace" 
-                                                                   Text="{Binding BallsToFirstPlace}" 
+                                                                   Text="{Binding Path = Value.BallsToFirstPlace}" 
                                                                    FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
                                                                    FontSize="35" 
                                                                    TextWrapping="NoWrap"
@@ -263,7 +263,7 @@
     </Grid>
     
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.5">
             
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

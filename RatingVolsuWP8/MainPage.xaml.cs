@@ -58,7 +58,7 @@ namespace RatingVolsuWP8
         private void InitializeMainAppBar()
         {
             if (ApplicationBar == null)
-                ApplicationBar = new ApplicationBar {IsVisible = true, IsMenuEnabled = true};
+                ApplicationBar = new ApplicationBar {IsVisible = true, IsMenuEnabled = true, Opacity = 0.5};
             ApplicationBar.Buttons.Clear();
             _appBarButtonAddFavorite = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/add.png", UriKind.Relative))
             {
@@ -120,7 +120,7 @@ namespace RatingVolsuWP8
         private ApplicationBarIconButton _appBarButtonEditFavorite;
         private void InitializeSelectionAppBar()
         {
-            ApplicationBar = new ApplicationBar { IsVisible = true, IsMenuEnabled = true };
+            ApplicationBar = new ApplicationBar { IsVisible = true, IsMenuEnabled = true, Opacity = 0.5};
 
             _appBarButtonDelFavorite = new ApplicationBarIconButton(new Uri("/Assets/Images/AppBar/delete.png", UriKind.Relative));
             _appBarButtonDelFavorite.Text = "Удалить";
