@@ -22,6 +22,7 @@
             <rating:IncrementPlaceConverter x:Key="IncrementPlaceConverter"/>
             <rating:SubjectTypeConverter x:Key="SubjectTypeConverter"/>
             <rating:TotalConverter x:Key="TotalConverter"/>
+            <rating:ExamConverter x:Key="ExamConverter"/>
             <rating:RatingTypeToImageConverter x:Key="RatingTypeToImageConverter"/>
             <rating:RatingTypeToImgSourceConverter x:Key="RatingTypeToImgSourceConverter"/>
             <rating:ArrayWrapperConverter x:Key="ArrayWrapperConverter"/>

@@ -15,7 +15,6 @@
 
     <phone:PhoneApplicationPage.Resources>
         <CollectionViewSource x:Key="SortedRatingList" Source="{Binding Path=RatingOfGroupForView}" />
-        
     </phone:PhoneApplicationPage.Resources>
     
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
@@ -246,7 +245,7 @@
                                     <TextBlock x:Name="Att3" Text="{Binding Att3}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Border>
                                 <Border BorderThickness="1" BorderBrush="White" Width="85" >
-                                    <TextBlock x:Name="Exam" Text="{Binding Exam}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="Exam" Text="{Binding Converter={StaticResource ExamConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Border>
                                 <Border BorderThickness="1" BorderBrush="White" Width="85" >
                                     <TextBlock x:Name="Total" Text="{Binding Total, Converter={StaticResource TotalConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>

@@ -202,5 +202,23 @@ namespace RatingVolsuWP8
         {
             throw new NotImplementedException();
         }
+    } 
+
+    public class ExamConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var rating = value as Rating;
+            if (rating != null && rating.Exam == 0)
+            {
+                return rating.Subject.Type == "2" ? "-" : "0";
+            }
+            return rating.Exam;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
