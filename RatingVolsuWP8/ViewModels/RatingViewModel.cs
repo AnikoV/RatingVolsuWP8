@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using RatingVolsuAPI;
@@ -19,13 +20,14 @@ namespace RatingVolsuWP8
         private readonly RequestManager _requestManager;
         private readonly RatingDatabase _ratingDb;
         public FavoritesItem CurrentFavoritesItem;
-    
+        private List<CancellationTokenSource> ctSourcesList; 
         //Properties
         public int[] Place { get; set; }
         public ObservableCollection<Rating> RatingOfStudent { get; set; }
         public ObservableCollection<Rating> RatingOfGroup { get; set; }
         public ObservableCollection<Rating> RatingOfGroupForView { get; set; }
         public ObservableCollection<Subject> Subjects { get; set; }
+       
         public string GroupName { get; set; }
         public string StudentNumber { get; set; }
 
@@ -34,9 +36,9 @@ namespace RatingVolsuWP8
             _ratingDb = new RatingDatabase();
             _requestManager = new RequestManager();
             RatingOfStudent = new ObservableCollection<Rating>();
-            //RatingOfGroupForView = new ObservableCollection<Rating>();
+            RatingOfGroupForView = new ObservableCollection<Rating>();
             Subjects = new ObservableCollection<Subject>();
-
+            ctSourcesList = new List<CancellationTokenSource>();
         }
 
         #region WEB
@@ -44,7 +46,18 @@ namespace RatingVolsuWP8
         public async Task GetWebRatingOfStudent(RequestManipulation requestManip)
         {
             GetRatingFromDb(requestManip);
-            var temp  = await _requestManager.GetRatingOfStudent(requestManip);
+            if (ctSourcesList.Count > 0)
+            {
+                foreach (var cancellationTokenSource in ctSourcesList)
+                {
+                    cancellationTokenSource.Cancel();
+                }
+                ctSourcesList.Clear();
+            }
+            ctSourcesList.Add(new CancellationTokenSource());
+            var ct = ctSourcesList.First().Token;
+            var temp  = await _requestManager.GetRatingOfStudent(requestManip, ct);
+            ctSourcesList.Remove(ctSourcesList.First());
             if (temp != null || temp.Count == 0)
             {
                 RatingOfStudent = temp;

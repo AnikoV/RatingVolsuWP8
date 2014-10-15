@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -18,6 +20,7 @@ namespace RatingVolsuWP8
     public partial class RatingPage : PhoneApplicationPage
     {
         private readonly RatingViewModel _viewModel;
+        private bool _requestExecution;
         public RatingPage()
         {
             InitializeComponent();
@@ -36,7 +39,64 @@ namespace RatingVolsuWP8
             };
             addFavoritesButton.Click += ApplicationBarIconButton_OnClick;
             ApplicationBar.Buttons.Add(addFavoritesButton);
+
+            var refreshButton = new ApplicationBarIconButton()
+            {
+                IconUri = new Uri("/Assets/Images/AppBar/refresh.png", UriKind.Relative),
+                Text = "обновить"
+            };
+            refreshButton.Click += RefreshButton_OnClick;
+            ApplicationBar.Buttons.Add(refreshButton);
         }
+
+        private async Task  StartRequest()
+        {
+            if (!_requestExecution)
+            {
+                _requestExecution = true;
+                var reqManip = _viewModel.RequestManip;
+                if (reqManip.GetType() == typeof(RequestByStudent))
+                {
+                    SubjectsPanoramaItem.Visibility = Visibility.Collapsed;
+                    GroupRatingPanoramaItem.Visibility = Visibility.Collapsed;
+                    SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
+                    var studentRequest = reqManip as RequestByStudent;
+                    _viewModel.StudentNumber = studentRequest.StudentNumber();
+                    App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
+                    if (await App.IsInternetAvailable())
+                    {
+                        await _viewModel.GetWebRatingOfStudent(reqManip);
+                        App.ProgressIndicator.IsVisible = false;
+                        ApplicationBar.IsVisible = true;
+                    }
+                    else
+                    {
+                        App.ProgressIndicator.IsVisible = false;
+                        MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
+                    }
+                }
+                else
+                {
+                    RatingPanorama.DefaultItem = GroupRatingPanoramaItem;
+                    StudentPanoramaItem.Visibility = Visibility.Collapsed;
+                    App.InitProgressIndicator(true, "Загрузка рейтинга группы...", this);
+                    if (await App.IsInternetAvailable())
+                    {
+                        await _viewModel.GetWebRatingOfGroup(reqManip);
+                        App.ProgressIndicator.IsVisible = false;
+                        ApplicationBar.IsVisible = true;
+                    }
+                    else
+                    {
+                        App.ProgressIndicator.IsVisible = false;
+                        MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
+                    }
+                }
+                _requestExecution = false;
+            }
+        }
+
+       
 
         protected override void OnBackKeyPress(CancelEventArgs e)
         {
@@ -66,46 +126,7 @@ namespace RatingVolsuWP8
             _viewModel.SetCurrentRequest(reqManip);
             _viewModel.GetRatingFromDb(reqManip);
 
-            if (reqManip.GetType() == typeof(RequestByStudent))
-            {
-                SubjectsPanoramaItem.Visibility = Visibility.Collapsed;
-                GroupRatingPanoramaItem.Visibility = Visibility.Collapsed;
-                SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
-                var studentRequest = reqManip as RequestByStudent;
-                _viewModel.StudentNumber = studentRequest.StudentNumber();
-                App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
-                if (await App.IsInternetAvailable())
-                {
-                    await _viewModel.GetWebRatingOfStudent(reqManip);
-                    App.ProgressIndicator.IsVisible = false;
-                    ApplicationBar.IsVisible = true;
-                }
-                else
-                {
-                    App.ProgressIndicator.IsVisible = false;
-                    MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
-                    return;
-                }
-            }
-            else
-            {
-                RatingPanorama.DefaultItem = GroupRatingPanoramaItem;
-                StudentPanoramaItem.Visibility = Visibility.Collapsed;
-                App.InitProgressIndicator(true, "Загрузка рейтинга группы...", this);
-                if (await App.IsInternetAvailable())
-                {
-                    await _viewModel.GetWebRatingOfGroup(reqManip);
-                    App.ProgressIndicator.IsVisible = false;
-                    ApplicationBar.IsVisible = true;
-                }
-                else
-                {
-                    App.ProgressIndicator.IsVisible = false;
-                    MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
-                }
-            }
-            
-
+            await StartRequest();
         }
 
         #region SelectionChanges
@@ -120,10 +141,13 @@ namespace RatingVolsuWP8
 
         private async void GroupRatingListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Debug.WriteLine("Begin selectionChanged handler");
             var subjLb = sender as ListBox;
-            if (subjLb != null)
+            Debug.WriteLine("First step ok. Selected item {0}", subjLb.SelectedIndex);
+            if (subjLb != null && subjLb.SelectedItem != null)
             {
                 var selectedItem = (subjLb.SelectedItem as ArrayItemWrapper).Value;
+                Debug.WriteLine("Second step ok");
                 if (selectedItem == null) 
                     return;
                 Debug.WriteLine("Begin set statistic for {0}", selectedItem.Student.Number );
@@ -164,7 +188,13 @@ namespace RatingVolsuWP8
         }
 
         #endregion
-
+        
+        private async void RefreshButton_OnClick(object sender, EventArgs e)
+        {
+            
+                await StartRequest();
+                
+        }
         private void ApplicationBarIconButton_OnClick(object sender, EventArgs e)
         {
             if (_viewModel.RequestManipForStudent != null)
@@ -184,10 +214,16 @@ namespace RatingVolsuWP8
             }
             else
             {
-                if (!_viewModel.CheckFavorites(false))
-                    MessageBox.Show("Запись уже находится в избранном");
-                else
-                    ShowCustomMessageBox(false);
+                //App.RootFrame.Dispatcher.BeginInvoke(() =>
+                //{
+                App.ProgressIndicator.IsVisible = false;
+                    if (!_viewModel.CheckFavorites(false))
+                        MessageBox.Show("Запись уже находится в избранном");
+                    else
+                        ShowCustomMessageBox(false);
+             //   }
+               //     );
+
             }
             
         }

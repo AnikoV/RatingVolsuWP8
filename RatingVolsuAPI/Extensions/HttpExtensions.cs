@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace WinPhoneExtensions
@@ -58,6 +59,38 @@ namespace WinPhoneExtensions
                 }
             }, request);
             return taskComplete.Task;
+        }
+        public static async Task<HttpWebResponse> GetResponseAsync(this HttpWebRequest request, CancellationToken ct)
+        {
+             
+            using (ct.Register(() =>
+            {
+                request.Abort();
+                Debug.WriteLine("Request was aborted");
+            }, useSynchronizationContext: false))
+            {
+                try
+                {
+                    var response = await request.GetResponseAsync();
+                    ct.ThrowIfCancellationRequested();
+                    return (HttpWebResponse)response;
+                }
+                catch (WebException ex)
+                {
+                    // WebException is thrown when request.Abort() is called,
+                    // but there may be many other reasons,
+                    // propagate the WebException to the caller correctly
+
+                    if (ct.IsCancellationRequested)
+                    {
+                        // the WebException will be available as Exception.InnerException
+                        throw new OperationCanceledException(ex.Message, ex, ct);
+                    }
+
+                    // cancellation hasn't been requested, rethrow the original WebException
+                    throw;
+                }
+            }
         }
     }
 }

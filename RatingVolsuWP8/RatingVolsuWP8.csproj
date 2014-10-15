@@ -155,6 +155,7 @@
     <Content Include="Assets\Images\AppBar\edit.png" />
     <Content Include="Assets\Images\AppBar\favs.addto.png" />
     <Content Include="Assets\Images\AppBar\groupAppBar.png" />
+    <Content Include="Assets\Images\AppBar\refresh.png" />
     <Content Include="Assets\Images\AppBar\studentAppBar.png" />
     <Content Include="Assets\Images\corona_icon.png" />
     <Content Include="Assets\Images\group_icon.png" />

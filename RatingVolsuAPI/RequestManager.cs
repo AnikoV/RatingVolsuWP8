@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Threading;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,7 +32,7 @@ namespace RatingVolsuAPI
             rating = new RatingDatabase();
         }
 
-        private async Task<string> SendRequest(string DataRequest)
+        private async Task<string> SendRequest(string DataRequest, CancellationToken ct = new CancellationToken())
         {
             var myHttpWebRequest = (HttpWebRequest)WebRequest.Create(_url);
             HttpExtensions.PostString = DataRequest;
@@ -41,7 +42,7 @@ namespace RatingVolsuAPI
             try
             {
                 var webRequest = (HttpWebRequest) await myHttpWebRequest.GetRequestStreamAsync();
-                var response = (HttpWebResponse) await webRequest.GetResponseAsync();
+                var response = (HttpWebResponse)await webRequest.GetResponseAsync(ct);
                 Debug.WriteLine(myHttpWebRequest.ContentType);
                 Stream responseStream = response.GetResponseStream();
                 string content;
@@ -267,14 +268,14 @@ namespace RatingVolsuAPI
         /// </summary>
         /// <param name="requestInfo">Объект, содержащий параметры запроса</param>
         /// <returns></returns>
-        public async Task<ObservableCollection<Rating>> GetRatingOfStudent(RequestManipulation requestInfo)
+        public async Task<ObservableCollection<Rating>> GetRatingOfStudent(RequestManipulation requestInfo, CancellationToken ct = new CancellationToken())
         {
             var req = (RequestByStudent) requestInfo;
             _url = "http://umka.volsu.ru/newumka3/viewdoc/service_selector/stud_rat.php";
 
             var parametrs = req.GetParams();
             Debug.WriteLine("Sending request - rating of student\n With params " + parametrs);
-            string content = await SendRequest(parametrs);
+            string content = await SendRequest(parametrs, ct);
             try
             {
                 var studentRating = JsonConvert.DeserializeObject<StudentRat>(content);

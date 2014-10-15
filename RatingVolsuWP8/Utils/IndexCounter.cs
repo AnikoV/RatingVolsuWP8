@@ -52,7 +52,12 @@ namespace RatingVolsuWP8
 
         public IEnumerator GetEnumerator()
         {
-            var result = _array.Select((item, index) => new ArrayItemWrapper(_array, index)).GetEnumerator();
+            var result = _array.Select((item, index) =>
+            {
+                var res = new ArrayItemWrapper(_array, index);
+                Debug.WriteLine("create arrayItemWrapper with index {0}", index);
+                return res;
+            }).GetEnumerator();
             Debug.WriteLine("converter return value");
             return result;
         }
