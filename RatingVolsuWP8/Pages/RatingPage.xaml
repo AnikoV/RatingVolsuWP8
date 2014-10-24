@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -13,8 +14,31 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
     <phone:PhoneApplicationPage.Resources>
         <CollectionViewSource x:Key="SortedRatingList" Source="{Binding Path=RatingOfGroupForView}" />
+        <Storyboard x:Name="StudentOpacityInSb">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="StudentOpacityOutSb">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </phone:PhoneApplicationPage.Resources>
     
     <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
@@ -36,7 +60,7 @@
                     <ListBox x:Name="SubjectsListBox"
                          ItemsSource="{Binding Subjects}"
                          ItemContainerStyle="{StaticResource SubjectItemStyle}"
-                         SelectionChanged="SubjectsListBox_OnSelectionChanged">
+                         SelectionChanged="SubjectsListBox_OnSelectionChanged" Margin="0,0,0,69">
                     </ListBox>
                 </phone:PanoramaItem>
 
@@ -49,11 +73,12 @@
                             </StackPanel>
                         </DataTemplate>
                     </phone:PanoramaItem.HeaderTemplate>
+                    
                     <Grid>
                         <ListBox x:Name="GroupRatingListBox"
                              ItemsSource="{Binding Path = RatingOfGroupForView, Converter={StaticResource ArrayWrapperConverter}}"
                              SelectionChanged="GroupRatingListBox_OnSelectionChanged"
-                             SelectionMode="Single" Margin="0,0,-29,0">
+                             SelectionMode="Single" Margin="0,-36,-29,72">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -62,9 +87,36 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="ListBoxItem">
-                                                <Grid>
+
+                                                <Grid x:Name="ItemGrid">
                                                     <VisualStateManager.VisualStateGroups>
-                                                        <VisualStateGroup x:Name="GroupStateGroup">
+                                                        <VisualStateGroup x:Name="LayoutStates">
+                                                            <VisualState x:Name="AfterLoaded">
+                                                                <Storyboard>
+                                                                    <DoubleAnimationUsingKeyFrames  Storyboard.TargetName="ItemGrid" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                                        <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                                                        <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </VisualState>
+                                                        </VisualStateGroup>
+                                                        <VisualStateGroup x:Name="CommonStates">
+                                                            <VisualStateGroup.Transitions>
+                                                                <VisualTransition To="Normal">
+                                                                    <Storyboard>
+                                                                        <DoubleAnimationUsingKeyFrames  Storyboard.TargetName="PredStat" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                                            <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                                                                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
+                                                                            <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="0"/>
+                                                                        </DoubleAnimationUsingKeyFrames>
+                                                                        <DoubleAnimationUsingKeyFrames  Storyboard.TargetName="FirstStat" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                                            <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                                                                            <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="1"/>
+                                                                            <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="0"/>
+                                                                        </DoubleAnimationUsingKeyFrames>
+                                                                    </Storyboard>
+                                                                </VisualTransition>
+                                                            </VisualStateGroup.Transitions>
                                                             <VisualState x:Name="Normal"/>
                                                             <VisualState x:Name="Selected">
                                                                 <Storyboard>
@@ -74,18 +126,21 @@
                                                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetName="StudentPlace" Storyboard.TargetProperty="FontFamily" Duration="0">
                                                                         <DiscreteObjectKeyFrame Value="{StaticResource PhoneFontFamilySemiBold}" KeyTime="0"/>
                                                                     </ObjectAnimationUsingKeyFrames>
-                                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FirstStat" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                        <DiscreteObjectKeyFrame Value="Visible" KeyTime="0"/>
-                                                                    </ObjectAnimationUsingKeyFrames>
-                                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredStat" Storyboard.TargetProperty="Visibility" Duration="0">
-                                                                        <DiscreteObjectKeyFrame Value="Visible" KeyTime="0"/>
-                                                                    </ObjectAnimationUsingKeyFrames>
+                                                                    <DoubleAnimationUsingKeyFrames  Storyboard.TargetName="PredStat" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                                        <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                                                        <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                                                                        <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1"/>
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                    <DoubleAnimationUsingKeyFrames  Storyboard.TargetName="FirstStat" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                                                        <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                                                        <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
+                                                                        <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1"/>
+                                                                    </DoubleAnimationUsingKeyFrames>
                                                                 </Storyboard>
                                                             </VisualState>
-
                                                         </VisualStateGroup>
                                                     </VisualStateManager.VisualStateGroups>
-
+                                                    
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto"/>
                                                         <ColumnDefinition Width="Auto"/>
@@ -93,19 +148,20 @@
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="*"/>
                                                     </Grid.RowDefinitions>
-
+                                                    
                                                     <TextBlock x:Name="StudentPlace"
-                                                           MinWidth="80"
+                                                           MinWidth="75"
                                                            Grid.Column="0"
                                                            Text="{Binding Index}" 
                                                            FontSize="80" 
-                                                           FontFamily="{StaticResource PhoneFontFamilyLight}"/>
+                                                           FontFamily="{StaticResource PhoneFontFamilyLight}">
+                                                    </TextBlock>
                                                     <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
-                                                        <StackPanel Orientation="Vertical" Margin="0,0,30,0">
+                                                        <StackPanel Orientation="Vertical" Margin="0,0,25,0">
                                                             <TextBlock x:Name="Zachetka" Text="{Binding Path=Value.Student.Number}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="35" TextWrapping="NoWrap"/>
                                                             <TextBlock x:Name="Balls" Text="{Binding Path=Value.Total}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="25" TextWrapping="NoWrap" Opacity="0.5"/>
                                                         </StackPanel>
-                                                        <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
+                                                        <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Opacity="0">
                                                             <Image Source="/Assets/Images/stat_icon1.png" />
                                                             <TextBlock x:Name="BallsToNextPlace" 
                                                                    Text="{Binding Path = Value.BallsToNextPlace}"
@@ -114,7 +170,7 @@
                                                                    TextWrapping="NoWrap"/>
                                                             <Image x:Name="CoronaPred" Source="/Assets/Images/corona_icon.png" Visibility="Collapsed"/>
                                                         </StackPanel>
-                                                        <StackPanel Name="FirstStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Visibility="Collapsed">
+                                                        <StackPanel Name="FirstStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Opacity="0">
                                                             <Image Source="/Assets/Images/stat_icon2.png"/>
                                                             <TextBlock x:Name="BallsToFirstPlace" 
                                                                    Text="{Binding Path = Value.BallsToFirstPlace}" 
@@ -125,6 +181,7 @@
                                                             <Image x:Name="CoronaFirst" Source="/Assets/Images/corona_icon.png" Visibility="Collapsed"/>
                                                         </StackPanel>
                                                     </StackPanel>
+                                                    
                                                 </Grid>
                                             </ControlTemplate>
                                         </Setter.Value>
@@ -132,9 +189,7 @@
                                 </Style>
                             </ListBox.ItemContainerStyle>
                         </ListBox>
-
                         <TextBlock HorizontalAlignment="Center"  Text="Список пуст" FontSize="48" Opacity="0.3" Visibility="{Binding Path = RatingOfGroupForView.Count, Converter = {StaticResource ListCountToVisabilityConverter}}"/>
-
                     </Grid>
                 </phone:PanoramaItem>
 
@@ -149,7 +204,7 @@
                     </phone:PanoramaItem.HeaderTemplate>
                     <Grid>
                         <ListBox x:Name="StudentRatingListBox"
-                             ItemsSource="{Binding RatingOfStudent}">
+                             ItemsSource="{Binding RatingOfStudent}" Margin="0,-34,0,74">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="Template">

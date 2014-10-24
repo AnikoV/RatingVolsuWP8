@@ -252,7 +252,13 @@
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyLight}"/>
     </Style>
-    
+
+    <Style TargetType="Border" x:Key="BorderAll">
+        <Setter Property="Background" Value="#D8FFFFFF"/>
+        <Setter Property="Padding" Value="18"/>
+        <Setter Property="Margin" Value="18,0"/>
+    </Style>
+
     <!--DATA TEMPLATES-->
     <DataTemplate x:Key="InstituteItemTemplate">
         <Grid>

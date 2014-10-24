@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
-using Windows.Networking.Connectivity;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Net.NetworkInformation;
-using Microsoft.Phone.Shell;
 using RatingVolsuAPI;
-using NetworkInterface = System.Net.NetworkInformation.NetworkInterface;
 
 namespace RatingVolsuWP8
 {
@@ -69,6 +60,7 @@ namespace RatingVolsuWP8
             
         }
 
+
         #region OnSelectionChanged
 
         private async void InstituteListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -81,6 +73,18 @@ namespace RatingVolsuWP8
                     return;
 
                 App.InitProgressIndicator(true, "Загрузка групп...", this);
+                
+                if (GroupPanoramaItem.Opacity == 1.0d)
+                {
+                    var opacityInSb = FindName("GroupOpacityInSb") as Storyboard;
+                    if (opacityInSb != null)
+                    {
+                        Storyboard.SetTargetName(opacityInSb, "GroupPanoramaItem");
+                        opacityInSb.Begin();
+                        opacityInSb.Completed += (o, args) => { GroupPanoramaItem.Opacity = 0; opacityInSb.Stop(); };
+                    }
+                }
+
                 if (await App.IsInternetAvailable())
                 {
                     ApplicationBar.IsVisible = false;
@@ -98,6 +102,17 @@ namespace RatingVolsuWP8
                 InputDataPanorama.Items.RemoveAt(indexItem);
                 InputDataPanorama.Items.Insert(indexItem, GroupPanoramaItem);
                 GroupPanoramaItem.Visibility = Visibility.Visible;
+                
+                if (GroupPanoramaItem.Opacity != 1.0d)
+                {
+                    var opacityOutSb = FindName("GroupOpacityOutSb") as Storyboard;
+                    if (opacityOutSb != null)
+                    {
+                        Storyboard.SetTargetName(opacityOutSb, "GroupPanoramaItem");
+                        opacityOutSb.Begin();
+                        opacityOutSb.Completed += (o, args) => { GroupPanoramaItem.Opacity = 1; opacityOutSb.Stop(); };
+                    }
+                }
             }
         }
 
@@ -111,6 +126,18 @@ namespace RatingVolsuWP8
                 if(selectedIndex == -1)
                     return;
                 App.InitProgressIndicator(true, "Загрузка семестров...", this);
+
+                if (SemesterPanoramaItem.Opacity == 1.0d)
+                {
+                    var opacityInSb = FindName("SemesterOpacityInSb") as Storyboard;
+                    if (opacityInSb != null)
+                    {
+                        Storyboard.SetTargetName(opacityInSb, "SemesterPanoramaItem");
+                        opacityInSb.Begin();
+                        opacityInSb.Completed += (o, args) => { SemesterPanoramaItem.Opacity = 0; opacityInSb.Stop(); };
+                    }
+                }
+
                 if (await App.IsInternetAvailable())
                 {
                     ApplicationBar.IsVisible = false;
@@ -154,6 +181,17 @@ namespace RatingVolsuWP8
                 InputDataPanorama.Items.RemoveAt(indexItem);
                 InputDataPanorama.Items.Insert(indexItem, SemesterPanoramaItem);
                 SemesterPanoramaItem.Visibility = Visibility.Visible;
+
+                if (SemesterPanoramaItem.Opacity != 1.0d)
+                {
+                    var opacityOutSb = FindName("SemesterOpacityOutSb") as Storyboard;
+                    if (opacityOutSb != null)
+                    {
+                        Storyboard.SetTargetName(opacityOutSb, "SemesterPanoramaItem");
+                        opacityOutSb.Begin();
+                        opacityOutSb.Completed += (o, args) => { SemesterPanoramaItem.Opacity = 1; opacityOutSb.Stop(); };
+                    }
+                }
             }
         }
 
@@ -168,7 +206,19 @@ namespace RatingVolsuWP8
             {
                 ApplicationBar.IsVisible = false;
                 _viewModel.Students.Clear();
+
                 App.InitProgressIndicator(true, "Загрузка номеров зачеток...", this);
+                if (ZachetkaPanoramaItem.Opacity == 1.0d)
+                {
+                    var opacityInSb = FindName("ZachetkaOpacityInSb") as Storyboard;
+                    if (opacityInSb != null)
+                    {
+                        Storyboard.SetTargetName(opacityInSb, "ZachetkaPanoramaItem");
+                        opacityInSb.Begin();
+                        opacityInSb.Completed += (o, args) => { ZachetkaPanoramaItem.Opacity = 0; opacityInSb.Stop(); };
+                    }
+                }
+
                 if (await App.IsInternetAvailable())
                 {
                     await _viewModel.GetStudents();
@@ -186,6 +236,16 @@ namespace RatingVolsuWP8
                 InputDataPanorama.Items.Insert(indexItem, ZachetkaPanoramaItem);
                 ZachetkaPanoramaItem.Visibility = Visibility.Visible;
 
+                if (ZachetkaPanoramaItem.Opacity != 1.0d)
+                {
+                    var opacityOutSb = FindName("ZachetkaOpacityOutSb") as Storyboard;
+                    if (opacityOutSb != null)
+                    {
+                        Storyboard.SetTargetName(opacityOutSb, "ZachetkaPanoramaItem");
+                        opacityOutSb.Begin();
+                        opacityOutSb.Completed += (o, args) => { ZachetkaPanoramaItem.Opacity = 1; opacityOutSb.Stop(); };
+                    }
+                }
             }
             else
             {

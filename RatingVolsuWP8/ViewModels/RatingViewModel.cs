@@ -124,8 +124,8 @@ namespace RatingVolsuWP8
             var idx = RatingOfGroupForView.IndexOf(RatingOfGroup.First(x => x.Id == curItem.Id));
             if (idx == 0)
             {
-                curItem.BallsToNextPlace = "0";
-                curItem.BallsToFirstPlace = "0";
+                curItem.BallsToNextPlace = " ☺";
+                curItem.BallsToFirstPlace = " ☺";
                 return;
             }
             if (RatingOfGroupForView[idx - 1].Total != null)

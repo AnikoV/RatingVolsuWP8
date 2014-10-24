@@ -11,3 +11,10 @@ C:\Users\nastya\Documents\RatingVolsu\some\RatingVolsuAPI\Bin\Release\Newtonsoft
 C:\Users\nastya\Documents\RatingVolsu\some\RatingVolsuAPI\Bin\Release\Newtonsoft.Json.xml
 C:\Users\nastya\Documents\RatingVolsu\some\RatingVolsuAPI\obj\Release\RatingVolsuAPI.dll
 C:\Users\nastya\Documents\RatingVolsu\some\RatingVolsuAPI\obj\Release\RatingVolsuAPI.pdb
+F:\Dropbox\OtherProjects\RatingVolsu\WinPhone\RatingVolsuWP8\RatingVolsuAPI\Bin\Release\RatingVolsuAPI.dll
+F:\Dropbox\OtherProjects\RatingVolsu\WinPhone\RatingVolsuWP8\RatingVolsuAPI\Bin\Release\RatingVolsuAPI.pdb
+F:\Dropbox\OtherProjects\RatingVolsu\WinPhone\RatingVolsuWP8\RatingVolsuAPI\Bin\Release\Newtonsoft.Json.dll
+F:\Dropbox\OtherProjects\RatingVolsu\WinPhone\RatingVolsuWP8\RatingVolsuAPI\Bin\Release\Newtonsoft.Json.xml
+F:\Dropbox\OtherProjects\RatingVolsu\WinPhone\RatingVolsuWP8\RatingVolsuAPI\obj\Release\RatingVolsuAPI.csprojResolveAssemblyReference.cache
+F:\Dropbox\OtherProjects\RatingVolsu\WinPhone\RatingVolsuWP8\RatingVolsuAPI\obj\Release\RatingVolsuAPI.dll
+F:\Dropbox\OtherProjects\RatingVolsu\WinPhone\RatingVolsuWP8\RatingVolsuAPI\obj\Release\RatingVolsuAPI.pdb
