@@ -26,7 +26,10 @@ namespace RatingVolsuWP8
             FavoritesList = new ObservableCollection<FavoritesItem>(from FavoritesItem item in _ratingDb.Favorites 
                                                                         select item);
         }
-
+        internal void EditFavorites(FavoritesItem favoritesItem, string name)
+        {
+            _ratingDb.EditFavorites(favoritesItem, name);
+        }
         internal void DeleteFavoriteItems(System.Collections.IList selectedCollection)
         {
             foreach (var favoritesItem in selectedCollection)

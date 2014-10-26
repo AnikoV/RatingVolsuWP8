@@ -119,6 +119,21 @@ namespace RatingVolsuAPI
             SubmitChanges();
         }
 
+        public void EditFavorites(FavoritesItem favorites, string name)
+        {
+            FavoritesItem favoriteItem = (from FavoritesItem item in Favorites
+                                          select item).FirstOrDefault(x => x.Id == favorites.Id);
+            if (favoriteItem == null)
+            {
+                Favorites.InsertOnSubmit(favorites);
+            }
+            else
+            {
+                favoriteItem.Name = name;
+            }
+            SubmitChanges();
+        }
+
         public void DeleteFavorites(FavoritesItem favoritesItem)
         {
             Favorites.DeleteOnSubmit(favoritesItem);

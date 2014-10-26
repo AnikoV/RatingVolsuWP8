@@ -170,8 +170,7 @@ namespace RatingVolsuWP8
                 if (collection != null)
                 {
                     var item = (FavoritesItem)collection[0];
-                    NavigationService.Navigate(
-                    new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}&templateId={1}", InputDataMode.EditTemplate, item.Id), UriKind.Relative));
+                    ShowCustomMessageBox(item);
                 }
             }
             InitializeMainAppBar();
@@ -205,6 +204,45 @@ namespace RatingVolsuWP8
                     case CustomMessageBoxResult.LeftButton:
                         _viewModel.DeleteFavoriteItems(selectedCollection);
                         InitializeMainAppBar();
+                        break;
+                    default: break;
+                }
+            };
+
+            cmBox.Show();
+        }
+
+        private void ShowCustomMessageBox(FavoritesItem favoritesItem)
+        {
+            var textBox = new TextBox()
+            {
+                Width = 300,
+                Text = favoritesItem.Name,
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+            textBox.GotFocus += (sender, args) => ((TextBox)sender).SelectAll();
+            var cmBox = new CustomMessageBox()
+            {
+                Message = "Введите название",
+                Content = textBox,
+                LeftButtonContent = "Оk",
+                RightButtonContent = "Закрыть"
+
+            };
+            cmBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        if (textBox.Text.Length <= 12)
+                        {
+                            _viewModel.EditFavorites(favoritesItem, textBox.Text);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Название слишком длинное");
+                            ShowCustomMessageBox(favoritesItem);
+                        }
                         break;
                     default: break;
                 }
@@ -289,8 +327,7 @@ namespace RatingVolsuWP8
             var item = ((FrameworkElement)sender).DataContext as FavoritesItem;
             if (item != null)
             {
-                NavigationService.Navigate(
-                new Uri(String.Format("/Pages/InputDataPage.xaml?mode={0}&templateId={1}", InputDataMode.EditTemplate, item.Id), UriKind.Relative));
+                ShowCustomMessageBox(item);
 
             }
         }
