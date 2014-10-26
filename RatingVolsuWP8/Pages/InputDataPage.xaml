@@ -24,7 +24,48 @@
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
+    
+    <phone:PhoneApplicationPage.Resources>
+        <Storyboard x:Name="GroupOpacityInSb">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="GroupOpacityOutSb">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
 
+        <Storyboard x:Name="SemesterOpacityInSb">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="SemesterOpacityOutSb">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Name="ZachetkaOpacityInSb">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="ZachetkaOpacityOutSb">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5q" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </phone:PhoneApplicationPage.Resources>
+    
     <Grid x:Name="LayoutRoot" Style="{StaticResource LayoutGrid}" >
         <phone:Panorama x:Name="InputDataPanorama" Margin="0,12,0,0">
             <phone:Panorama.Background>
@@ -48,7 +89,7 @@
                 </ListBox>
             </phone:PanoramaItem>
             
-            <phone:PanoramaItem x:Name="GroupPanoramaItem" Visibility="Collapsed">
+            <phone:PanoramaItem x:Name="GroupPanoramaItem" Visibility="Collapsed" Opacity="0">
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Группа" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>
@@ -59,8 +100,8 @@
                          SelectionMode="Single">
                 </ListBox>
             </phone:PanoramaItem>
-            
-            <phone:PanoramaItem x:Name="SemesterPanoramaItem" Visibility="Collapsed">
+
+            <phone:PanoramaItem x:Name="SemesterPanoramaItem" Visibility="Collapsed" Opacity="0">
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Семестр" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>
@@ -72,8 +113,8 @@
                 </ListBox>
                     
             </phone:PanoramaItem>
-            
-            <phone:PanoramaItem x:Name="ZachetkaPanoramaItem" Visibility="Collapsed">
+
+            <phone:PanoramaItem x:Name="ZachetkaPanoramaItem" Visibility="Collapsed" Opacity="0">
                 <phone:PanoramaItem.Header>
                     <TextBlock Text="Зачетная книжка" Style="{StaticResource PivotHeaderStyle}"/>
                 </phone:PanoramaItem.Header>

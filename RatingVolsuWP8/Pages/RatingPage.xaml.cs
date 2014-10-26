@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -166,6 +167,18 @@ namespace RatingVolsuWP8
                     StudentPanoramaItem.Visibility = Visibility.Visible;
                 Debug.WriteLine("init progress indicator for {0}", selectedItem.Student.Number);
                 App.InitProgressIndicator(true, "Загрузка рейтинга студента...", this);
+
+                if (StudentRatingListBox.Opacity == 1.0d)
+                {
+                    var opacityInSb = FindName("StudentOpacityInSb") as Storyboard;
+                    if (opacityInSb != null)
+                    {
+                        Storyboard.SetTargetName(opacityInSb, "StudentRatingListBox");
+                        opacityInSb.Begin();
+                        opacityInSb.Completed += (o, args) => { StudentRatingListBox.Opacity = 0; opacityInSb.Stop(); };
+                    }
+                }
+
                 Debug.WriteLine("Check internet access for {0}", selectedItem.Student.Number);
                 if (await App.IsInternetAvailable())
                 {
@@ -176,6 +189,7 @@ namespace RatingVolsuWP8
                     Debug.WriteLine("unvisible progress indicator for {0}", selectedItem.Student.Number);
                     SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
                     
+
                 }
                 else
                 {
@@ -183,7 +197,17 @@ namespace RatingVolsuWP8
                     MessageBox.Show("К сожалению, соединение с интернетом недоступно.");
                     return;
                 }
-               
+
+                if (StudentRatingListBox.Opacity != 1.0d)
+                {
+                    var opacityOutSb = FindName("StudentOpacityOutSb") as Storyboard;
+                    if (opacityOutSb != null)
+                    {
+                        Storyboard.SetTargetName(opacityOutSb, "StudentRatingListBox");
+                        opacityOutSb.Begin();
+                        opacityOutSb.Completed += (o, args) => { StudentRatingListBox.Opacity = 1; opacityOutSb.Stop(); };
+                    }
+                }
             }
         }
 
