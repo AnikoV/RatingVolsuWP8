@@ -217,6 +217,9 @@
                         <TextBlock x:Name="Att3" Text="3 модуль" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                     <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                        <TextBlock x:Name="Sum" Text="Сумма" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Border>
+                    <Border BorderThickness="1" BorderBrush="White" Width="85" >
                         <TextBlock x:Name="Exam" Text="Экзамен" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                     <Border BorderThickness="1" BorderBrush="White" Width="85" >
@@ -243,6 +246,9 @@
                                 </Border>
                                 <Border BorderThickness="1" BorderBrush="White" Width="85" >
                                     <TextBlock x:Name="Att3" Text="{Binding Att3}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Border>
+                                <Border BorderThickness="1" BorderBrush="White" Width="85" >
+                                    <TextBlock x:Name="Sum" Text="{Binding Sum}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                 </Border>
                                 <Border BorderThickness="1" BorderBrush="White" Width="85" >
                                     <TextBlock x:Name="Exam" Text="{Binding Converter={StaticResource ExamConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>

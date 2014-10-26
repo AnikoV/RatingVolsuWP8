@@ -307,12 +307,14 @@ namespace RatingVolsuWP8
                     VerticalState.Visibility = Visibility.Collapsed;
                     HorizontalState.Visibility = Visibility.Visible;
                     SystemTray.IsVisible = false;
+                    ApplicationBar.IsVisible = false;
                 }
                 else
                 {
                     VerticalState.Visibility = Visibility.Visible;
                     HorizontalState.Visibility = Visibility.Collapsed;
                     SystemTray.IsVisible = true;
+                    ApplicationBar.IsVisible = true;
                 }
             }
         }
