@@ -99,11 +99,13 @@ namespace RatingVolsuWP8
                 // Ошибка навигации; перейти в отладчик
                 Debugger.Break();
             }
+            AnalyticsManager.SendException("[NAVIGATION_FAILED]" + e.Exception.Message + "[Stacktrace] - " + e.Exception.StackTrace, true);
         }
 
         // Код для выполнения на необработанных исключениях
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            AnalyticsManager.SendException("[UNHANDLED]" + e.ExceptionObject.Message + "[Stacktrace] - " + e.ExceptionObject.StackTrace, true);
             if (Debugger.IsAttached)
             {
                 // Произошло необработанное исключение; перейти в отладчик

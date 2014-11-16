@@ -120,7 +120,7 @@ namespace RatingVolsuWP8
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            //string type, tmp;
+            AnalyticsManager.SendView("Рейтинг студентов");
 
             var reqManip = NavigationService.GetNavigationData() as RequestManipulation;
             if (reqManip == null) return;

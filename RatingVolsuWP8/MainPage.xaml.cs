@@ -38,6 +38,7 @@ namespace RatingVolsuWP8
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            AnalyticsManager.SendView("Главный экран");
             if (Info.ToFavoritesPivot)
             {
                 MainPivot.SelectedItem = MainPivot.Items[1];
