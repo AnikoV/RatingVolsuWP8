@@ -24,6 +24,7 @@ namespace RatingVolsuWP8
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            AnalyticsManager.SendView("Ввод данных");
             // Парсим мод
             string mode, templateId;
             if (NavigationContext.QueryString.TryGetValue("mode", out mode))
