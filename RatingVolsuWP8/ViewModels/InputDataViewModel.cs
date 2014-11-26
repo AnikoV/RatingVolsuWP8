@@ -18,6 +18,7 @@ namespace RatingVolsuWP8
         private readonly RequestManager _requestManager;
         public FavoritesItem CurrentFavoritesItem;
         private RatingDatabase ratingDb;
+        public delegate void Handler(int count);
         //Collections
         public ObservableCollection<Facult> Facults { get; set; }
         public ObservableCollection<Group> Groups { get; set; }
@@ -36,15 +37,17 @@ namespace RatingVolsuWP8
 
         #region Requests
 
-        public async Task GetFacults()
+        public async Task GetFacults(Handler handler)
         {
             Facults = await _requestManager.GetFacultList();
+            handler(Facults.Count);
         }
 
-        public async Task GetGroups(int selectedIndex)
+        public async Task GetGroups(int selectedIndex, Handler handler)
         {
             RequestManip.FacultId = Facults[selectedIndex].Id;
             Groups = await _requestManager.GetGroupList(RequestManip.FacultId);
+            handler(Groups.Count);
         }
 
         public int GetSemestrCount()
@@ -59,15 +62,17 @@ namespace RatingVolsuWP8
             return 0;
         }
 
-        public async Task GetStudents()
+        public async Task GetStudents(Handler handler)
         {
             Students = await _requestManager.GetStudentList(RequestManip.GroupId);
+            handler(Students.Count);
         }
         #endregion
 
-        public async Task<List<string>> GetSemestrList(string groupId)
+        public async Task<List<string>> GetSemestrList(string groupId, Handler handler)
         {
             var list = await _requestManager.GetSemestrList(groupId);
+            handler(list.Count);
             return list;
         }
 

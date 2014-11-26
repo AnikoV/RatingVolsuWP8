@@ -45,7 +45,7 @@
     <Grid x:Name="LayoutRoot" Style="{StaticResource LayoutGrid}">
 
         <Grid x:Name="VerticalState">
-            <phone:Panorama x:Name="RatingPanorama" Margin="0,6,0,0">
+            <phone:Panorama x:Name="RatingPanorama" Margin="0,6,0,0" SelectionChanged="RatingPanorama_SelectionChanged">
                 <phone:Panorama.Background>
                     <ImageBrush ImageSource="/Assets/Images/ScreenBackground.png" Stretch="Uniform"/>
                 </phone:Panorama.Background>
@@ -82,7 +82,7 @@
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                    <Setter Property="Margin" Value="0,0,0,0"/>
+                                    <Setter Property="Margin" Value="0,8,0,8"/>
 
                                     <Setter Property="Template">
                                         <Setter.Value>
@@ -150,32 +150,39 @@
                                                     </Grid.RowDefinitions>
                                                     
                                                     <TextBlock x:Name="StudentPlace"
-                                                           MinWidth="75"
+                                                           MinWidth="60"
                                                            Grid.Column="0"
                                                            Text="{Binding Index}" 
-                                                           FontSize="80" 
+                                                           FontSize="50" 
+                                                               TextAlignment="Center"
                                                            FontFamily="{StaticResource PhoneFontFamilyLight}">
                                                     </TextBlock>
                                                     <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center">
-                                                        <StackPanel Orientation="Vertical" Margin="0,0,25,0">
-                                                            <TextBlock x:Name="Zachetka" Text="{Binding Path=Value.Student.Number}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="35" TextWrapping="NoWrap"/>
-                                                            <TextBlock x:Name="Balls" Text="{Binding Path=Value.Total}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="25" TextWrapping="NoWrap" Opacity="0.5"/>
+                                                        <StackPanel Orientation="Vertical" Margin="0,0,15,0">
+                                                            <StackPanel Orientation="Horizontal"  VerticalAlignment="Bottom">
+                                                                <TextBlock Text="№ " FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="30" TextWrapping="NoWrap"/>
+                                                                <TextBlock x:Name="Zachetka" Text="{Binding Path=Value.Student.Number}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="30" TextWrapping="NoWrap"/>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                                <TextBlock Text="Баллы: " FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="25" TextWrapping="NoWrap" Opacity="0.5"/>
+                                                                <TextBlock x:Name="Balls" Text="{Binding Path=Value.Total}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="25" TextWrapping="NoWrap" Opacity="0.5"/>
+                                                            </StackPanel>
                                                         </StackPanel>
-                                                        <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Opacity="0">
+                                                        <StackPanel Name="PredStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,15,0" Opacity="0">
                                                             <Image Source="/Assets/Images/stat_icon1.png" />
                                                             <TextBlock x:Name="BallsToNextPlace" 
                                                                    Text="{Binding Path = Value.BallsToNextPlace}"
                                                                    FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
-                                                                   FontSize="35" 
+                                                                   FontSize="25" 
                                                                    TextWrapping="NoWrap"/>
                                                             <Image x:Name="CoronaPred" Source="/Assets/Images/corona_icon.png" Visibility="Collapsed"/>
                                                         </StackPanel>
-                                                        <StackPanel Name="FirstStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,30,0" Opacity="0">
+                                                        <StackPanel Name="FirstStat" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,15,0" Opacity="0">
                                                             <Image Source="/Assets/Images/stat_icon2.png"/>
                                                             <TextBlock x:Name="BallsToFirstPlace" 
                                                                    Text="{Binding Path = Value.BallsToFirstPlace}" 
                                                                    FontFamily="{StaticResource PhoneFontFamilySemiLight}" 
-                                                                   FontSize="35" 
+                                                                   FontSize="25" 
                                                                    TextWrapping="NoWrap"
                                                                    VerticalAlignment="Center"/>
                                                             <Image x:Name="CoronaFirst" Source="/Assets/Images/corona_icon.png" Visibility="Collapsed"/>

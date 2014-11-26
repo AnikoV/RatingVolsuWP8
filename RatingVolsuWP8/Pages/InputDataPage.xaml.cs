@@ -13,6 +13,7 @@ namespace RatingVolsuWP8
     public partial class InputDataPage : PhoneApplicationPage
     {
         readonly InputDataViewModel _viewModel;
+
         public InputDataPage()
         {
             InitializeComponent();
@@ -48,7 +49,14 @@ namespace RatingVolsuWP8
             App.InitProgressIndicator(true,"Загрузка институтов...",this);
             if (await App.IsInternetAvailable())
             {
-                await _viewModel.GetFacults();
+                await _viewModel.GetFacults((count) =>
+                {
+                    if (count == 0)
+                    {
+                        FacultsButton.Visibility = Visibility.Visible;
+                    }
+                        
+                });
                 App.ProgressIndicator.IsVisible = false;
             }
             else
@@ -89,7 +97,14 @@ namespace RatingVolsuWP8
                 {
                     ApplicationBar.IsVisible = false;
                     _viewModel.Groups.Clear(); _viewModel.Semesters.Clear(); _viewModel.Students.Clear();
-                    await _viewModel.GetGroups(selectedIndex);
+                    await _viewModel.GetGroups(selectedIndex, (count) =>
+                    {
+                        if (count == 0)
+                        {
+                            GroupsButton.Visibility = Visibility.Visible;
+                        }
+
+                    });
                     App.ProgressIndicator.IsVisible = false;
                 }
                 else
@@ -147,7 +162,14 @@ namespace RatingVolsuWP8
                     _viewModel.RequestManip.GroupId = _viewModel.Groups[selectedIndex].Id;
 
                     int introYear = Convert.ToInt32(_viewModel.Groups[selectedIndex].Year);
-                    var semesterList = await _viewModel.GetSemestrList(_viewModel.RequestManip.GroupId);
+                    var semesterList = await _viewModel.GetSemestrList(_viewModel.RequestManip.GroupId, (count) =>
+                    {
+                        if (count == 0)
+                        {
+                            SemestersButton.Visibility = Visibility.Visible;
+                        }
+
+                    });
                     int temp = introYear;
                     _viewModel.Semesters.Clear();
 
@@ -221,7 +243,14 @@ namespace RatingVolsuWP8
 
                 if (await App.IsInternetAvailable())
                 {
-                    await _viewModel.GetStudents();
+                    await _viewModel.GetStudents((count) =>
+                    {
+                        if (count == 0)
+                        {
+                            StudentsButton.Visibility = Visibility.Visible;
+                        }
+
+                    });
                     App.ProgressIndicator.IsVisible = false;
                 }
                 else
